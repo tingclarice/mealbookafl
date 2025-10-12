@@ -11,6 +11,8 @@
     {{-- Custom CSS --}}
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
+    @yield('head')
+
 </head>
 <body class="d-flex flex-column min-vh-100">
 

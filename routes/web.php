@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Meal;
 
@@ -35,6 +36,6 @@ Route::get('/menu/{id}', function ($id) {
     return view('menu.show', compact('meal', 'suggestedMeals'));
 })->name('menu.show');
 
-Route::get('/cart', function(){
-    return view('cart');
-});
+
+Route::get('/cart', [CartController::class, 'cart']);
+

@@ -1,43 +1,10 @@
 @extends('layouts.app')
 
-@section('content')
-{{-- Adding some custom styles to match your design --}}
-<style>
-    body {
-        background-color: #f8f9fa; /* Light gray background */
-    }
-    .card {
-        border: none;
-        border-radius: 1rem; /* More rounded corners for cards */
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
-    .cart-item-img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 0.75rem;
-    }
-    .quantity-btn {
-        width: 28px;
-        height: 28px;
-        line-height: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-    }
-    .checkout-btn {
-        background-color: #2c3e50; /* Dark blue-gray button */
-        border: none;
-        border-radius: 50px;
-        padding: 0.75rem 1.5rem;
-        font-weight: bold;
-    }
-    .checkout-btn:hover {
-        background-color: #34495e;
-    }
-</style>
+@section('head')
+<link rel="stylesheet" href="css/cart.css">
+@endsection
 
+@section('content')
 <div class="container my-5 min-h-screen">
     <div class="row g-4">
         <div class="col-lg-8">
@@ -73,7 +40,7 @@
                             </div>
                         </div>
                     @empty
-                        {{-- ... --}}
+                        <p class="w-full text-center">You have no meals on your cart</p>
                     @endforelse
                 </div>
             </div>
