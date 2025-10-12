@@ -22,7 +22,7 @@ class MealController extends Controller
     {
         $meal = Meal::with('reviews.user')->findOrFail($id);
         
-        $suggestedMeals = Meal::available()
+        $suggestedMeals = Meal::where('isAvailable', true)
                                 ->where('id', '!=', $id)
                                 ->inRandomOrder()
                                 ->take(4)
