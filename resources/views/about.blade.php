@@ -61,26 +61,6 @@
         </div>
     </section>
 
-    {{-- Our Values Section --}}
-    <section class="py-5" style="background-color: #F97352;">
-        <div class="container">
-            <div class="row text-center text-white">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h3 class="mb-3" style="font-family: 'Potta One';">Kualitas Utama</h3>
-                    <p>Kami tidak pernah berkompromi soal kualitas bahan dan standar masakan kami.</p>
-                </div>
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h3 class="mb-3" style="font-family: 'Potta One';">Fokus ke Pelanggan</h3>
-                    <p>Semua yang kami lakukan dirancang dengan kenyamanan dan kepuasan kamu sebagai prioritas.</p>
-                </div>
-                <div class="col-md-4">
-                    <h3 class="mb-3" style="font-family: 'Potta One';">Peduli Komunitas</h3>
-                    <p>Kami lebih dari sekadar kantin. Kami adalah bagian dari kehidupan sehari hari kamu.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     {{-- Contact Section --}}
     <section class="py-5" style="background-color: #fff;">
         <div class="container text-center">
