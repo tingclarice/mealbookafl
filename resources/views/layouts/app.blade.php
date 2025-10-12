@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     {{-- Navbar --}}
     @include('components.navbar')
 
     {{-- Page Content --}}
-    <main>
+    <main class="flex-grow-1">
         @yield('content')
     </main>
 

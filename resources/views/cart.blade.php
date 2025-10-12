@@ -38,30 +38,23 @@
     }
 </style>
 
-<div class="container my-5">
+<div class="container my-5 min-h-screen">
     <div class="row g-4">
-
-        {{-- Left Column: Selected Meals --}}
         <div class="col-lg-8">
             <div class="card p-3">
                 <div class="card-header bg-white border-0 pt-3">
                     <h4 class="fw-bold mb-0">
-                        {{-- Using a Bootstrap Icon for the list symbol --}}
                         <i class="bi bi-list-ul me-2" style="color: #e74c3c;"></i>
                         Your selected meals
                     </h4>
                 </div>
                 <div class="card-body">
-                    {{--
-                        This is where you loop through your cart items.
-                        We'll assume you pass a `$cartItems` variable from your controller.
-                    --}}
+                    {{-- Looping Cart Items --}}
                     @forelse ($cartItems as $item)
                         <div class="d-flex align-items-center mb-4">
-                            {{-- Meal Image --}}
-                            <img src="{{ asset($item->meal->image_url_path) }}" alt="{{ $item->meal->name }}" class="cart-item-img">
+                            {{-- Access the meal relationship for image, name, and price --}}
+                            <img src="{{ asset($item->meal->image_url) }}" alt="{{ $item->meal->name }}" class="cart-item-img">
 
-                            {{-- Meal Details & Quantity --}}
                             <div class="flex-grow-1 ms-3">
                                 <h6 class="fw-bold mb-1">{{ $item->meal->name }}</h6>
                                 <p class="text-muted small mb-2">
@@ -74,15 +67,13 @@
                                 </div>
                             </div>
 
-                            {{-- Item Total Price --}}
                             <div class="ms-3">
+                                {{-- Calculate total price on the fly --}}
                                 <span class="fw-bold">Rp. {{ number_format($item->meal->price * $item->quantity, 0, ',', '.') }}</span>
                             </div>
                         </div>
                     @empty
-                        <div class="text-center">
-                            <p>Your cart is empty.</p>
-                        </div>
+                        {{-- ... --}}
                     @endforelse
                 </div>
             </div>

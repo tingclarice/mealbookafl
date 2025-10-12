@@ -1,0 +1,83 @@
+[
+    {
+        "id": 1,
+        "user_id": 1,
+        "meal_id": 1,
+        "quantity": 2,
+        "notes": "Tolong yang satu pedas, yang satu tidak pedas.",
+        "created_at": "2025-10-12T14:48:13.000000Z",
+        "updated_at": "2025-10-12T14:48:13.000000Z",
+        "meal": {
+            "id": 1,
+            "name": "Nasi Goreng",
+            "description": "Indonesian fried rice with egg and vegetables",
+            "price": "20000.00",
+            "category": "MEAL",
+            "isAvailable": true,
+            "image_url": "images/nasi-goreng.png",
+            "created_at": "2025-10-12T14:48:13.000000Z",
+            "updated_at": "2025-10-12T14:48:13.000000Z"
+        }
+    },
+    {
+        "id": 2,
+        "user_id": 1,
+        "meal_id": 5,
+        "quantity": 1,
+        "notes": "Banyakin bawang gorengnya ya.",
+        "created_at": "2025-10-12T14:48:13.000000Z",
+        "updated_at": "2025-10-12T14:48:13.000000Z",
+        "meal": {
+            "id": 5,
+            "name": "Pisang Goreng",
+            "description": "Fried banana fritters",
+            "price": "10000.00",
+            "category": "SNACK",
+            "isAvailable": true,
+            "image_url": "images/pisang-goreng.png",
+            "created_at": "2025-10-12T14:48:13.000000Z",
+            "updated_at": "2025-10-12T14:48:13.000000Z"
+        }
+    },
+    {
+        "id": 3,
+        "user_id": 1,
+        "meal_id": 7,
+        "quantity": 3,
+        "notes": null,
+        "created_at": "2025-10-12T14:48:13.000000Z",
+        "updated_at": "2025-10-12T14:48:13.000000Z",
+        "meal": {
+            "id": 7,
+            "name": "Es Teh Manis",
+            "description": "Sweet iced tea",
+            "price": "5000.00",
+            "category": "DRINKS",
+            "isAvailable": true,
+            "image_url": "images/es-teh.png",
+            "created_at": "2025-10-12T14:48:13.000000Z",
+            "updated_at": "2025-10-12T14:48:13.000000Z"
+        }
+    },
+    {
+        "name": "Nasi Goreng",
+        "price": 20000,
+        "quantity": 2,
+        "totalPrice": 40000,
+        "image_url": "images/nasi-goreng.png"
+    },
+    {
+        "name": "Pisang Goreng",
+        "price": 10000,
+        "quantity": 1,
+        "totalPrice": 10000,
+        "image_url": "images/pisang-goreng.png"
+    },
+    {
+        "name": "Es Teh Manis",
+        "price": 5000,
+        "quantity": 3,
+        "totalPrice": 15000,
+        "image_url": "images/es-teh.png"
+    }
+]
