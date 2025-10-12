@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Meal;
 
@@ -13,7 +14,6 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+Route::get('/menu/{id}/reviews', [MenuController::class, 'reviews']);
 
 Route::get('/cart', [CartController::class, 'cart']);
-
-// Route:get('/r')
