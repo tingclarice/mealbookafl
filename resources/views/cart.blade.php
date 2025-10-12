@@ -1,14 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- Adding some custom styles to match your design --}}
 <style>
     body {
-        background-color: #f8f9fa; /* Light gray background */
+        background-color: #f8f9fa;
     }
     .card {
         border: none;
-        border-radius: 1rem; /* More rounded corners for cards */
+        border-radius: 1rem;
         box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
     .cart-item-img {
@@ -27,7 +26,7 @@
         border-radius: 50%;
     }
     .checkout-btn {
-        background-color: #2c3e50; /* Dark blue-gray button */
+        background-color: #2c3e50; 
         border: none;
         border-radius: 50px;
         padding: 0.75rem 1.5rem;
@@ -73,7 +72,6 @@
                             </div>
                         </div>
                     @empty
-                        {{-- ... --}}
                     @endforelse
                 </div>
             </div>
