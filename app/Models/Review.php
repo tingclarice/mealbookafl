@@ -18,4 +18,6 @@ class Review extends Model
 
     /** @use HasFactory<\Database\Factories\ReviewFactory> */
     use HasFactory;
+
+    protected $fillable = ['user_id', 'meal_id', 'message'];
 }

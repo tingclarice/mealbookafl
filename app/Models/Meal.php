@@ -22,4 +22,9 @@ class Meal extends Model
         'isAvailable' => 'boolean',
         'price' => 'decimal:2'
     ];
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
