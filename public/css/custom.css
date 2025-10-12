@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'Pacifico';
+    src: url('/fonts/Pacifico-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Potta One';
+    src: url('/fonts/PottaOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Preahvihear';
+    src: url('/fonts/Preahvihear-Regular.ttf') format('truetype');
+}
+
+body {
+    font-family: 'Preahvihear', sans-serif;
+    background-color: #fff;
+}
+
+h1, h2 {
+    font-family: 'Potta One', cursive;
+}
