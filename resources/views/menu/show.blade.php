@@ -17,7 +17,7 @@
                 {{ $meal->name }}
             </h1>
             <p style="color: #2D114B; font-size: 1.25rem; margin-bottom: 0;">
-                Rp. {{ number_format($meal->price, 0, ',', '.') }}
+                {{ $meal->formatted_price }}
             </p>
         </div>
 
@@ -71,7 +71,7 @@
                                     {{ $suggested->name }}
                                 </h6>
                                 <p style="color: #4A3763; font-size: 0.9rem; margin: 0;">
-                                    Rp. {{ number_format($suggested->price, 0, ',', '.') }}
+                                    {{ $meal->formatted_price }}
                                 </p>
                             </div>
                         </div>

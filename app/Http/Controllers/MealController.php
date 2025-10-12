@@ -2,23 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Meal;
 use App\Models\Review;
+use Illuminate\Http\Request;
 
 class MealController extends Controller
 {
+    // Untuk halaman /menu (list + filter)
     public function index(Request $request)
     {
         $query = Meal::where('isAvailable', true);
-        if ($request->has('category')) {
-            $query->where('category', $request->category);
+        
+        $currentCategory = $request->get('category');
+        
+        if ($currentCategory) {
+            $query->where('category', $currentCategory);
         }
         
         $meals = $query->paginate(12);
-        return view('menu.index', compact('meals'));
+        
+        $categories = [
+            'MEAL' => 'Makanan',
+            'SNACK' => 'Snack',
+            'DRINKS' => 'Minuman'
+        ];
+        
+        return view('menu.index', compact('meals', 'categories', 'currentCategory'));
     }
 
+    // Untuk halaman /menu/{id} (detail)
     public function show($id)
     {
         $meal = Meal::with('reviews.user')->findOrFail($id);
