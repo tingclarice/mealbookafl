@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Meal extends Model
 {
@@ -26,5 +27,17 @@ class Meal extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    // Accessor untuk format harga
+    public function getFormattedPriceAttribute()
+    {
+        return 'Rp. ' . number_format($this->price, 0, ',', '.');
+    }
+
+    // Accessor untuk deskripsi pendek
+    public function getShortDescriptionAttribute()
+    {
+        return Str::limit($this->description, 60);
     }
 }
