@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('meal_id')->constrained('meals')->onDelete('cascade');
             $table->text('message');
+            $table->unsignedTinyInteger('rate');
             $table->timestamps();
         });
     }

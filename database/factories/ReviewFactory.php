@@ -22,6 +22,7 @@ class ReviewFactory extends Factory
             'user_id' => User::factory(),
             'meal_id' => Meal::factory(),
             'message' => fake()->paragraph(),
+            'rate' => fake()->random_int(0, 5),
             'created_at' => now(),
             'updated_at' => now(),
         ];

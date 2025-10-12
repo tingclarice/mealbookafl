@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Meal;
+use App\Models\Review;
 
 class MealController extends Controller
 {
@@ -29,5 +30,13 @@ class MealController extends Controller
                                 ->get();
         
         return view('menu.show', compact('meal', 'suggestedMeals'));
+    }
+
+    public function reviews($id){
+        $meal = Meal::with(['reviews.user'])->findOrFail($id);
+        $reviews = $meal->reviews->sortByDesc('created_at');
+        $averageRating = round($reviews->avg('rate'), 1);
+        $reviewCount = $reviews->count();
+        return view('menu.reviews', compact('meal', 'reviews', 'averageRating', 'reviewCount'));
     }
 }
