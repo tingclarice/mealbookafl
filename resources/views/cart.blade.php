@@ -40,6 +40,7 @@
                             </div>
                         </div>
                     @empty
+                        <p class="w-full text-center">You have no meals on your cart</p>
                     @endforelse
                 </div>
             </div>
