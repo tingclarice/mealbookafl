@@ -15,3 +15,5 @@ Route::get('/about', function () {
 
 
 Route::get('/cart', [CartController::class, 'cart']);
+
+// Route:get('/r')
