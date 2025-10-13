@@ -1,5 +1,6 @@
 {
     "version": 2,
+    "buildCommand": "composer install --optimize-autoloader --no-dev && npm install && npm run build",
     "builds": [
         { "src": "public/index.php", "use": "@vercel/php" }
     ],
