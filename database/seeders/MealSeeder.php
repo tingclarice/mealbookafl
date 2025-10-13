@@ -41,7 +41,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/ayam-krispy.png',
+                'image_url' => 'images/menu_images/ayam_geprek.png',
             ],
             [
                 'name' => 'Soto Ayam',
@@ -49,7 +49,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/soto-ayam.png',
+                'image_url' => 'images/menu_images/soto_ayam.png',
             ],
             [
                 'name' => 'Ayam Teriyaki',
@@ -57,7 +57,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/ayam-teriyaki.png',
+                'image_url' => 'images/menu_images/chicken_teriyaki.png',
             ],
             [
                 'name' => 'Nasi Mie',
@@ -65,7 +65,7 @@ class MealSeeder extends Seeder
                 'price' => 12000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/nasi-mie.png',
+                'image_url' => 'images/menu_images/indomie_nasi.jpeg',
             ],
             [
                 'name' => 'Mie Goreng',
@@ -73,7 +73,7 @@ class MealSeeder extends Seeder
                 'price' => 10000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/mie-goreng.png',
+                'image_url' => 'images/menu_images/mie_goreng.png',
             ],
             [
                 'name' => 'Nasi Ayam Sisit Telur',
@@ -81,7 +81,7 @@ class MealSeeder extends Seeder
                 'price' => 10000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/nasi-ayam-sisit.png',
+                'image_url' => 'images/menu_images/nasi_ayam_sisit.png',
             ],
             
 
