@@ -24,24 +24,25 @@ class MealController extends Controller
         $categories = [
             'MEAL' => 'Makanan',
             'SNACK' => 'Snack',
-            'DRINKS' => 'Minuman'
+            'DRINK' => 'Minuman'
         ];
         
         return view('menu.index', compact('meals', 'categories', 'currentCategory'));
     }
 
     // Untuk halaman /menu/{id} (detail)
-    public function show($id)
-    {
-        $meal = Meal::with('reviews.user')->findOrFail($id);
-        
-        $suggestedMeals = Meal::where('isAvailable', true)
-                                ->where('id', '!=', $id)
-                                ->inRandomOrder()
-                                ->take(4)
-                                ->get();
-        
-        return view('menu.show', compact('meal', 'suggestedMeals'));
+    public function show($id){
+        $meal = Meal::with(['reviews.user'])->findOrFail($id);
+        $reviews = $meal->reviews;
+        $averageRating = round($reviews->avg('rate'), 1);
+        $reviewCount = $reviews->count();
+        $latestReviews = $reviews->sortByDesc('created_at')->take(2);
+        $suggestedMeals = Meal::where('id', '!=', $meal->id)
+                            ->inRandomOrder()
+                            ->take(4)
+                            ->get();
+
+        return view('menu.show', compact('meal', 'averageRating', 'reviewCount', 'latestReviews', 'suggestedMeals'));
     }
 
     public function reviews($id){

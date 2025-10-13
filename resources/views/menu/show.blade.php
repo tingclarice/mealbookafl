@@ -44,11 +44,56 @@
         </div>
 
         {{-- Reviews Section --}}
-        <div class="mt-5">
-            <h4 style="font-family: 'Preahvihear', sans-serif; font-weight: 600; color: #2D114B; margin-bottom: 1rem;">
-                Reviews
-            </h4>
-            {{-- (You can later add reviews content here) --}}
+        <div class="mt-5 pt-4 border-top">
+            {{-- Section Header with Average Rating --}}
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 style="font-family: 'Preahvihear', sans-serif; font-weight: 600; color: #2D114B; margin-bottom: 0;">
+                    Reviews
+                </h4>
+                @if ($reviewCount > 0)
+                <div class="d-flex align-items-center">
+                    <span class="fw-bold me-2" style="color: #2D114B;">{{ $averageRating }}</span>
+                    <div style="color: #ffc107;"> @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $averageRating) <i class="bi bi-star-fill"></i>
+                            @elseif ($i - 0.5 <= $averageRating) <i class="bi bi-star-half"></i>
+                            @else <i class="bi bi-star"></i>
+                            @endif
+                        @endfor
+                    </div>
+                    <span class="ms-2 text-muted small">({{ $reviewCount }} reviews)</span>
+                </div>
+                @endif
+            </div>
+
+            {{-- Loop to display the 2 latest reviews --}}
+            @forelse($latestReviews as $review)
+                <div class="card mb-3 border-0" style="background-color: #fff; border-radius: 15px;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="fw-bold" style="color: #2D114B;">{{ $review->user->name }}</h6>
+                            <div style="color: #ffc107;">
+                                {{-- Star rating for this specific review --}}
+                                @for ($i = 0; $i < 5; $i++)
+                                    <i class="bi {{ $i < $review->rate ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                @endfor
+                            </div>
+                        </div>
+                        <p class="mb-0" style="color: #4A3763;">{{ $review->message }}</p>
+                    </div>
+                </div>
+            @empty
+                <p class="text-muted text-center">No reviews for this meal yet.</p>
+            @endforelse
+
+            {{-- "Show all reviews" button (only appears if there are more than 2 reviews) --}}
+            @if($reviewCount > 2)
+                <div class="text-center mt-4">
+                    <a href="{{ route('menu.reviews', $meal->id) }}" class="btn px-4 py-2" 
+                    style="background-color: transparent; color: #2D114B; border: 1px solid #2D114B; border-radius: 25px;">
+                        Show all reviews
+                    </a>
+                </div>
+            @endif
         </div>
 
         {{-- Suggested Section --}}
