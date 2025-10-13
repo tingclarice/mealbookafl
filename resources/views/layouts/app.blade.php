@@ -12,6 +12,8 @@
     {{-- Custom CSS --}}
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+
     @yield('head')
 
 </head>
