@@ -17,7 +17,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/nasgor.png',
+                'image_url' => 'images/menu_images/nasgor.webp',
             ],
             [
                 'name' => 'Nasi Goreng Lap Jiong / Babi',
@@ -25,7 +25,7 @@ class MealSeeder extends Seeder
                 'price' => 17000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/nasgor_lapjiong.png',
+                'image_url' => 'images/menu_images/nasgor_lapjiong.webp',
             ],
             [
                 'name' => 'Chicken Katsu',
@@ -33,7 +33,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/katsu.png',
+                'image_url' => 'images/menu_images/katsu.webp',
             ],
             [
                 'name' => 'Ayam Krispy',
@@ -49,7 +49,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/soto_ayam.png',
+                'image_url' => 'images/menu_images/soto_ayam.webp',
             ],
             [
                 'name' => 'Ayam Teriyaki',
@@ -57,7 +57,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/chicken_teriyaki.png',
+                'image_url' => 'images/menu_images/chicken_teriyaki.webp',
             ],
             [
                 'name' => 'Nasi Mie',
@@ -81,7 +81,7 @@ class MealSeeder extends Seeder
                 'price' => 10000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/nasi_ayam_sisit.png',
+                'image_url' => 'images/menu_images/nasi_ayam_sisit.webp',
             ],
             
 
