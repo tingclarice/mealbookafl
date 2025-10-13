@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MealController;
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Meal;
 
@@ -10,9 +11,7 @@ Route::get('/', function () {
     return view('home', compact('meals'));
 })->name('home');
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
+Route::get('/about', [PageController::class, 'about'])->name('about');
 
 Route::get('/menu', [MealController::class, 'index'])->name('menu');
 Route::get('/menu/{id}', [MealController::class, 'show'])->name('menu.show');
