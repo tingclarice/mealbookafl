@@ -3,7 +3,7 @@
 @section('content')
     {{-- Hero Section --}}
     <section class="text-center text-white d-flex align-items-center justify-content-center flex-column"
-                style="background: linear-gradient(rgba(249, 115, 82, 0.8), rgba(249, 115, 82, 0.8)), url('{{ asset('images/hero-bg.png') }}') center/cover no-repeat; height: 50vh;">
+                style="background: linear-gradient(rgba(249, 115, 82, 0.8), rgba(249, 115, 82, 0.8)), url('{{ asset('images/hero-bg.webp') }}') center/cover no-repeat; height: 50vh;">
         <h1 class="mb-3" style="font-family: 'Pacifico'; font-size: 3.5rem;">Tentang MealBook</h1>
         <p class="lead" style="font-size: 1.2rem; max-width: 600px;">Order dari kantin favorit kamu,<br>sekarang tinggal klik saja!</p>
     </section>

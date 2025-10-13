@@ -3,7 +3,7 @@
 @section('content')
     {{-- Hero Section --}}
     <section class="text-center text-white d-flex align-items-center justify-content-center flex-column"
-                style="background: url('{{ asset('images/hero-bg.png') }}') center/cover no-repeat; height: 70vh;">
+                style="background: url('{{ asset('images/hero-bg.webp') }}') center/cover no-repeat; height: 70vh;">
         <h1 style="font-family: 'Pacifico'; font-size: 3rem;">Book a Meal &<br>We'll Cook It!</h1>
     </section>
 
