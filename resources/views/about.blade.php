@@ -72,15 +72,15 @@
                     <div class="d-flex flex-column flex-md-row justify-content-center gap-4 mb-4">
                         <div>
                             <strong style="color: #F97352;">📍 Lokasi:</strong>
-                            <p class="mb-0" style="color: #64748B;">Kantin Jalan Utama</p>
+                            <p class="mb-0" style="color: #64748B;">jl. Serma Kawi no 4</p>
                         </div>
                         <div>
                             <strong style="color: #F97352;">⏰ Jam Buka:</strong>
-                            <p class="mb-0" style="color: #64748B;">Senin sampai Sabtu: 08.00 sampai 20.00</p>
+                            <p class="mb-0" style="color: #64748B;">06:00-17:00</p>
                         </div>
                         <div>
                             <strong style="color: #F97352;">📞 Kontak:</strong>
-                            <p class="mb-0" style="color: #64748B;">+62 812 3456 7890</p>
+                            <p class="mb-0" style="color: #64748B;">082247967548</p>
                         </div>
                     </div>
                 </div>
