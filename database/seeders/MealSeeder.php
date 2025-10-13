@@ -73,7 +73,7 @@ class MealSeeder extends Seeder
                 'price' => 10000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/mie_goreng.png',
+                'image_url' => 'images/menu_images/mie_goreng.jpg',
             ],
             [
                 'name' => 'Nasi Ayam Sisit Telur',
