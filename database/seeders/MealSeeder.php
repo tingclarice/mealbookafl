@@ -92,7 +92,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/roti-manis.png',
+                'image_url' => 'images/menu_images/roti-manis.jpg',
             ],
             [
                 'name' => 'Cakue / Roti Goreng (3 pcs)',
@@ -100,7 +100,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/cakue.png',
+                'image_url' => 'images/menu_images/cakue.jpg',
             ],
             [
                 'name' => 'Otak-otak Ikan',
@@ -108,7 +108,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/otak-otak.png',
+                'image_url' => 'images/menu_images/otak-otak-ikan.jpeg',
             ],
             [
                 'name' => 'Roti Bakar',
@@ -116,7 +116,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/roti-bakar.png',
+                'image_url' => 'images/menu_images/roti-bakar.jpg',
             ],
 
             // DESSERT
@@ -124,17 +124,17 @@ class MealSeeder extends Seeder
                 'name' => 'Semangka / Melon',
                 'description' => 'Fresh sliced watermelon or melon',
                 'price' => 5000,
-                'category' => 'DESSERT',
+                'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/semangka.png',
+                'image_url' => 'images/menu_images/semangka-melon.jpg',
             ],
             [
                 'name' => 'Puding',
                 'description' => 'Sweet and creamy pudding dessert',
                 'price' => 5000,
-                'category' => 'DESSERT',
+                'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/puding.png',
+                'image_url' => 'images/menu_images/puding.jpg',
             ],
 
             // DRINKS
@@ -144,7 +144,7 @@ class MealSeeder extends Seeder
                 'price' => 3000,
                 'category' => 'DRINK',
                 'isAvailable' => true,
-                'image_url' => 'images/es-teh.png',
+                'image_url' => 'images/menu_images/es-teh.jpg',
             ],
             [
                 'name' => 'Es Teh Jumbo',
@@ -152,7 +152,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'DRINK',
                 'isAvailable' => true,
-                'image_url' => 'images/es-teh-jumbo.png',
+                'image_url' => 'images/menu_images/es-teh-jumbo.jpg',
             ],
             [
                 'name' => 'Es Milo',
@@ -160,7 +160,7 @@ class MealSeeder extends Seeder
                 'price' => 6000,
                 'category' => 'DRINK',
                 'isAvailable' => true,
-                'image_url' => 'images/es-milo.png',
+                'image_url' => 'images/menu_images/es-milo.webp',
             ],
             [
                 'name' => 'Lohankuo',
@@ -168,7 +168,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'DRINK',
                 'isAvailable' => true,
-                'image_url' => 'images/lohankuo.png',
+                'image_url' => 'images/menu_images/lohankuo.webp',
             ],
             [
                 'name' => 'Cappuccino Coffee GoodDay',
@@ -176,7 +176,7 @@ class MealSeeder extends Seeder
                 'price' => 6000,
                 'category' => 'DRINK',
                 'isAvailable' => true,
-                'image_url' => 'images/cappuccino-goodday.png',
+                'image_url' => 'images/menu_images/good-day-cappucino.jpg',
             ],
         ];
 
