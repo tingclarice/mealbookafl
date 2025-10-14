@@ -8,7 +8,7 @@
     </section>
 
     {{-- Menu Section --}}
-    <section class="text-center py-5" style="background-color: #F97352;">
+    <section class="text-center py-5 px-4 px-md-0" style="background-color: #F97352;">
         <div class="container">
             <h2 class="mb-5" style="font-family: 'Potta One'; color: #fff;">Check out our menu!</h2>
 
