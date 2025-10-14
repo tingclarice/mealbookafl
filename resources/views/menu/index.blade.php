@@ -49,11 +49,17 @@
                                 {{-- Previous Page Link --}}
                                 @if ($meals->onFirstPage())
                                     <li class="page-item disabled">
-                                        <span class="page-link" style="background-color: #fff; border: 2px solid #F97352; color: #64748B; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">‹ Sebelumnya</span>
+                                        <span class="page-link" style="background-color: #fff; border: 2px solid #F97352; color: #64748B; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
+                                            {{-- Teks diganti dengan ikon --}}
+                                            <i class="bi bi-chevron-left"></i>
+                                        </span>
                                     </li>
                                 @else
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $meals->previousPageUrl() }}" style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">‹ Sebelumnya</a>
+                                        <a class="page-link" href="{{ $meals->previousPageUrl() }}" style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
+                                            {{-- Teks diganti dengan ikon --}}
+                                            <i class="bi bi-chevron-left"></i>
+                                        </a>
                                     </li>
                                 @endif
 
@@ -73,11 +79,17 @@
                                 {{-- Next Page Link --}}
                                 @if ($meals->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $meals->nextPageUrl() }}" style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">Selanjutnya ›</a>
+                                        <a class="page-link" href="{{ $meals->nextPageUrl() }}" style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
+                                            {{-- Teks diganti dengan ikon --}}
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
                                     </li>
                                 @else
                                     <li class="page-item disabled">
-                                        <span class="page-link" style="background-color: #fff; border: 2px solid #F97352; color: #64748B; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">Selanjutnya ›</span>
+                                        <span class="page-link" style="background-color: #fff; border: 2px solid #F97352; color: #64748B; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
+                                            {{-- Teks diganti dengan ikon --}}
+                                            <i class="bi bi-chevron-right"></i>
+                                        </span>
                                     </li>
                                 @endif
                             </ul>
