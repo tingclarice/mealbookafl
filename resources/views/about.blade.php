@@ -10,8 +10,8 @@
 
     {{-- Our Story Section --}}
     <section class="py-5" style="background-color: #fff;">
-        <div class="container">
-            <div class="row align-items-center">
+        <div class="container d-flex justify-content-center">
+            <div class="d-flex justify-content-center align-items-center gap-5 flex-wrap text-center text-lg-start">
                 <div class="col-lg-6 mb-4 mb-lg-0">
                     <h2 class="mb-4" style="font-family: 'Potta One'; color: #F97352;">Cerita Kami</h2>
                     <p class="mb-3" style="color: #1E293B; line-height: 1.8;">
@@ -21,8 +21,13 @@
                         Karena itu kami menciptakan MealBook, sebuah platform di mana kamu bisa melihat menu, memesan makanan dari jauh hari, dan tinggal ambil tanpa perlu antri. Lebih banyak waktu untuk hal yang penting, lebih banyak waktu bersama orang tersayang, dan tentu saja lebih banyak waktu menikmati makanan lezat!
                     </p>
                 </div>
-                <div class="col-lg-6">
-                    <img src="{{ asset('images/nasi-goreng.png') }}" alt="Cerita Kami" class="img-fluid rounded shadow" style="border-radius: 20px !important;">
+
+                <div>
+                    <img 
+                        src="{{ asset('images/nasi-goreng.png') }}" 
+                        alt="Cerita Kami" 
+                        class="img-fluid rounded shadow"
+                        style="max-width: 400px; border-radius: 20px !important;">
                 </div>
             </div>
         </div>
