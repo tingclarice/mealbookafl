@@ -20,7 +20,7 @@
 <body class="d-flex flex-column min-vh-100">
 
     {{-- Navbar --}}
-    @include('components.navbar')
+    @include('layouts.navbar')
 
     {{-- Page Content --}}
     <main class="flex-grow-1">
@@ -28,7 +28,7 @@
     </main>
 
     {{-- Footer --}}
-    @include('components.footer')
+    @include('layouts.footer')
 
     {{-- Bootstrap JS --}}
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
