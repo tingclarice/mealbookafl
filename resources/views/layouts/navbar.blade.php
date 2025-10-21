@@ -10,7 +10,7 @@
         <ul class="navbar-nav align-items-center gap-3">
             <li class="nav-item"><a class="nav-link text-white" href="{{ route('home') }}">home</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="{{ route('about') }}">about</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="{{ route('home') }}#menu">menu</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{{ route('menu') }}">menu</a></li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('cart') }}">
                     <i class="bi bi-cart fs-4"></i>
