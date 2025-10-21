@@ -20,6 +20,8 @@ services:
     volumes:
       - .:/var/www
       - ./nginx:/etc/nginx/conf.d
+    env_file:
+      - .env.production
     depends_on:
       - app
     networks:
