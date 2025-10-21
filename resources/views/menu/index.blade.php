@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('head')
-<link rel="stylesheet" href="css/custom.css">
+<link rel="stylesheet" href="css/menuIndex.css">
 @endsection
 
 
