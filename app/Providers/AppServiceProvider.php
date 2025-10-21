@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // For SSL Certificate (without this google login wont work)
+        // if (app()->environment('local')) {
+        //     putenv('CURL_CA_BUNDLE=' . base_path('certs/cacert.pem'));
+        // }
     }
 }

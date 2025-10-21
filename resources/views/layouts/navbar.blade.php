@@ -11,21 +11,28 @@
             <li class="nav-item"><a class="nav-link text-white" href="{{ route('home') }}">home</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="{{ route('about') }}">about</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="{{ route('menu') }}">menu</a></li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="{{ route('cart') }}">
-                    <i class="bi bi-cart fs-4"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="">
-                    <i class="bi bi-person-circle fs-4"></i>
-                </a>
-            </li>
+            
+            @if (Auth::check())
+                {{-- Show this when logged in --}}
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ route('cart') }}">
+                        <i class="bi bi-cart fs-4"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">
+                        <i class="bi bi-person-circle fs-4"></i>
+                    </a>
+                </li>
+            @else
+                {{-- Show this when NOT logged in --}}
+                <li class="nav-item">
+                    <a class="btn btn-dark px-4 py-2 rounded-pill" href="{{ route('loginGoogle') }}">
+                        Log In
+                    </a>
+                </li>
+            @endif
 
-            {{-- Login Button --}}
-            {{-- <li class="nav-item">
-                <a class="btn btn-dark px-4 py-2 rounded-pill" href="/login">Log In</a>
-            </li> --}}
         </ul>
         </div>
     </div>
