@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@section('head')
+<link rel="stylesheet" href="css/custom.css">
+@endsection
+
+
 @section('content')
     {{-- Hero Section --}}
     <section class="text-center text-white d-flex align-items-center justify-content-center flex-column"
@@ -33,9 +38,9 @@
                     <h3 style="color: #64748B;">Tidak ada menu tersedia.</h3>
                 </div>
             @else
-                <div class="row g-4">
+                <div class="d-flex flex-wrap gap-4 justify-content-center">
                     @foreach ($meals as $meal)
-                        <div class="col-6 col-md-4 col-lg-3">
+                        <div class="meal-card-wrapper">
                             <x-meal-card :meal="$meal" />
                         </div>
                     @endforeach
