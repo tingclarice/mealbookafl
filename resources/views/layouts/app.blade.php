@@ -20,7 +20,7 @@
 <body class="d-flex flex-column min-vh-100">
 
     {{-- Navbar --}}
-    @include('layouts.navbar')
+    @include('layouts.navbar', ["user"=>Auth::user()])
 
     {{-- Page Content --}}
     <main class="flex-grow-1">

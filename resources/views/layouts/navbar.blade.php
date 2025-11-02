@@ -12,22 +12,37 @@
             <li class="nav-item"><a class="nav-link text-white" href="{{ route('about') }}">about</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="{{ route('menu') }}">menu</a></li>
             
+            {{-- If Login and not --}}
             @if (Auth::check())
-                {{-- Show this when logged in --}}
+                
+                {{-- Dashboard button (if admin) --}}
+                @if(Auth::user()->role === "ADMIN")
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('dashboard') }}">dashboard</a></li>
+                @endif
+
+                {{-- Logout Button --}}
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <li class="nav-item"><button class="nav-link text-white" type="submit">logout</button></li>
+                </form>
+
+                {{-- Cart Button --}}
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{{ route('cart') }}">
                         <i class="bi bi-cart fs-4"></i>
                     </a>
                 </li>
+
+                {{-- Profile Button --}}
                 <li class="nav-item">
                     <a class="nav-link text-white" href="#">
                         <i class="bi bi-person-circle fs-4"></i>
                     </a>
                 </li>
             @else
-                {{-- Show this when NOT logged in --}}
+                {{-- Login Button --}}
                 <li class="nav-item">
-                    <a class="btn btn-dark px-4 py-2 rounded-pill" href="{{ route('loginGoogle') }}">
+                    <a class="btn btn-dark px-4 py-2 rounded-pill" href="{{ route('login') }}">
                         Log In
                     </a>
                 </li>
