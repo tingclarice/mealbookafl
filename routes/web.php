@@ -5,7 +5,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +16,7 @@ Route::get('/auth/google', [AuthController::class, 'loginGoogle'])->name("login"
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleResponse']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Home & About
+// Static Pages (Home, About)
 Route::get('/', [PageController::class, 'index'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 
@@ -26,13 +28,17 @@ Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu
 // Cart
 Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 
+// User
+Route::patch('admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->middleware(['auth', AdminMiddleware::class])->name('dashboard');
-Route::get('/dashboard/user', [DashboardController::class, 'dashboardUser'])->middleware(['auth', AdminMiddleware::class])->name('dashboard.accounts');
+Route::get('/dashboard/users', [DashboardController::class, 'dashboardUsers'])->middleware(['auth', AdminMiddleware::class])->name('dashboard.users');
+
 
 
 // Test Page can be deleted later
 Route::get('test', function(){
-    $user = Auth::user();
-    return view('tes', ["user"=>$user]);
+    $data = User::all();
+    return view('tes', compact('data'));
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -11,7 +12,8 @@ class DashboardController extends Controller
         return view('dashboard.menuDashboard');
     }
 
-    function dashboardUser(){
-        return view('dashboard.userDashboard');
+    function dashboardUsers(){
+        $users = User::all();
+        return view('dashboard.userDashboard', compact('users'));
     }
 }
