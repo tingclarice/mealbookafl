@@ -16,8 +16,4 @@ class PageController extends Controller
         return view('about');
     }
 
-    public function dashboard(){
-        return view('dashboard.menuDashboard');
-    }
-
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\PageController;
 use App\Http\Middleware\AdminMiddleware;
@@ -26,7 +27,8 @@ Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu
 Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 
 // Dashboard
-Route::get('/dashboard', [PageController::class, 'dashboard'])->middleware(['auth', AdminMiddleware::class])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->middleware(['auth', AdminMiddleware::class])->name('dashboard');
+Route::get('/dashboard/user', [DashboardController::class, 'dashboardUser'])->middleware(['auth', AdminMiddleware::class])->name('dashboard.accounts');
 
 
 // Test Page can be deleted later
