@@ -13,6 +13,47 @@
         <p class="lead" style="font-size: 1.2rem; max-width: 600px;">Pilih makanan favoritmu!</p>
     </section>
 
+    {{-- Search Section --}}
+    <section class="py-4" style="background-color: #FEF3F0;">
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <form method="GET" action="{{ route('menu') }}" class="d-flex gap-2" style="max-width: 600px; width: 100%;">
+                    {{-- Preserve category filter --}}
+                    @if($currentCategory)
+                        <input type="hidden" name="category" value="{{ $currentCategory }}">
+                    @endif
+                    
+                    <input 
+                        type="text" 
+                        name="search" 
+                        class="form-control" 
+                        placeholder="Cari menu..." 
+                        value="{{ $searchQuery ?? '' }}"
+                        style="border: 2px solid #F97352; border-radius: 10px; padding: 12px 20px;"
+                    >
+                    <button 
+                        type="submit" 
+                        class="btn"
+                        style="background-color: #F97352; color: white; border-radius: 10px; padding: 12px 24px; border: none; white-space: nowrap;"
+                    >
+                        <i class="bi bi-search"></i> Cari
+                    </button>
+                    
+                    {{-- Clear button if search is active --}}
+                    @if($searchQuery)
+                        <a 
+                            href="{{ route('menu', ['category' => $currentCategory]) }}" 
+                            class="btn"
+                            style="background-color: #64748B; color: white; border-radius: 10px; padding: 12px 24px; border: none;"
+                        >
+                            <i class="bi bi-x-circle"></i>
+                        </a>
+                    @endif
+                </form>
+            </div>
+        </div>
+    </section>
+
     {{-- Filter Section --}}
     <section class="py-4" style="background-color: #FEF3F0;">
         <div class="container">
