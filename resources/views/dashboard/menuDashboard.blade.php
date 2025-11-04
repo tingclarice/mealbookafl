@@ -18,7 +18,7 @@
         @forelse($meals as $meal)
         <div class="col">
             <div class="card shadow-sm h-100">
-                <img src="{{ $meal->image_url ? asset($meal->image_url) : 'https://placehold.co/600x400/F97352/ffffff?text=' . urlencode($meal->name) }}" 
+                <img src="{{ $meal->image_url ? asset($meal->image_url) : 'blank' . urlencode($meal->name) }}" 
                     class="card-img-top" 
                     alt="{{ $meal->name }}" 
                     style="height: 200px; object-fit: cover;">

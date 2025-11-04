@@ -17,7 +17,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/nasgor.webp',
+                'image_url' => 'images/meals/nasgor.webp',
             ],
             [
                 'name' => 'Nasi Goreng Lap Jiong / Babi',
@@ -25,7 +25,7 @@ class MealSeeder extends Seeder
                 'price' => 17000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/nasgor_lapjiong.webp',
+                'image_url' => 'images/meals/nasgor_lapjiong.webp',
             ],
             [
                 'name' => 'Chicken Katsu',
@@ -33,7 +33,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/katsu.webp',
+                'image_url' => 'images/meals/katsu.webp',
             ],
             [
                 'name' => 'Ayam Krispy',
@@ -41,7 +41,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/ayam_geprek.png',
+                'image_url' => 'images/meals/ayam_geprek.png',
             ],
             [
                 'name' => 'Soto Ayam',
@@ -49,7 +49,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/soto_ayam.webp',
+                'image_url' => 'images/meals/soto_ayam.webp',
             ],
             [
                 'name' => 'Ayam Teriyaki',
@@ -57,7 +57,7 @@ class MealSeeder extends Seeder
                 'price' => 15000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/chicken_teriyaki.webp',
+                'image_url' => 'images/meals/chicken_teriyaki.webp',
             ],
             [
                 'name' => 'Nasi Mie',
@@ -65,7 +65,7 @@ class MealSeeder extends Seeder
                 'price' => 12000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/indomie_nasi.jpeg',
+                'image_url' => 'images/meals/indomie_nasi.jpeg',
             ],
             [
                 'name' => 'Mie Goreng',
@@ -73,7 +73,7 @@ class MealSeeder extends Seeder
                 'price' => 10000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/mie_goreng.jpg',
+                'image_url' => 'images/meals/mie_goreng.jpg',
             ],
             [
                 'name' => 'Nasi Ayam Sisit Telur',
@@ -81,7 +81,7 @@ class MealSeeder extends Seeder
                 'price' => 10000,
                 'category' => 'MEAL',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/nasi_ayam_sisit.webp',
+                'image_url' => 'images/meals/nasi_ayam_sisit.webp',
             ],
             
 
@@ -92,7 +92,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/roti-manis.jpg',
+                'image_url' => 'images/meals/roti-manis.jpg',
             ],
             [
                 'name' => 'Cakue / Roti Goreng (3 pcs)',
@@ -100,7 +100,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/cakue.jpg',
+                'image_url' => 'images/meals/cakue.jpg',
             ],
             [
                 'name' => 'Otak-otak Ikan',
@@ -108,7 +108,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/otak-otak-ikan.jpeg',
+                'image_url' => 'images/meals/otak-otak-ikan.jpeg',
             ],
             [
                 'name' => 'Roti Bakar',
@@ -116,7 +116,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/roti-bakar.jpg',
+                'image_url' => 'images/meals/roti-bakar.jpg',
             ],
 
             // DESSERT
@@ -126,7 +126,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/semangka-melon.jpg',
+                'image_url' => 'images/meals/semangka-melon.jpg',
             ],
             [
                 'name' => 'Puding',
@@ -134,7 +134,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'SNACK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/puding.jpg',
+                'image_url' => 'images/meals/puding.jpg',
             ],
 
             // DRINKS
@@ -144,7 +144,7 @@ class MealSeeder extends Seeder
                 'price' => 3000,
                 'category' => 'DRINK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/es-teh.jpg',
+                'image_url' => 'images/meals/es-teh.jpg',
             ],
             [
                 'name' => 'Es Teh Jumbo',
@@ -152,7 +152,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'DRINK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/es-teh-jumbo.jpg',
+                'image_url' => 'images/meals/es-teh-jumbo.jpg',
             ],
             [
                 'name' => 'Es Milo',
@@ -160,7 +160,7 @@ class MealSeeder extends Seeder
                 'price' => 6000,
                 'category' => 'DRINK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/es-milo.webp',
+                'image_url' => 'images/meals/es-milo.webp',
             ],
             [
                 'name' => 'Lohankuo',
@@ -168,7 +168,7 @@ class MealSeeder extends Seeder
                 'price' => 5000,
                 'category' => 'DRINK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/lohankuo.webp',
+                'image_url' => 'images/meals/lohankuo.webp',
             ],
             [
                 'name' => 'Cappuccino Coffee GoodDay',
@@ -176,7 +176,7 @@ class MealSeeder extends Seeder
                 'price' => 6000,
                 'category' => 'DRINK',
                 'isAvailable' => true,
-                'image_url' => 'images/menu_images/good-day-cappucino.jpg',
+                'image_url' => 'images/meals/good-day-cappucino.jpg',
             ],
         ];
 

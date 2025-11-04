@@ -74,7 +74,7 @@ class MealController extends Controller
 
         // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('meals', 'public');
+            $imagePath = $request->file('image')->store('storage/images/meals', 'public');
             $validated['image_url'] = $imagePath;
         }
 
@@ -105,7 +105,7 @@ class MealController extends Controller
                 Storage::disk('public')->delete($meal->image_url);
             }
             
-            $imagePath = $request->file('image')->store('meals', 'public');
+            $imagePath = $request->file('image')->store('menu_images', 'public');
             $validated['image_url'] = $imagePath;
         }
 

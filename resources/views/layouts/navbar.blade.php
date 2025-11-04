@@ -8,22 +8,22 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav align-items-center gap-3">
-            <li class="nav-item"><a class="nav-link text-white" href="{{ route('home') }}">home</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="{{ route('about') }}">about</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="{{ route('menu') }}">menu</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{{ route('home') }}">Home</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{{ route('about') }}">About</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{{ route('menu') }}">Menu</a></li>
             
             {{-- If Login and not --}}
             @if (Auth::check())
                 
                 {{-- Dashboard button (if admin) --}}
                 @if(Auth::user()->role === "ADMIN")
-                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('dashboard') }}">dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('dashboard') }}">Dashboard</a></li>
                 @endif
 
                 {{-- Logout Button --}}
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
-                    <li class="nav-item"><button class="nav-link text-white" type="submit">logout</button></li>
+                    <li class="nav-item"><button class="nav-link text-white" type="submit">Logout</button></li>
                 </form>
 
                 {{-- Cart Button --}}

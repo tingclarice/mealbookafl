@@ -1,6 +1,6 @@
 <div class="card shadow-sm border-0 h-md-100 h-80" style="border-radius: 20px;">
     <a href="{{ route('menu.show', $meal->id) }}" class="text-decoration-none">
-        <img src="{{ asset($meal->image_url) }}" class="card-img-top" alt="{{ $meal->name }}" 
+        <img src="{{ asset("storage/" . $meal->image_url) }}" class="card-img-top" alt="{{ $meal->name }}" 
             style="border-top-left-radius: 20px; border-top-right-radius: 20px; height: 200px; object-fit: cover;">
     </a>
     <div class="card-body d-flex flex-column">
