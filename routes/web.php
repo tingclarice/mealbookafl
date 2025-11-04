@@ -39,7 +39,6 @@ Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->middlew
 Route::get('/dashboard/users', [DashboardController::class, 'dashboardUsers'])->middleware(['auth', AdminMiddleware::class])->name('dashboard.users');
 
 
-
 // Test Page can be deleted later
 Route::get('test', function(){
     $data = User::all();
