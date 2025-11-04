@@ -74,7 +74,7 @@ class MealController extends Controller
 
         // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('storage/images/meals', 'public');
+            $imagePath = $request->file('image')->store('images/meals', 'public');
             $validated['image_url'] = $imagePath;
         }
 

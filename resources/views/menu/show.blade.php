@@ -24,7 +24,7 @@
         {{-- Image & Description --}}
         <div class="row justify-content-center align-items-center g-5">
             <div class="col-md-5 text-center">
-                <img src="{{ asset($meal->image_url) }}" 
+                <img src="{{ asset("storage/" . $meal->image_url) }}" 
                         alt="{{ $meal->name }}" 
                         style="border-radius: 25px; width: 100%; max-width: 400px; height: auto; object-fit: cover;">
             </div>
@@ -107,7 +107,7 @@
                         <div class="card border-0 text-center"
                                 style="width: 180px; border-radius: 25px; background-color: #fff; 
                                     box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
-                            <img src="{{ asset($suggested->image_url) }}" 
+                            <img src="{{ asset("storage/" . $suggested->image_url) }}" 
                                     alt="{{ $suggested->name }}" 
                                     style="border-top-left-radius: 25px; border-top-right-radius: 25px; 
                                             width: 100%; height: 140px; object-fit: cover;">
