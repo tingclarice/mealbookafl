@@ -7,6 +7,7 @@ use App\Http\Controllers\MealController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Models\Meal;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,6 @@ Route::get('/dashboard/users', [DashboardController::class, 'dashboardUsers'])->
 
 // Test Page can be deleted later
 Route::get('test', function(){
-    $data = User::all();
+    $data = Meal::all();
     return view('tes', compact('data'));
 });
