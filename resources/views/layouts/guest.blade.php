@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MealBook</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <title>MealBook - @yield('title', 'Authentication')</title>
 
-    {{-- Bootstrap (local file version) --}}
+    {{-- Bootstrap --}}
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
@@ -13,14 +15,15 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
-
-    @yield('head')
-
 </head>
 <body class="d-flex flex-column min-vh-100">
-
-    {{-- Navbar --}}
-    @include('layouts.navbar', ["user"=>Auth::user()])
+    
+    {{-- Simple navbar for auth pages (no user dropdown) --}}
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #F97352;">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/" style="font-family: 'Pacifico'; color: #fff;">MealBook</a>
+        </div>
+    </nav>
 
     {{-- Page Content --}}
     <main class="flex-grow-1">
@@ -32,6 +35,5 @@
 
     {{-- Bootstrap JS --}}
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    @stack('scripts')
 </body>
 </html>
