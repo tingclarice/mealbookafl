@@ -7,7 +7,7 @@
 @section('content')
 <div class="container my-5 min-h-screen">
     <div class="row g-4">
-        <div class="col-lg-8">
+        <div class="col-lg-8 mx-auto">
             <div class="card p-3">
                 <div class="card-header bg-white border-0 pt-3">
                     <h4 class="fw-bold mb-0">
@@ -20,7 +20,7 @@
                     @forelse ($cartItems as $item)
                         <div class="d-flex align-items-center mb-4">
                             {{-- Access the meal relationship for image, name, and price --}}
-                            <img src="{{ asset($item->meal->image_url) }}" alt="{{ $item->meal->name }}" class="cart-item-img">
+                            <img src="{{ asset("storage/" . $item->meal->image_url) }}" alt="{{ $item->meal->name }}" class="cart-item-img">
 
                             <div class="flex-grow-1 ms-3">
                                 <h6 class="fw-bold mb-1">{{ $item->meal->name }}</h6>
@@ -28,9 +28,19 @@
                                     Rp. {{ number_format($item->meal->price, 0, ',', '.') }} x {{ $item->quantity }}
                                 </p>
                                 <div class="d-flex align-items-center">
-                                    <button class="btn btn-sm btn-outline-secondary quantity-btn">-</button>
+                                    <form action="{{ route('cart.decrement', $item->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary quantity-btn">−</button>
+                                    </form>
+
                                     <span class="mx-3 fw-bold">{{ $item->quantity }}</span>
-                                    <button class="btn btn-sm btn-outline-secondary quantity-btn">+</button>
+                                    
+                                    <form action="{{ route('cart.add', $item->meal->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary quantity-btn">
+                                            +
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
 
@@ -47,6 +57,7 @@
         </div>
 
         {{-- Right Column: Payment Summary --}}
+        @if($cartItems->isNotEmpty())
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body p-4">
@@ -71,6 +82,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
     </div>
 </div>

@@ -41,6 +41,11 @@ Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu
 Route::middleware(['auth', 'verified'])->group(function () {
     // Cart (logged in users only)
     Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+    Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/decrement/{id}', [CartController::class, 'decrement'])->name('cart.decrement');
+
+    Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
 });
 
 // ===== ADMIN ONLY ROUTES =====

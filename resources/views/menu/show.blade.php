@@ -36,10 +36,14 @@
                 <p style="color: #4A3763; font-size: 1rem; line-height: 1.7; margin-top: 10px;">
                     {{ $meal->description }}
                 </p>
-                <button class="btn mt-4 px-5 py-3 fw-bold"
+                
+                <form action="{{ route('cart.add', $meal->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn mt-4 px-5 py-3 fw-bold"
                         style="background-color: #2D114B; color: #fff; border: none; border-radius: 25px; font-size: 1rem;">
-                    Add to Cart
-                </button>
+                        Add to Cart
+                    </button>
+                </form>
             </div>
         </div>
 
