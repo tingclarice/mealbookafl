@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,11 @@ class AuthController extends Controller
     function handleGoogleResponse(){
         try {
             // Modern Socialite - just remove stateless() and setHttpClient()
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = Socialite::driver('google')
+            ->stateless()
+            ->setHttpClient(new Client(['verify' => base_path('certs/cacert.pem')]))
+            ->user();
+
 
             $user = User::updateOrCreate(
                 ['email' => $googleUser->getEmail()],
