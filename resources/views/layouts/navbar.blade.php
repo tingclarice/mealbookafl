@@ -30,13 +30,13 @@
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{-- @if(Auth::user()->avatar)
+                            @if(Auth::user()->avatar)
                                 <img src="{{ Auth::user()->avatar }}" alt="Avatar" class="rounded-circle me-2 border border-light" width="34" height="34" style="object-fit: cover;">
-                            @else --}}
+                            @else
                                 <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-2" style="width:34px; height:34px;">
                                     <i class="bi bi-person-fill text-secondary"></i>
                                 </div>
-                            {{-- @endif --}}
+                            @endif
                             <span class="fw-semibold">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">

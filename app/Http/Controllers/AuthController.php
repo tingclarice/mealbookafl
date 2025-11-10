@@ -12,7 +12,9 @@ class AuthController extends Controller
 {
     // Google Login
     function loginGoogle(){
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')
+            ->scopes(['openid', 'profile', 'email'])
+            ->redirect();
     }
 
     function handleGoogleResponse(){
