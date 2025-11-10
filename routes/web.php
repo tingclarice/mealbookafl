@@ -7,41 +7,59 @@ use App\Http\Controllers\MealController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
-use App\Models\Meal;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Login Google
-Route::get('/auth/google', [AuthController::class, 'loginGoogle'])->name("login");
+// ===== BREEZE AUTH ROUTES =====
+// handles login, register, password reset, etc.
+require __DIR__.'/auth.php';
+
+// ===== PROFILE ROUTES =====
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+// ===== GOOGLE AUTH =====
+Route::get('/auth/google', [AuthController::class, 'loginGoogle'])->name("google.login");
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleResponse']);
+
+// ===== LOGOUT (Works for regular auth & Google OAuth) =====
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Static Pages (Home, About)
+// ===== PUBLIC PAGES =====
 Route::get('/', [PageController::class, 'index'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 
-// Menu / Meal
+// ===== MENU (Public Routes) =====
 Route::get('/menu', [MealController::class, 'index'])->name('menu');
 Route::get('/menu/{id}', [MealController::class, 'show'])->name('menu.show');
 Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu.reviews');
-Route::post('/meals', [MealController::class, 'store'])->name('meals.store');
-Route::put('/meals/{id}', [MealController::class, 'update'])->name('meals.update');
-Route::delete('/meals/{id}', [MealController::class, 'destroy'])->name('meals.destroy');
 
-// Cart
-Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+// ===== PROTECTED ROUTES (Need Login + Email Verified) =====
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Cart (logged in users only)
+    Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+});
 
-// User
-Route::patch('admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+// ===== ADMIN ONLY ROUTES =====
+Route::middleware(['auth', 'verified', AdminMiddleware::class])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
+    Route::get('/dashboard/users', [DashboardController::class, 'dashboardUsers'])->name('dashboard.users');
+    
+    // Meal Management
+    Route::post('/meals', [MealController::class, 'store'])->name('meals.store');
+    Route::put('/meals/{id}', [MealController::class, 'update'])->name('meals.update');
+    Route::delete('/meals/{id}', [MealController::class, 'destroy'])->name('meals.destroy');
+    
+    // User Management
+    Route::patch('admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+});
 
-// Dashboard
-Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->middleware(['auth', AdminMiddleware::class])->name('dashboard');
-Route::get('/dashboard/users', [DashboardController::class, 'dashboardUsers'])->middleware(['auth', AdminMiddleware::class])->name('dashboard.users');
-
-
-// Test Page can be deleted later
+// Test route
 Route::get('test', function(){
-    $data = Meal::all();
+    $data = \App\Models\Meal::all();
     return view('tes', compact('data'));
 });
