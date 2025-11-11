@@ -83,26 +83,4 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Cart updated successfully.');
     }
-
-
-    public function removeFromCart($id){
-        $user = Auth::user();
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'You must be logged in to modify your cart.');
-        }
-
-        // Find the cart item for this user
-        $cartItem = CartItem::where('user_id', $user->id)
-            ->where('id', $id) // ID here is the cart item ID, not meal ID
-            ->first();
-
-        if (!$cartItem) {
-            return redirect()->back()->with('error', 'Item not found in your cart.');
-        }
-
-        $cartItem->delete();
-
-        return redirect()->back()->with('success', 'Item removed from your cart.');
-    }
 }

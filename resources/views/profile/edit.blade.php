@@ -10,7 +10,7 @@
     </div>
 </section>
 
-<div class="container py-5" style="background-color: #FEF3F0; min-height: 70vh;">
+<div class="container py-5" style="background-color: #FEF3F0; min-height: 70vh; ">
     <div class="row justify-content-center">
         <div class="col-lg-10">
 
@@ -47,7 +47,7 @@
                 <div class="card-header d-flex align-items-center" style="background-color: #dc3545; color: white; padding: 1.5rem;">
                     <i class="bi bi-exclamation-triangle fs-3 me-3"></i>
                     <div>
-                        <h5 class="fw-bold mb-0">Danger Zone</h5>
+                        <h5 class="fw-bold mb-0">Delete Account</h5>
                         <small class="opacity-75">Permanently delete your account</small>
                     </div>
                 </div>
