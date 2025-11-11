@@ -51,9 +51,14 @@
         <div class="mt-5 pt-4 border-top">
             {{-- Section Header with Average Rating --}}
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 style="font-family: 'Preahvihear', sans-serif; font-weight: 600; color: #2D114B; margin-bottom: 0;">
-                    Reviews
-                </h4>
+                <div class="d-flex align-items-center">
+                    <h4 style="font-family: 'Preahvihear', sans-serif; font-weight: 600; color: #2D114B; margin-bottom: 0;">
+                        Reviews
+                    </h4>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary quantity-btn rounded-circle">
+                        +
+                    </button>
+                </div>
                 @if ($reviewCount > 0)
                 <div class="d-flex align-items-center">
                     <span class="fw-bold me-2" style="color: #2D114B;">{{ $averageRating }}</span>
