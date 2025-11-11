@@ -20,10 +20,7 @@ class AuthController extends Controller
     function handleGoogleResponse(){
         try {
             // Modern Socialite - just remove stateless() and setHttpClient()
-            $googleUser = Socialite::driver('google')
-            ->stateless()
-            ->setHttpClient(new Client(['verify' => base_path('certs/cacert.pem')]))
-            ->user();
+            $googleUser = Socialite::driver('google')->user();
 
 
             $user = User::updateOrCreate(
