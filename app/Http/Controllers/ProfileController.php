@@ -40,21 +40,23 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+    public function destroy(Request $request)
+{
+    $user = $request->user();
+
+    if (strtolower($request->input('confirm_text')) !== 'delete my account') {
+        return back()->withErrors([
+            'confirm_text' => 'You must type "delete my account" to confirm.',
         ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
     }
+
+    Auth::logout();
+
+    $user->delete();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/')->with('status', 'Your account has been deleted.');
+}
 }
