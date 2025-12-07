@@ -29,6 +29,12 @@ class Meal extends Model
         return $this->hasMany(Review::class);
     }
 
+    // Relationship to option groups
+    public function optionGroups()
+    {
+        return $this->hasMany(MealOptionGroup::class);
+    }
+
     // Accessor untuk format harga
     public function getFormattedPriceAttribute()
     {
