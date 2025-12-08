@@ -22,14 +22,11 @@ class MealOptionController extends Controller
             'is_required' => 'nullable|boolean',
         ]);
 
-        $meal = Meal::findOrFail($meal->id);
+        $validated['meal_id'] = $meal->id;
+        $validated['is_multiple'] = $request->has('is_multiple');
+        $validated['is_required'] = $request->has('is_required');
 
-        MealOptionGroup::create([
-            'meal_id' => $meal->id,
-            'name' => $validated['name'],
-            'is_multiple' => $request->has('is_multiple') ? true : false,
-            'is_required' => $request->has('is_required') ? true : false,
-        ]);
+        MealOptionGroup::create($validated);
 
         return back()->with('success', 'Meal option group created successfully.');
     }
@@ -72,14 +69,10 @@ class MealOptionController extends Controller
             'price' => 'required|numeric|min:0',
         ]);
 
-        // $group->values()->create([
-        //     'name' => $validated['name'],
-        //     'price' => $validated['price'],
-        // ]);
-
-        $validated['meal_option_group_id'] = $group->id;
-
-        MealOptionValue::create($validated);
+        $group->values()->create([
+            'name' => $validated['name'],
+            'price' => $validated['price'],
+        ]);
 
         return back()->with('success', 'Option value added successfully!');
     }
