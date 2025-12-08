@@ -10,7 +10,7 @@ services:
       - .:/var/www
       - /home/mealbookafl/storage/app/public:/var/www/storage/app/public
     networks:
-      - laravel
+      - npm_default
 
   web:
     image: nginx:latest
