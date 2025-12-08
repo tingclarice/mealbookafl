@@ -53,7 +53,7 @@ class MealController extends Controller
         
         $averageRating = "";
         $reviewCount = "";
-        $latestReviews = "";
+        $latestReviews = [];
         
         $suggestedMeals = Meal::where('id', '!=', $meal->id)
                             ->inRandomOrder()
