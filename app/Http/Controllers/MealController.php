@@ -42,7 +42,10 @@ class MealController extends Controller
 
     // Untuk halaman /menu/{id} (detail)
     public function show($id){
-        $meal = Meal::with(['reviews.user'])->findOrFail($id);
+        $meal = Meal::with([
+            'reviews.user',
+            'optionGroups.values'
+        ])->findOrFail($id);
         $reviews = $meal->reviews;
         $averageRating = round($reviews->avg('rate'), 1);
         $reviewCount = $reviews->count();

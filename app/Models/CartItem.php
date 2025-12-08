@@ -52,4 +52,9 @@ class CartItem extends Model
         
         return $basePrice + $optionsPrice;
     }
+
+    public function getFormattedTotalPriceAttribute()
+{
+    return 'Rp. ' . number_format($this->total_price, 0, ',', '.');
+}
 }
