@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Meal;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
 
-    public function dashboardMeal(){
-        $meals = Meal::orderBy('created_at', 'desc')->get();
+    public function dashboardMeal(Request $request){
+        // $meals = Meal::orderBy('created_at', 'desc')->get();
+        $meals = $request->user()->meals()->get();
+
         return view('dashboard.menuDashboard', compact('meals'));
     }
 

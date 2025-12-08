@@ -10,10 +10,33 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
+use App\Http\Middleware\OwnerMiddleware;
+use App\Http\Middleware\StaffMiddleware;
 
 // ===== BREEZE AUTH ROUTES =====
 // handles login, register, password reset, etc.
 require __DIR__.'/auth.php';
+
+
+// PUBLIC ROUTES
+// ===== GOOGLE AUTH =====
+Route::get('/auth/google', [AuthController::class, 'loginGoogle'])->name("google.login");
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleResponse']);
+
+// ===== LOGOUT (Works for regular auth & Google OAuth) =====
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// ===== PUBLIC PAGES =====
+Route::get('/', [PageController::class, 'index'])->name('home');
+Route::get('/about', [PageController::class, 'about'])->name('about');
+
+// ===== MENU (Public Routes) =====
+Route::get('/menu', [MealController::class, 'index'])->name('menu');
+Route::get('/menu/{id}', [MealController::class, 'show'])->name('menu.show');
+Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu.reviews');
+
+
 
 // ===== Login Required =====
 Route::middleware(['auth'])->group(function () {
@@ -34,40 +57,34 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// ===== GOOGLE AUTH =====
-Route::get('/auth/google', [AuthController::class, 'loginGoogle'])->name("google.login");
-Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleResponse']);
-
-// ===== LOGOUT (Works for regular auth & Google OAuth) =====
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// ===== PUBLIC PAGES =====
-Route::get('/', [PageController::class, 'index'])->name('home');
-Route::get('/about', [PageController::class, 'about'])->name('about');
-
-// ===== MENU (Public Routes) =====
-Route::get('/menu', [MealController::class, 'index'])->name('menu');
-Route::get('/menu/{id}', [MealController::class, 'show'])->name('menu.show');
-Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu.reviews');
-
-
-
 // ===== ADMIN ONLY ROUTES =====
-Route::middleware(['auth', 'verified', AdminMiddleware::class])->group(function () {
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+    // User Management
     Route::get('/dashboard/users', [DashboardController::class, 'dashboardUsers'])->name('dashboard.users');
+    Route::patch('admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+
+    // Shop Dashboard (approval)
+    Route::get('/admin/shopApprovals', [ShopController::class, 'shopApprovals'])->name('admin.shopApprovals');
+    Route::patch('/shops/{shop}/accept', [ShopController::class, 'accept'])->name('shops.accept');
+    Route::patch('/shops/{shop}/decline', [ShopController::class, 'decline'])->name('shops.decline');
+    Route::patch('/shops/{shop}/suspend', [ShopController::class, 'suspend'])->name('shops.suspend');
+    
+});
+
+
+// ===== STAFF & OWNER ONLY ROUTES =====
+Route::middleware(['auth', StaffMiddleware::class])->group(function () {
+    // Shop Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
+
     
     // Meal Management
     Route::post('/meals', [MealController::class, 'store'])->name('meals.store');
     Route::put('/meals/{id}', [MealController::class, 'update'])->name('meals.update');
     Route::delete('/meals/{id}', [MealController::class, 'destroy'])->name('meals.destroy');
     
-    // User Management
-    Route::patch('admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
-
-    // ===== MEAL OPTION MANAGEMENT =====
     
+    // ===== MEAL OPTION MANAGEMENT =====
     // Option Groups
     Route::post('/meals/{meal}/options/groups', [MealOptionController::class, 'storeGroup'])
         ->name('meal.options.groups.store');
@@ -88,6 +105,17 @@ Route::middleware(['auth', 'verified', AdminMiddleware::class])->group(function 
     Route::get('/meals/{meal}/options', [MealOptionController::class, 'getMealOptions'])
         ->name('meal.options.get');
 });
+
+
+// ===== OWNER ONLY ROUTES =====
+Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
+    // Shop Overview (analytics)
+});
+
+
+
+
+
 
 // Test route
 Route::get('test', function(){

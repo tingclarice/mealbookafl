@@ -15,6 +15,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\OwnerMiddleware;
+use App\Http\Middleware\StaffMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -41,5 +43,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => Authenticate::class,
         'admin' => AdminMiddleware::class,
+        'owner' => OwnerMiddleware::class,
+        'staff' => StaffMiddleware::class,
     ];
 }

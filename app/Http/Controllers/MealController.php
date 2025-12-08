@@ -79,36 +79,32 @@ class MealController extends Controller
                 'description' => 'required|string',
                 'price' => 'required|numeric|min:0',
                 'category' => 'required|in:MEAL,SNACK,DRINK',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             ]);
+
+            // Get shop ID from relationship
+            $shop = $request->user()->shops()->first();
+
+            if (!$shop) {
+                return back()->withErrors(['error' => 'User is not assigned to any shop']);
+            }
+
+            $validated['shop_id'] = $shop->id;
 
             // Handle image upload
             if ($request->hasFile('image')) {
-                try {
-                    $imagePath = $request->file('image')->store('images/meals', 'public');
-                    $validated['image_url'] = $imagePath;
-                } catch (Exception $e) {
-                    Log::error('Image upload failed: ' . $e->getMessage());
-                    return back()->withErrors(['image' => 'Image upload failed.'])->withInput();
-                }
+                $imagePath = $request->file('image')->store('images/meals', 'public');
+                $validated['image_url'] = $imagePath;
             }
 
             $validated['isAvailable'] = $request->has('isAvailable');
 
             Meal::create($validated);
 
-            Log::info('New meal created successfully', [
-                'name' => $validated['name'],
-                'image' => $validated['image_url'] ?? null
-            ]);
-
             return redirect()->route('dashboard')->with('success', 'Menu berhasil ditambahkan!');
-        } catch (Exception $e) {
-            // Log any exception (validation, DB, etc.)
-            Log::error('Failed to store meal: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
-            ]);
-
+        } 
+        catch (Exception $e) {
+            Log::error('Failed to store meal: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data.'])->withInput();
         }
     }
@@ -123,7 +119,7 @@ class MealController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'category' => 'required|in:MEAL,SNACK,DRINK',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         // Handle image upload
@@ -137,6 +133,8 @@ class MealController extends Controller
             $validated['image_url'] = $imagePath;
         }
 
+        $shop = $request->user()->shops()->first();
+        $validated['shop_id'] = $shop->id;
         $validated['isAvailable'] = $request->has('isAvailable') ? true : false;
 
         $meal->update($validated);

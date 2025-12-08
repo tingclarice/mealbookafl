@@ -16,7 +16,8 @@ class Meal extends Model
         'price',
         'category',
         'isAvailable',
-        'image_url'
+        'image_url',
+        'shop_id'
     ];
 
     protected $casts = [

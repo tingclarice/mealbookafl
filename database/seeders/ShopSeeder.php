@@ -16,18 +16,20 @@ class ShopSeeder extends Seeder
     public function run(): void
     {
 
-        Shop::factory()->create([
+        Shop::forceCreate([
             'name' => 'MealBook Cafetaria',
             'address' => 'Jl. Ciputra Raya No. 1, Surabaya',
             'phone' => '081-12345678',
             'profileImage' => 'shops/mealbook-cafetaria.jpg',
+            'status' => 'OPEN',
         ]);
 
-        Shop::factory()->create([
+        Shop::forceCreate([
             'name' => 'Kantin 88',
             'address' => 'Jl. Mahendradata No. 1, Denpasar',
             'phone' => '021-1132456',
             'profileImage' => 'shops/mealbook-cafetaria.jpg',
+            'status' => 'OPEN',
         ]);
 
         // Shop::factory($shopCount)->create()->each(function ($shop) use ($staffPerShop, $mealsPerShop) {

@@ -40,11 +40,19 @@
                             {{-- <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person-circle me-2"></i>Profile</a></li> --}}
                             
                             {{-- Settings --}}
-                            @if(Auth::user()->role === 'ADMIN')
+                            @if(Auth::user()->isAdmin())
+                                <a class="dropdown-item" href="{{ route('admin.shopApprovals') }}">
+                                    <i class="bi bi-layout-text-sidebar-reverse me-2"></i> Shop Approvals
+                                </a>
+                            @endif
+                            
+                            
+                            @if(Auth::user()->isOwnerOrStaff())
                                 <a class="dropdown-item" href="{{ route('dashboard') }}">
                                     <i class="bi bi-layout-text-sidebar-reverse me-2"></i> Shop Dashboard
                                 </a>
                             @endif
+                            
 
                             <li>
                                 <a class="dropdown-item" href="{{ route('profile.edit') }}">

@@ -14,37 +14,33 @@ class Shop extends Model
         'address',
         'phone',
         'profileImage',
+        'status'
     ];
 
     // One Shop has one Wallet
-    public function wallet()
-    {
+    public function wallet(){
         return $this->hasOne(ShopWallet::class);
     }
 
     // One Shop has many Meals
-    public function meals()
-    {
+    public function meals(){
         return $this->hasMany(Meal::class);
     }
 
     // One Shop has many User Roles
-    public function userRoles()
-    {
+    public function userRoles(){
         return $this->hasMany(UserRole::class);
     }
 
     // Users connected through roles
-    public function users()
-    {
+    public function users(){
         return $this->belongsToMany(User::class, 'user_roles')
             ->withPivot('role')
             ->withTimestamps();
     }
 
     // Auto create wallet when a shop is created
-    protected static function booted()
-    {
+    protected static function booted(){
         static::created(function ($shop) {
             $shop->wallet()->create([
                 'balance' => 0,

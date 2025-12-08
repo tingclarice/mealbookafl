@@ -55,4 +55,33 @@ class User extends Authenticatable
             ->withPivot('role')
             ->withTimestamps();
     }
+    public function meals(){
+        return Meal::whereIn('shop_id', $this->shops()->pluck('shops.id'))
+                ->orderByDesc('created_at');
+    }
+
+    // Get Roles
+    public function userRoles(){
+        return $this->hasMany(UserRole::class);
+    }
+
+    public function isAdmin(){
+        return $this->role === 'ADMIN';
+    }
+
+    public function isOwner(){
+        return $this->userRoles()
+            ->where('role', 'OWNER')
+            ->exists();
+    }
+
+    public function isStaff(){
+        return $this->userRoles()
+            ->where('role', 'STAFF')
+            ->exists();
+    }
+
+    public function isOwnerOrStaff(){
+        return $this->isOwner() || $this->isStaff();
+    }
 }
