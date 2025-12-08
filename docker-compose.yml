@@ -28,20 +28,6 @@ services:
     networks:
       - laravel
 
-  npm:
-    image: jc21/nginx-proxy-manager:latest
-    container_name: nginx_proxy_manager
-    restart: unless-stopped
-    ports:
-      - "80:80"       # Public HTTP
-      - "81:81"       # NPM admin interface
-      - "443:443"     # HTTPS
-    volumes:
-      - npm_data:/data
-      - npm_letsencrypt:/etc/letsencrypt
-    networks:
-      - laravel
-
 networks:
   laravel:
 

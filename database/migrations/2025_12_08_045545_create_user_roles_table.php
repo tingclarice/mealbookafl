@@ -11,28 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('meals', function (Blueprint $table) {
+        Schema::create('user_roles', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('shop_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->string('name');
-            $table->text('description');
-            $table->decimal('price', 10, 2);
-            $table->enum('category', ['MEAL', 'SNACK', 'DRINK', 'DESSERT']);
-            $table->boolean('isAvailable')->default(true);
-            $table->string('image_url');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->enum('role', ['OWNER', 'STAFF']);
+
             $table->timestamps();
+
+            // Prevent a user from having multiple roles in same shop
+            $table->unique(['shop_id', 'user_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('meals');
+        Schema::dropIfExists('user_roles');
     }
 };
