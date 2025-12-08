@@ -12,6 +12,21 @@
                 </svg>
             </a>
 
+            {{-- Error and Success Messages --}}
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
             {{-- Meal Title & Price --}}
             <div class="text-center mb-5">
                 <h1 style="font-family: 'Preahvihear', sans-serif; font-weight: 600; color: #2D114B; font-size: 2rem;">
@@ -38,50 +53,49 @@
                         {{ $meal->description }}
                     </p>
 
-                    {{-- Add this in menu/show.blade.php, before the "Add to Cart" form --}}
-
-                    @if ($meal->optionGroups->isNotEmpty())
-                        <div class="mt-4">
-                            <h5 class="fw-bold mb-3">Customize Your Order</h5>
-
-                            @foreach ($meal->optionGroups as $group)
-                                <div class="mb-4 p-3 border rounded">
-                                    <h6 class="fw-bold">
-                                        {{ $group->name }}
-                                        @if ($group->is_required)
-                                            <span class="badge bg-danger">Required</span>
-                                        @endif
-                                    </h6>
-
-                                    @foreach ($group->values as $value)
-                                        <div class="form-check">
-                                            <input class="form-check-input"
-                                                type="{{ $group->is_multiple ? 'checkbox' : 'radio' }}" name="options[]"
-                                                value="{{ $value->id }}" id="option-{{ $value->id }}"
-                                                {{ $group->is_required ? 'required' : '' }}>
-                                            <label class="form-check-label" for="option-{{ $value->id }}">
-                                                {{ $value->name }}
-                                                @if ($value->price > 0)
-                                                    <span class="text-muted">(+{{ $value->formatted_price }})</span>
-                                                @endif
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    <div class="mb-3">
-                        <label for="notes" class="form-label">Special Instructions (Optional)</label>
-                        <textarea name="notes" id="notes" class="form-control" rows="2" 
-                            placeholder="e.g., No onions, extra spicy..."></textarea>
-                    </div>
-
                     <form action="{{ route('cart.add', $meal->id) }}" method="POST">
                         @csrf
+
+                        @if ($meal->optionGroups->isNotEmpty())
+                            <div class="mt-4">
+                                <h5 class="fw-bold mb-3">Customize Your Order</h5>
+
+                                @foreach ($meal->optionGroups as $group)
+                                    <div class="mb-4 p-3 border rounded">
+                                        <h6 class="fw-bold">
+                                            {{ $group->name }}
+                                            @if ($group->is_required)
+                                                <span class="badge bg-danger">Required</span>
+                                            @endif
+                                        </h6>
+
+                                        @foreach ($group->values as $value)
+                                            <div class="form-check">
+                                                <input class="form-check-input"
+                                                    type="{{ $group->is_multiple ? 'checkbox' : 'radio' }}" name="options[]"
+                                                    value="{{ $value->id }}" id="option-{{ $value->id }}"
+                                                    {{ $group->is_required && !$group->is_multiple ? 'required' : '' }}>
+                                                <label class="form-check-label" for="option-{{ $value->id }}">
+                                                    {{ $value->name }}
+                                                    @if ($value->price > 0)
+                                                        <span class="text-muted">(+{{ $value->formatted_price }})</span>
+                                                    @endif
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Special Instructions (Optional)</label>
+                            <textarea name="notes" id="notes" class="form-control" rows="2"
+                                placeholder="e.g., No onions, extra spicy..."></textarea>
+                        </div>
+
                         <button type="submit" class="btn mt-4 px-5 py-3 fw-bold"
-                            style="background-color: #2D114B; color: #fff; border: none; border-radius: 25px; font-size: 1rem;">
+                            style="background-color: #2D114B; color: #fff; border: none; border-radius: 25px;">
                             Add to Cart
                         </button>
                     </form>

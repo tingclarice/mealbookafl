@@ -21,7 +21,7 @@ class MealOptionValue extends Model
 
     // Relationship to option group
     public function group() {
-        return $this->belongsTo(MealOptionGroup::class);
+        return $this->belongsTo(MealOptionGroup::class, 'meal_option_group_id');
     }
 
     public function getFormattedPriceAttribute()
