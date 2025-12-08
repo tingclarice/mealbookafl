@@ -13,18 +13,20 @@
         {{-- Nav links --}}
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav align-items-center gap-lg-4 gap-2">
+                {{-- Public Links (accessible to everyone) --}}
                 <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ route('about') }}">About</a></li>
                 <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ route('menu') }}">Menu</a></li>
 
                 @auth
-
+                    {{-- Cart (Users only - not shop owners/staff when viewing their own shop) --}}
                     <li class="nav-item">
                         <a class="nav-link text-white position-relative" href="{{ route('cart') }}">
                             <i class="bi bi-cart3 fs-5"></i>
                         </a>
                     </li>
 
+                    {{-- User Dropdown --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             @if(Auth::user()->avatar)
@@ -37,15 +39,23 @@
                             <span class="fw-semibold">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
-                            {{-- <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person-circle me-2"></i>Profile</a></li> --}}
-                            
-                            {{-- Settings --}}
-                            @if(Auth::user()->role === 'ADMIN')
-                                <a class="dropdown-item" href="{{ route('dashboard') }}">
-                                    <i class="bi bi-layout-text-sidebar-reverse me-2"></i> Shop Dashboard
+                            {{-- My Orders (for all authenticated users) --}}
+                            <li>
+                                <a class="dropdown-item" href="{{ route('orders.index') }}">
+                                    <i class="bi bi-receipt me-2"></i> My Orders
                                 </a>
+                            </li>
+
+                            {{-- Shop Dashboard (for Shop Owners & Staff) --}}
+                            @if(Auth::user()->shops()->exists())
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('shop.dashboard') }}">
+                                        <i class="bi bi-shop me-2"></i> Shop Dashboard
+                                    </a>
+                                </li>
                             @endif
 
+                            {{-- Settings --}}
                             <li>
                                 <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                     <i class="bi bi-gear me-2"></i> Settings
@@ -53,6 +63,8 @@
                             </li>
 
                             <li><hr class="dropdown-divider"></li>
+
+                            {{-- Logout --}}
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -64,7 +76,7 @@
                         </ul>
                     </li>
                 @else
-                    {{-- Auth buttons (balanced size & tone) --}}
+                    {{-- Auth buttons --}}
                     <li class="nav-item">
                         <a class="btn btn-outline-light px-4 py-2 rounded-pill fw-semibold me-2"
                             style="transition: all 0.2s;"

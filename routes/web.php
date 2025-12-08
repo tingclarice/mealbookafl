@@ -57,7 +57,8 @@ Route::middleware(['auth', 'verified', AdminMiddleware::class])->group(function 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
     Route::get('/dashboard/users', [DashboardController::class, 'dashboardUsers'])->name('dashboard.users');
-    
+    Route::get('/dashboard/shop', [DashboardController::class, 'dashboardShop'])->name('dashboard.shop');
+
     // Meal Management
     Route::post('/meals', [MealController::class, 'store'])->name('meals.store');
     Route::put('/meals/{id}', [MealController::class, 'update'])->name('meals.update');
