@@ -28,10 +28,10 @@ class UserRoleSeeder extends Seeder
         UserRole::firstOrCreate(
             [
                 'shop_id' => 1,
-                'user_id' => 1,
+                'user_id' => 53,
             ],
             [
-                'role' => 'ADMIN',
+                'role' => 'OWNER',
                 'getNotification' => true,
             ]
         );
@@ -39,10 +39,10 @@ class UserRoleSeeder extends Seeder
         UserRole::firstOrCreate(
             [
                 'shop_id' => 2,
-                'user_id' => 2,
+                'user_id' => 55,
             ],
             [
-                'role' => 'ADMIN',
+                'role' => 'OWNER',
                 'getNotification' => true,
             ]
         );

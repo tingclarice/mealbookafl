@@ -32,6 +32,12 @@ class UserSeeder extends Seeder
             "password" => bcrypt("password"),
             "role" => "ADMIN"
         ]);
+        User::forceCreate([
+            "name" => "Seller Clarice",
+            "email" => "charijanto01@student.ciputra.ac.id",
+            "password" => bcrypt("password"),
+            "role" => "USER"
+        ]);
 
     }
 }

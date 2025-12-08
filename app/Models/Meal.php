@@ -24,11 +24,6 @@ class Meal extends Model
         'price' => 'decimal:2'
     ];
 
-    public function reviews()
-    {
-        return $this->hasMany(Review::class);
-    }
-
     // Relationship to option groups
     public function optionGroups()
     {

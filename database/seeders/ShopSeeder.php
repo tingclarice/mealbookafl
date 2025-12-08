@@ -20,14 +20,14 @@ class ShopSeeder extends Seeder
             'name' => 'MealBook Cafetaria',
             'address' => 'Jl. Ciputra Raya No. 1, Surabaya',
             'phone' => '081-12345678',
-            'email' => 'blabla'
+            'profileImage' => 'shops/mealbook-cafetaria.jpg',
         ]);
 
         Shop::factory()->create([
             'name' => 'Kantin 88',
             'address' => 'Jl. Mahendradata No. 1, Denpasar',
             'phone' => '021-1132456',
-            'email' => 'blabla'
+            'profileImage' => 'shops/mealbook-cafetaria.jpg',
         ]);
 
         // Shop::factory($shopCount)->create()->each(function ($shop) use ($staffPerShop, $mealsPerShop) {
