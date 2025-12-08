@@ -18,9 +18,6 @@
                 <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ route('menu') }}">Menu</a></li>
 
                 @auth
-                    @if(Auth::user()->role === 'ADMIN')
-                        <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ route('dashboard') }}">Dashboard</a></li>
-                    @endif
 
                     <li class="nav-item">
                         <a class="nav-link text-white position-relative" href="{{ route('cart') }}">
@@ -50,7 +47,7 @@
                             @endif
 
                             <li>
-                                <a class="dropdown-item" href="{{ route('settings') }}">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                     <i class="bi bi-gear me-2"></i> Settings
                                 </a>
                             </li>

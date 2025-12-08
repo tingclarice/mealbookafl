@@ -1,59 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    /* Custom Theme Settings */
-    :root {
-        --theme-primary: #F97352;
-        --theme-hover: #e06040; /* Slightly darker for hover states */
-    }
-
-    body {
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-    }
-
-    /* Custom Button */
-    .btn-theme {
-        background-color: var(--theme-primary);
-        border-color: var(--theme-primary);
-        color: white;
-        font-weight: 500;
-    }
-
-    .btn-theme:hover {
-        background-color: var(--theme-hover);
-        border-color: var(--theme-hover);
-        color: white;
-    }
-
-    /* Custom Input Focus Ring */
-    .form-control:focus {
-        border-color: var(--theme-primary);
-        box-shadow: 0 0 0 0.25rem rgba(249, 115, 82, 0.25); /* #F97352 with opacity */
-    }
-
-    /* Sidebar Menu Styling */
-    .settings-menu .list-group-item {
-        border: none;
-        color: #6c757d; /* Muted gray for inactive */
-        padding: 1rem 1.5rem;
-        transition: all 0.2s;
-    }
-
-    .settings-menu .list-group-item:hover {
-        color: var(--theme-primary);
-        background-color: #f8f9fa;
-    }
-
-    /* Active State Styling - Left Border Accent */
-    .settings-menu .list-group-item.active {
-        background-color: white; /* Keep background white */
-        color: var(--theme-primary);
-        font-weight: bold;
-        border-left: 4px solid var(--theme-primary) !important;
-        border-radius: 0;
-    }
-</style>
+<link rel="stylesheet" href="css/settings.css">
 
 <div class="container py-5">
     <div class="row justify-content-center">
@@ -91,60 +39,44 @@
                                     <i class="bi bi-shield-lock me-2"></i> Security
                                 </a>
 
+                                <a class="list-group-item list-group-item-action" 
+                                   id="v-pills-danger-tab" 
+                                   data-bs-toggle="pill" 
+                                   href="#v-pills-danger" 
+                                   role="tab" 
+                                   aria-controls="v-pills-danger" 
+                                   aria-selected="false">
+                                    <i class="bi bi-exclamation-triangle me-2"></i> Danger Zone
+                                </a>
+
                             </div>
                         </div>
 
                         <div class="col-md-9 bg-white">
                             <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
                                 
+                                {{-- Profile Information Tab --}}
                                 <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                     <h5 class="mb-4 fw-bold" style="color: #333;">Profile Information</h5>
                                     <hr class="mb-4 text-muted">
 
-                                    <form>
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label text-muted small text-uppercase fw-bold">Full Name</label>
-                                            <input type="text" class="form-control form-control-lg fs-6" id="name" value="John Doe">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label text-muted small text-uppercase fw-bold">Email Address</label>
-                                            <input type="email" class="form-control form-control-lg fs-6" id="email" value="john@example.com">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="bio" class="form-label text-muted small text-uppercase fw-bold">Bio</label>
-                                            <textarea class="form-control fs-6" id="bio" rows="4"></textarea>
-                                        </div>
-                                        <div class="d-flex justify-content-end mt-4">
-                                            <button type="submit" class="btn btn-theme px-4 py-2">Save Changes</button>
-                                        </div>
-                                    </form>
+                                    @include('profile.partials.update-profile-information-form')
                                 </div>
 
+                                {{-- Security Tab --}}
                                 <div class="tab-pane fade" id="v-pills-security" role="tabpanel" aria-labelledby="v-pills-security-tab">
                                     <h5 class="mb-4 fw-bold" style="color: #333;">Security Settings</h5>
                                     <hr class="mb-4 text-muted">
                                     
-                                    <form>
-                                        <div class="mb-3">
-                                            <label for="current_password" class="form-label text-muted small text-uppercase fw-bold">Current Password</label>
-                                            <input type="password" class="form-control form-control-lg fs-6" id="current_password">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="new_password" class="form-label text-muted small text-uppercase fw-bold">New Password</label>
-                                            <input type="password" class="form-control form-control-lg fs-6" id="new_password">
-                                        </div>
-                                        
-                                        <div class="form-check mb-4 mt-3">
-                                            <input class="form-check-input" type="checkbox" id="2fa" style="accent-color: #F97352;">
-                                            <label class="form-check-label" for="2fa">
-                                                Enable Two-Factor Authentication
-                                            </label>
-                                        </div>
+                                    @include('profile.partials.update-password-form')
+                                </div>
 
-                                        <div class="d-flex justify-content-end mt-4">
-                                            <button type="submit" class="btn btn-theme px-4 py-2">Update Password</button>
-                                        </div>
-                                    </form>
+                                {{-- Danger Zone Tab --}}
+                                <div class="tab-pane fade" id="v-pills-danger" role="tabpanel" aria-labelledby="v-pills-danger-tab">
+                                    <h5 class="mb-4 fw-bold text-danger" style="color: #dc3545;">Danger Zone</h5>
+                                    <hr class="mb-4 text-muted">
+                                    
+                                    @include('profile.partials.delete-user-form')
                                 </div>
 
                             </div>
