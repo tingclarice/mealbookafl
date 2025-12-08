@@ -26,10 +26,11 @@ services:
     depends_on:
       - app
     networks:
-      - laravel
+      - npm_default
 
 networks:
-  laravel:
+  npm_default:
+    external: true
 
 volumes:
   npm_data:
