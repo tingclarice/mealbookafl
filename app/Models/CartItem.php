@@ -30,4 +30,26 @@ class CartItem extends Model
     {
         return $this->belongsTo(Meal::class);
     }
+
+    // Relationship to selected options
+    public function selectedOptions()
+    {
+        return $this->hasMany(CartItemOption::class);
+    }
+
+    // Helper method to get total price including options
+    public function getTotalPriceAttribute()
+    {
+        $basePrice = $this->meal->price * $this->quantity;
+        
+        // Add option prices
+        $optionsPrice = $this->selectedOptions()
+            ->with('optionValue')
+            ->get()
+            ->sum(function ($option) {
+                return $option->optionValue->price * $this->quantity;
+            });
+        
+        return $basePrice + $optionsPrice;
+    }
 }

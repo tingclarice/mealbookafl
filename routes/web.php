@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MealController;
+use App\Http\Controllers\MealOptionController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
@@ -62,6 +63,28 @@ Route::middleware(['auth', 'verified', AdminMiddleware::class])->group(function 
     
     // User Management
     Route::patch('admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+
+    // ===== MEAL OPTION MANAGEMENT =====
+    
+    // Option Groups
+    Route::post('/meals/{meal}/options/groups', [MealOptionController::class, 'storeGroup'])
+        ->name('meal.options.groups.store');
+    Route::put('/options/groups/{group}', [MealOptionController::class, 'updateGroup'])
+        ->name('meal.options.groups.update');
+    Route::delete('/options/groups/{group}', [MealOptionController::class, 'destroyGroup'])
+        ->name('meal.options.groups.destroy');
+    
+    // Option Values
+    Route::post('/options/groups/{group}/values', [MealOptionController::class, 'storeValue'])
+        ->name('meal.options.values.store');
+    Route::put('/options/values/{value}', [MealOptionController::class, 'updateValue'])
+        ->name('meal.options.values.update');
+    Route::delete('/options/values/{value}', [MealOptionController::class, 'destroyValue'])
+        ->name('meal.options.values.destroy');
+    
+    // Get meal options (AJAX)
+    Route::get('/meals/{meal}/options', [MealOptionController::class, 'getMealOptions'])
+        ->name('meal.options.get');
 });
 
 // Test route

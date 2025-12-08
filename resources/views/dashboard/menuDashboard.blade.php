@@ -12,6 +12,21 @@
         </button>
     </div>
 
+    <!-- Success/Error Messages -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
     <!-- Menu Items List -->
     <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
         
@@ -53,7 +68,12 @@
                             <button type="submit" class="btn btn-danger w-100">Delete</button>
                         </form>
                     </div>
-                    <button type="button" class="btn btn-dark w-100 mt-2" data-bs-toggle="modal" data-bs-target="#customizationModal">
+                    <button type="button" 
+                        class="btn btn-dark w-100 mt-2 btn-manage-options" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#customizationModal"
+                        data-meal-id="{{ $meal->id }}"
+                        data-meal-name="{{ $meal->name }}">
                         Manage Customizations
                     </button>
                 </div>
@@ -184,135 +204,53 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="customizationModalLabel">Customizations for "Margherita Pizza"</h5>
+                <h5 class="modal-title" id="customizationModalLabel">
+                    Customizations for "<span id="modal-meal-name"></span>"
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 
                 <!-- Add New Option Group Form -->
-                <form class="mb-4 p-3 bg-light rounded border">
+                <form id="addGroupForm" class="mb-4 p-3 bg-light rounded border">
+                    @csrf
                     <h4 class="h5 mb-3">Add New Option Group</h4>
                     <div class="row g-3 align-items-end">
-                        <div class="col-sm">
+                        <div class="col-sm-5">
                             <label for="group-name" class="form-label">Group Name</label>
-                            <input type="text" id="group-name" class="form-control" placeholder="e.g., Size, Add-ons, Spice Level">
+                            <input type="text" name="name" id="group-name" class="form-control" placeholder="e.g., Size, Add-ons" required>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_multiple" id="group-is-multiple">
+                                <label class="form-check-label" for="group-is-multiple">
+                                    Allow Multiple
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_required" id="group-is-required">
+                                <label class="form-check-label" for="group-is-required">
+                                    Required
+                                </label>
+                            </div>
                         </div>
                         <div class="col-sm-auto">
                             <button type="submit" class="btn btn-success w-100">Create Group</button>
                         </div>
                     </div>
-                    <div class="form-text mt-2">You must create a group (like "Size") before you can add options (like "Small", "Medium").</div>
+                    <div class="form-text mt-2">Create a group (like "Size") before adding options (like "Small", "Medium").</div>
                 </form>
 
                 <!-- Existing Option Groups -->
-                <div class="d-flex flex-column gap-4">
-                    
-                    <!-- Example Option Group 1: Size -->
-                    <div class="border rounded p-3">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="h5 mb-0">Size</h4>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-link btn-sm p-0">Edit Group</button>
-                                <button class="btn btn-link btn-sm text-danger p-0">Delete Group</button>
-                            </div>
+                <div id="option-groups-container">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
-
-                        <!-- Option Values for "Size" -->
-                        <div class="list-group mb-3">
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>Small</div>
-                                <div class="fw-bold">+$0.00</div>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-link btn-sm p-0 text-warning">Edit</button>
-                                    <button class="btn btn-link btn-sm p-0 text-danger">Delete</button>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>Medium</div>
-                                <div class="fw-bold">+$2.00</div>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-link btn-sm p-0 text-warning">Edit</button>
-                                    <button class="btn btn-link btn-sm p-0 text-danger">Delete</button>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>Large</div>
-                                <div class="fw-bold">+$4.00</div>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-link btn-sm p-0 text-warning">Edit</button>
-                                    <button class="btn btn-link btn-sm p-0 text-danger">Delete</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Form to Add New Option Value to "Size" Group -->
-                        <form class="p-3 bg-light rounded border">
-                            <h5 class="h6 mb-2">Add New Option to "Size"</h5>
-                            <div class="row g-3 align-items-end">
-                                <div class="col-sm">
-                                    <label for="val-name-1" class="form-label">Option Name</label>
-                                    <input type="text" id="val-name-1" class="form-control" placeholder="e.g., Extra Large">
-                                </div>
-                                <div class="col-sm-3">
-                                    <label for="val-price-1" class="form-label">Price (e.g., 6.00)</label>
-                                    <input type="number" id="val-price-1" step="0.01" class="form-control" placeholder="6.00">
-                                </div>
-                                <div class="col-sm-auto">
-                                    <button type="submit" class="btn btn-primary w-100">Add</button>
-                                </div>
-                            </div>
-                        </form>
+                        <p class="mt-2 text-muted">Loading options...</p>
                     </div>
-
-                    <!-- Example Option Group 2: Add-ons -->
-                    <div class="border rounded p-3">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="h5 mb-0">Add-ons</h4>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-link btn-sm p-0">Edit Group</button>
-                                <button class="btn btn-link btn-sm text-danger p-0">Delete Group</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Option Values for "Add-ons" -->
-                        <div class="list-group mb-3">
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>Extra Cheese</div>
-                                <div class="fw-bold">+$1.50</div>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-link btn-sm p-0 text-warning">Edit</button>
-                                    <button class="btn btn-link btn-sm p-0 text-danger">Delete</button>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>Pepperoni</div>
-                                <div class="fw-bold">+$2.00</div>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-link btn-sm p-0 text-warning">Edit</button>
-                                    <button class="btn btn-link btn-sm p-0 text-danger">Delete</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Form to Add New Option Value to "Add-ons" Group -->
-                        <form class="p-3 bg-light rounded border">
-                            <h5 class="h6 mb-2">Add New Option to "Add-ons"</h5>
-                            <div class="row g-3 align-items-end">
-                                <div class="col-sm">
-                                    <label for="val-name-2" class="form-label">Option Name</label>
-                                    <input type="text" id="val-name-2" class="form-control" placeholder="e.g., Mushrooms">
-                                </div>
-                                <div class="col-sm-3">
-                                    <label for="val-price-2" class="form-label">Price (e.g., 1.00)</label>
-                                    <input type="number" id="val-price-2" step="0.01" class="form-control" placeholder="1.00">
-                                </div>
-                                <div class="col-sm-auto">
-                                    <button type="submit" class="btn btn-primary w-100">Add</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    
                 </div>
             </div>
             <div class="modal-footer">
@@ -323,6 +261,7 @@
 </div>
 
 <script>
+// Edit meal modal population
 document.addEventListener('DOMContentLoaded', function() {
     const editModal = document.getElementById('editMenuModal');
     
@@ -353,6 +292,222 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Customization modal
+let currentMealId = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const customModal = document.getElementById('customizationModal');
+    
+    customModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        currentMealId = button.getAttribute('data-meal-id');
+        const mealName = button.getAttribute('data-meal-name');
+        
+        document.getElementById('modal-meal-name').textContent = mealName;
+        
+        // Load options for this meal
+        loadMealOptions(currentMealId);
+    });
+    
+    // Handle add group form submission
+    document.getElementById('addGroupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        
+        fetch(`/meals/${currentMealId}/options/groups`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            this.reset();
+            loadMealOptions(currentMealId);
+            showToast('Group created successfully!', 'success');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Failed to create group', 'error');
+        });
+    });
+});
+
+function loadMealOptions(mealId) {
+    const container = document.getElementById('option-groups-container');
+    container.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+    
+    fetch(`/meals/${mealId}/options`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.optionGroups.length === 0) {
+                container.innerHTML = '<div class="alert alert-info text-center">No option groups yet. Create one above!</div>';
+                return;
+            }
+            
+            let html = '<div class="d-flex flex-column gap-4">';
+            
+            data.optionGroups.forEach(group => {
+                html += renderOptionGroup(group);
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+            
+            // Attach event listeners
+            attachOptionEventListeners();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            container.innerHTML = '<div class="alert alert-danger">Failed to load options</div>';
+        });
+}
+
+function renderOptionGroup(group) {
+    let html = `
+        <div class="border rounded p-3" data-group-id="${group.id}">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h4 class="h5 mb-1">${group.name}</h4>
+                    <small class="text-muted">
+                        ${group.is_multiple ? '✓ Multiple' : '○ Single'} | 
+                        ${group.is_required ? 'Required' : 'Optional'}
+                    </small>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-link btn-sm p-0 text-danger delete-group" data-group-id="${group.id}">Delete Group</button>
+                </div>
+            </div>
+
+            <!-- Option Values -->
+            <div class="list-group mb-3">
+    `;
+    
+    if (group.values && group.values.length > 0) {
+        group.values.forEach(value => {
+            html += `
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>${value.name}</div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="fw-bold">+Rp ${Number(value.price).toLocaleString('id-ID')}</div>
+                        <button class="btn btn-link btn-sm p-0 text-danger delete-value" data-value-id="${value.id}">Delete</button>
+                    </div>
+                </div>
+            `;
+        });
+    } else {
+        html += '<div class="list-group-item text-muted text-center">No options yet</div>';
+    }
+    
+    html += `
+            </div>
+
+            <!-- Add Value Form -->
+            <form class="add-value-form p-3 bg-light rounded border" data-group-id="${group.id}">
+                <h5 class="h6 mb-2">Add New Option to "${group.name}"</h5>
+                <div class="row g-3 align-items-end">
+                    <div class="col-sm">
+                        <label class="form-label">Option Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="e.g., Large" required>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label">Price (Rp)</label>
+                        <input type="number" name="price" step="0.01" class="form-control" placeholder="0" required>
+                    </div>
+                    <div class="col-sm-auto">
+                        <button type="submit" class="btn btn-primary w-100">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    `;
+    
+    return html;
+}
+
+function attachOptionEventListeners() {
+    // Delete group buttons
+    document.querySelectorAll('.delete-group').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (!confirm('Delete this option group? All its values will also be deleted.')) return;
+            
+            const groupId = this.getAttribute('data-group-id');
+            
+            fetch(`/options/groups/${groupId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+                }
+            })
+            .then(() => {
+                loadMealOptions(currentMealId);
+                showToast('Group deleted successfully!', 'success');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Failed to delete group', 'error');
+            });
+        });
+    });
+    
+    // Delete value buttons
+    document.querySelectorAll('.delete-value').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (!confirm('Delete this option?')) return;
+            
+            const valueId = this.getAttribute('data-value-id');
+            
+            fetch(`/options/values/${valueId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+                }
+            })
+            .then(() => {
+                loadMealOptions(currentMealId);
+                showToast('Option deleted successfully!', 'success');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Failed to delete option', 'error');
+            });
+        });
+    });
+    
+    // Add value forms
+    document.querySelectorAll('.add-value-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const groupId = this.getAttribute('data-group-id');
+            const formData = new FormData(this);
+            
+            fetch(`/options/groups/${groupId}/values`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+                },
+                body: formData
+            })
+            .then(() => {
+                this.reset();
+                loadMealOptions(currentMealId);
+                showToast('Option added successfully!', 'success');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Failed to add option', 'error');
+            });
+        });
+    });
+}
+
+function showToast(message, type) {
+    alert(message); // Simple toast notification
+}
 </script>
 
 @endsection
