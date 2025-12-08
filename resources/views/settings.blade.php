@@ -87,7 +87,7 @@
 
                                 <div class="tab-pane fade" id="v-pills-seller" role="tabpanel">
                                     {{-- Register as Seller --}}
-                                    @if ($pendingOwnedShop->status == "PENDING")
+                                    @if ($pendingOwnedShop && $pendingOwnedShop->status == "PENDING")
                                         {{-- PENDING STATE UI --}}
                                         <div class="text-center p-5 rounded-4 mt-3" style="background-color: #fff9f7; border: 1px dashed #F97352;">
                                             
@@ -116,7 +116,7 @@
                                             </button> 
                                             --}}
                                         </div>
-                                    @elseif ($pendingOwnedShop->status == "REJECTED")
+                                    @elseif ($pendingOwnedShop && $pendingOwnedShop->status == "REJECTED")
                                         <div class="text-center p-5 rounded-4 mt-3" style="background-color: #fff5f5; border: 1px dashed #dc3545;">
         
                                             {{-- Icon (X Circle) --}}
