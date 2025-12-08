@@ -24,46 +24,15 @@ class PageController extends Controller
 
 
     // Profile Settings
-    public function editProfile(Request $request){
-        return view('settings', [
-            'user' => $request->user(),
-        ]);
-    }
-
-    // Update Settings
-    public function updateProfile(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroyProfile(Request $request){
+    public function settings(Request $request){
+        $pendingOwnedShop = Auth::user()->shops()
+                                        ->wherePivot('role', 'OWNER')
+                                        ->whereIn('status', ['PENDING', 'REJECTED'])
+                                        ->first();
         $user = $request->user();
-
-        if (strtolower($request->input('confirm_text')) !== 'delete my account') {
-            return back()->withErrors([
-                'confirm_text' => 'You must type "delete my account" to confirm.',
-            ]);
-        }
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/')->with('status', 'Your account has been deleted.');
+        return view('settings', compact('user', 'pendingOwnedShop'));
     }
+
+    
 
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('phone');
             $table->string('profileImage')->nullable();
+            $table->string('description');
             
             $table->enum('status', ['PENDING', 'REJECTED', 'CLOSED', 'OPEN', 'SUSPENDED'])
                 ->default('PENDING');

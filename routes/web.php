@@ -6,13 +6,14 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\MealOptionController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
 use App\Http\Middleware\OwnerMiddleware;
 use App\Http\Middleware\StaffMiddleware;
+use App\Http\Middleware\OwnerAndStaffForbiddenMiddleware;
 
 // ===== BREEZE AUTH ROUTES =====
 // handles login, register, password reset, etc.
@@ -51,9 +52,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 
     // Settings
-    Route::get('/settings', [PageController::class, 'editProfile'])->name('profile.edit');
-    Route::patch('/settings', [PageController::class, 'updateProfile'])->name('profile.update');
-    Route::delete('/settings', [PageController::class, 'destroyProfile'])->name('profile.destroy');
+    Route::get('/settings', [PageController::class, 'settings'])->name('profile.edit');
+    Route::patch('/settings', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::delete('/settings', [ProfileController::class, 'destroyProfile'])->name('profile.destroy');
+
+    // Block Owner and Staff
+    Route::middleware([OwnerAndStaffForbiddenMiddleware::class])->group(function () {
+        // Register as Seller
+        Route::post('/shops/request', [ShopController::class, 'request'])->name('shops.request');
+    });
 });
 
 

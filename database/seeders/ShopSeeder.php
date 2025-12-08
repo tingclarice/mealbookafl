@@ -22,6 +22,7 @@ class ShopSeeder extends Seeder
             'phone' => '081-12345678',
             'profileImage' => 'shops/mealbook-cafetaria.jpg',
             'status' => 'OPEN',
+            'description' => 'Selamat datang di mealbook cafetaria. Kantin ini adalah kantin paling berssejarah yang digemari oleh banyak siswa dair masa ke masa'
         ]);
 
         Shop::forceCreate([
@@ -30,6 +31,7 @@ class ShopSeeder extends Seeder
             'phone' => '021-1132456',
             'profileImage' => 'shops/mealbook-cafetaria.jpg',
             'status' => 'OPEN',
+            'description'=> "yo wazzap, welcome back to this canteen, this is the legendary cantin from era to era, no one can stop from playing this game"
         ]);
 
         // Shop::factory($shopCount)->create()->each(function ($shop) use ($staffPerShop, $mealsPerShop) {

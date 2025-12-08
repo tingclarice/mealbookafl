@@ -14,7 +14,8 @@ class Shop extends Model
         'address',
         'phone',
         'profileImage',
-        'status'
+        'status',
+        'description'
     ];
 
     // One Shop has one Wallet
