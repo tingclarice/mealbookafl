@@ -15,20 +15,23 @@ class MealOptionController extends Controller
 
     // Store new option group
     public function storeGroup(Request $request, Meal $meal)
-    {
+{
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'is_multiple' => 'nullable|boolean',
-            'is_required' => 'nullable|boolean',
         ]);
 
-        $validated['meal_id'] = $meal->id;
-        $validated['is_multiple'] = $request->has('is_multiple');
-        $validated['is_required'] = $request->has('is_required');
+        MealOptionGroup::create([
+            'meal_id' => $meal->id,
+            'name' => $validated['name'],
+            'is_multiple' => $request->has('is_multiple'),
+            'is_required' => $request->has('is_required'),
+        ]);
 
-        MealOptionGroup::create($validated);
-
-        return back()->with('success', 'Meal option group created successfully.');
+        // PENTING: Return JSON, bukan redirect!
+        return response()->json([
+            'success' => true,
+            'message' => 'Group created successfully!'
+        ]);
     }
 
     // Update option group
