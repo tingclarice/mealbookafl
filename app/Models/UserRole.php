@@ -15,6 +15,7 @@ class UserRole extends Model
         'shop_id',
         'user_id',
         'role',
+        'getNotification',
     ];
 
     // Role belongs to a Shop

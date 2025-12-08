@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\CartItem;
 use App\Models\User;
+use App\Models\UserRole;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,9 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+            ShopSeeder::class,
+            UserRoleSeeder::class,
             MealSeeder::class,
-            ReviewSeeder::class,
-            CartItemSeeder::class
+            // ReviewSeeder::class,
+            // CartItemSeeder::class
         ]);
     }
 }

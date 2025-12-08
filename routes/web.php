@@ -39,14 +39,16 @@ Route::get('/menu', [MealController::class, 'index'])->name('menu');
 Route::get('/menu/{id}', [MealController::class, 'show'])->name('menu.show');
 Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu.reviews');
 
-// ===== PROTECTED ROUTES (Need Login + Email Verified) =====
-Route::middleware(['auth', 'verified'])->group(function () {
+// ===== PROTECTED ROUTES (Need Login) =====
+Route::middleware(['auth'])->group(function () {
     // Cart (logged in users only)
     Route::get('/cart', [CartController::class, 'cart'])->name('cart');
     Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::post('/cart/decrement/{id}', [CartController::class, 'decrement'])->name('cart.decrement');
-
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+    // Settings
+    Route::get('/settings', [PageController::class, 'settings'])->name('settings');
 
 });
 

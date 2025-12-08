@@ -24,6 +24,8 @@ return new class extends Migration
 
             $table->enum('role', ['OWNER', 'STAFF']);
 
+            $table->boolean('getNotification')->default(true);
+
             $table->timestamps();
 
             // Prevent a user from having multiple roles in same shop
