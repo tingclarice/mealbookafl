@@ -6,6 +6,8 @@ use App\Models\Shop;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class ShopController extends Controller
 {
@@ -77,4 +79,31 @@ class ShopController extends Controller
         }
     }
 
+    public function update(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'profileImage' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // 2MB Max
+            // ... other validations
+        ]);
+
+        $user = $request->user();
+        $shop = $user->shops()->wherePivot('role', 'OWNER')->first(); 
+
+        $data = $request->except('profileImage');
+
+        // Handle Image Upload
+        if ($request->hasFile('profileImage')) {
+            // Delete old image if exists
+            if ($shop->profileImage) {
+                Storage::disk('public')->delete($shop->profileImage);
+            }
+            // Store new image
+            $path = $request->file('profileImage')->store('shops', 'public');
+            $data['profileImage'] = $path;
+        }
+
+        $shop->update($data);
+
+        return Redirect::route('profile.edit')->with('status', 'shop-updated');
+    }
 }

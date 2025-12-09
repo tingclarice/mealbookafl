@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Meal;
 use Illuminate\Http\Request;
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 class PageController extends Controller
 {
@@ -29,8 +26,12 @@ class PageController extends Controller
                                         ->wherePivot('role', 'OWNER')
                                         ->whereIn('status', ['PENDING', 'REJECTED'])
                                         ->first();
+        $activeOwnedShop = Auth::user()->shops()
+                                       ->wherePivot('role', "OWNER")
+                                       ->whereIn('status', ["OPEN", "CLOSED"])
+                                       ->first();
         $user = $request->user();
-        return view('settings', compact('user', 'pendingOwnedShop'));
+        return view('settings', compact('user', 'pendingOwnedShop', 'activeOwnedShop'));
     }
 
     

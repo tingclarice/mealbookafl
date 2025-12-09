@@ -28,6 +28,20 @@
                                    aria-selected="true">
                                     <i class="bi bi-person me-2"></i> Profile Information
                                 </a>
+
+                                {{-- If user has active shop --}}
+                                @if ($activeOwnedShop || !Auth::user()->isOwnerOrStaff())
+                                    <a class="list-group-item list-group-item-action" 
+                                        id="v-pills-seller-tab" 
+                                        data-bs-toggle="pill" 
+                                        href="#v-pills-seller" 
+                                        role="tab" 
+                                        aria-controls="v-pills-seller" 
+                                        aria-selected="false">
+                                            <i class="bi bi-shop me-2"></i> 
+                                            Edit Shop Information
+                                    </a>
+                                @endif
                                 
                                 <a class="list-group-item list-group-item-action" 
                                    id="v-pills-security-tab" 
@@ -52,6 +66,7 @@
                                             Register as Seller
                                     </a>
                                 @endif
+                                
 
                                 <a class="list-group-item list-group-item-action" 
                                    id="v-pills-danger-tab" 
@@ -189,8 +204,16 @@
                                         </form>
                                         
                                     @endunless
-                                </div>
 
+                                    {{-- Edit Shop Information --}}
+                                    @if ($activeOwnedShop || !Auth::user()->isOwnerOrStaff())
+                                        <h5 class="mb-4 fw-bold" style="color: #333;">Shop Information</h5>
+                                        <hr class="mb-4 text-muted" style="opacity: 0.1;">
+                                        @include('profile.partials.edit-shop')                                        
+                                    @endif
+
+                                </div>
+                            
 
                                 {{-- Danger Zone Tab --}}
                                 <div class="tab-pane fade" id="v-pills-danger" role="tabpanel" aria-labelledby="v-pills-danger-tab">
