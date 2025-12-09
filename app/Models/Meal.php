@@ -31,6 +31,12 @@ class Meal extends Model
         return $this->hasMany(MealOptionGroup::class);
     }
 
+    // Relationship to shop
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
     // Accessor untuk format harga
     public function getFormattedPriceAttribute()
     {

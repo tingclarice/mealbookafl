@@ -38,7 +38,7 @@ Route::get('/menu/{id}', [MealController::class, 'show'])->name('menu.show');
 Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu.reviews');
 
 // ===== SHOP VIEW (for guests) =====
-Route::get('/shops/{id}', [ShopController::class, 'viewShop'])->name('shop.show');
+Route::get('/shops/{shop}', [ShopController::class, 'show'])->name('shop.show');
 
 // ===== Login Required =====
 Route::middleware(['auth'])->group(function () {

@@ -43,7 +43,8 @@ class MealController extends Controller
     // Untuk halaman /menu/{id} (detail)
     public function show($id){
         $meal = Meal::with([
-            'optionGroups.values'
+            'optionGroups.values',
+            'shop'
         ])->findOrFail($id);
 
         // $reviews = $meal->reviews;

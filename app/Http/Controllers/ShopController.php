@@ -87,6 +87,6 @@ class ShopController extends Controller
             $query->where('isAvailable', true)->latest();
         }]);
         
-        return view('shops.show', compact('shop'));
+        return view('shop.show', compact('shop'));
     }
 }

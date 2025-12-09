@@ -3,23 +3,23 @@
 @section('content')
 <div style="background-color: #FEF3F0; min-height: 100vh;">
     
-    {{-- Back Button --}}
-    <div class="container pt-4">
-        <a href="{{ route('menu') }}" class="btn d-inline-flex align-items-center"
-            style="background: none; border: none; color: #F97352; font-size: 1.1rem; padding: 0;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 18l-6-6 6-6" />
-            </svg>
-            <span class="ms-2">Back</span>
-        </a>
-    </div>
-
     {{-- Hero Section with Shop Image --}}
-    <section class="position-relative text-white mt-3" style="height: 300px; overflow: hidden; border-radius: 0;">
+    <section class="position-relative text-white" style="height: 300px; overflow: hidden; border-radius: 0;">
         <div style="background: linear-gradient(rgba(249, 115, 82, 0.8), rgba(249, 115, 82, 0.8)), 
                     url('{{ $shop->profileImage ? asset('storage/' . $shop->profileImage) : asset('images/hero-bg.webp') }}') center/cover no-repeat;
                     height: 100%; width: 100%;"></div>
+        
+        {{-- Back Button (overlay on image) --}}
+        <div class="position-absolute top-0 start-0 p-4">
+            <a href="{{ route('menu') }}" class="btn d-inline-flex align-items-center text-white fw-semibold"
+                style="background: none; border: none; font-size: 1.1rem; padding: 8px 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+                <span class="ms-2">Back</span>
+            </a>
+        </div>
         
         <div class="position-absolute bottom-0 start-0 w-100 p-4" style="background: linear-gradient(transparent, rgba(0,0,0,0.7));">
             <div class="container">

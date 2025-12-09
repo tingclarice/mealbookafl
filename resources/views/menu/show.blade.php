@@ -37,25 +37,26 @@
                 </p>
             </div>
 
-            {{-- Shop Name Link --}}
-            @if($meal->shop)
-                <div class="mt-2">
-                    <small class="text-muted">from</small>
-                    <a href="{{ route('shops.show', $meal->shop) }}" 
-                    class="text-decoration-none fw-semibold ms-1"
-                    style="color: #F97352;">
-                        {{ $meal->shop->name }}
-                        <i class="bi bi-shop ms-1"></i>
-                    </a>
-                </div>
-            @endif
-
             {{-- Image & Description --}}
             <div class="row justify-content-center align-items-center g-5">
+                
                 <div class="col-md-5 text-center">
                     <img src="{{ asset('storage/' . $meal->image_url) }}" alt="{{ $meal->name }}"
                         style="border-radius: 25px; width: 100%; max-width: 400px; height: auto; object-fit: cover;">
+                    {{-- Shop Name Link --}}
+                    @if($meal->shop)
+                        <div class="mt-2">
+                            <small class="text-muted">from</small>
+                            <a href="{{ route('shop.show', $meal->shop) }}" 
+                            class="text-decoration-none fw-semibold ms-1"
+                            style="color: #F97352;">
+                                {{ $meal->shop->name }}
+                                <i class="bi bi-shop ms-1"></i>
+                            </a>
+                        </div>
+                    @endif
                 </div>
+                
 
                 <div class="col-md-6">
                     <h4
