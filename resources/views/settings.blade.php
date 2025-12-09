@@ -101,7 +101,7 @@
                                 </div>
 
                                 <div class="tab-pane fade" id="v-pills-seller" role="tabpanel">
-                                    {{-- Register as Seller --}}
+                                    {{-- Show Message info Shops Approvals --}}
                                     @if ($pendingOwnedShop && $pendingOwnedShop->status == "PENDING")
                                         {{-- PENDING STATE UI --}}
                                         <div class="text-center p-5 rounded-4 mt-3" style="background-color: #fff9f7; border: 1px dashed #F97352;">
@@ -154,7 +154,7 @@
                                         </div>
                                     @endif
                                 
-                                    {{-- Show if user is not owner or staff --}}
+                                    {{-- Register as Seller; if user is not owner or staff --}}
                                     @unless(Auth::user()->isOwnerOrStaff())
                                         {{-- REGISTRATION FORM (Only shows if NO pending shop) --}}
                                         <h5 class="mb-4 fw-bold" style="color: #333;">Register as Seller</h5>
@@ -205,7 +205,7 @@
                                         
                                     @endunless
 
-                                    {{-- Edit Shop Information --}}
+                                    {{-- Edit Shop Information; if user is shops owner --}}
                                     @if ($activeOwnedShop)
                                         <h5 class="mb-4 fw-bold" style="color: #333;">Shop Information</h5>
                                         <hr class="mb-4 text-muted" style="opacity: 0.1;">
