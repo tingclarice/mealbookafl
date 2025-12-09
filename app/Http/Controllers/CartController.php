@@ -14,10 +14,7 @@ class CartController extends Controller
 {
     public function cart(){
         $cartItems = CartItem::where('user_id', Auth::user()->id)
-            ->with([
-                'meal',
-                'selectedOptions.optionValue.group'
-            ])
+            ->with(['meal', 'selectedOptions.optionValue.group'])
             ->get();
 
         // Calculate subtotal using the total_price attribute (includes options)
