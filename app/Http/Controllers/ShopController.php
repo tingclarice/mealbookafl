@@ -77,4 +77,16 @@ class ShopController extends Controller
         }
     }
 
+    public function show(Shop $shop){
+        // Only show approved shops to public
+        if (!in_array($shop->status, ['OPEN', 'CLOSE'])) {
+            abort(404, 'Shop not found');
+        }
+        
+        $shop->load(['meals' => function($query) {
+            $query->where('isAvailable', true)->latest();
+        }]);
+        
+        return view('shops.show', compact('shop'));
+    }
 }

@@ -37,6 +37,19 @@
                 </p>
             </div>
 
+            {{-- Shop Name Link --}}
+            @if($meal->shop)
+                <div class="mt-2">
+                    <small class="text-muted">from</small>
+                    <a href="{{ route('shops.show', $meal->shop) }}" 
+                    class="text-decoration-none fw-semibold ms-1"
+                    style="color: #F97352;">
+                        {{ $meal->shop->name }}
+                        <i class="bi bi-shop ms-1"></i>
+                    </a>
+                </div>
+            @endif
+
             {{-- Image & Description --}}
             <div class="row justify-content-center align-items-center g-5">
                 <div class="col-md-5 text-center">
@@ -94,7 +107,7 @@
                                 placeholder="e.g., No onions, extra spicy..."></textarea>
                         </div>
 
-                        <button type="submit" class="btn mt-4 px-5 py-3 fw-bold"
+                        <button type="submit" class="btn mt-4 px-5 py-3 fw-bold mx-auto d-block d-md-inline-block"
                             style="background-color: #2D114B; color: #fff; border: none; border-radius: 25px;">
                             Add to Cart
                         </button>
@@ -164,7 +177,7 @@
                 <h3 class="mb-4" style="font-family: 'Preahvihear', sans-serif; color: #2D114B; font-weight: 600;">
                     Suggested for you
                 </h3>
-                <div class="d-flex flex-wrap gap-4 justify-content-start">
+                <div class="d-flex flex-wrap gap-4 justify-content-center">
                     @foreach ($suggestedMeals as $suggested)
                         <a href="{{ route('menu.show', $suggested->id) }}" class="text-decoration-none">
                             <div class="card border-0 text-center"

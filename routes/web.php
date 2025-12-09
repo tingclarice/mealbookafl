@@ -37,7 +37,8 @@ Route::get('/menu', [MealController::class, 'index'])->name('menu');
 Route::get('/menu/{id}', [MealController::class, 'show'])->name('menu.show');
 Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu.reviews');
 
-
+// ===== SHOP VIEW (for guests) =====
+Route::get('/shops/{id}', [ShopController::class, 'viewShop'])->name('shop.show');
 
 // ===== Login Required =====
 Route::middleware(['auth'])->group(function () {
@@ -83,7 +84,6 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 Route::middleware(['auth', StaffMiddleware::class])->group(function () {
     // Shop Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
-
     
     // Meal Management
     Route::post('/meals', [MealController::class, 'store'])->name('meals.store');
