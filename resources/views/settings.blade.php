@@ -30,7 +30,7 @@
                                 </a>
 
                                 {{-- If user has active shop --}}
-                                @if ($activeOwnedShop || !Auth::user()->isOwnerOrStaff())
+                                @if ($activeOwnedShop)
                                     <a class="list-group-item list-group-item-action" 
                                         id="v-pills-seller-tab" 
                                         data-bs-toggle="pill" 
@@ -206,10 +206,10 @@
                                     @endunless
 
                                     {{-- Edit Shop Information --}}
-                                    @if ($activeOwnedShop || !Auth::user()->isOwnerOrStaff())
+                                    @if ($activeOwnedShop)
                                         <h5 class="mb-4 fw-bold" style="color: #333;">Shop Information</h5>
                                         <hr class="mb-4 text-muted" style="opacity: 0.1;">
-                                        @include('profile.partials.edit-shop')                                        
+                                        @include('profile.partials.edit-shop')
                                     @endif
 
                                 </div>
