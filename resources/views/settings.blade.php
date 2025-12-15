@@ -31,7 +31,7 @@
 
     @if (session('status') === 'profile-updated')
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ __('Profile information updated successfully !!') }}
+            {{ __('Profile information updated successfully.') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif

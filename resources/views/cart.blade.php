@@ -2,9 +2,36 @@
 
 @section('head')
     <link rel="stylesheet" href="css/cart.css">
+    <!-- <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+          data-client-key="{{ config('midtrans.client_key') }}"></script> -->
 @endsection
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+    
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
     <div style="background-color: #fef3f0; min-height: 100vh; padding: 3rem 0;">
         <div class="container my-5 min-h-screen">
             <div class="row g-4">
@@ -107,7 +134,13 @@
                                     <span>Rp {{ number_format($totalPrice, 0, ',', '.') }}</span>
                                 </div>
 
-                                <a href="#" class="btn btn-primary w-100 mt-4 checkout-btn">Check Out</a>
+                                <form action="{{ route('order.create') }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="btn btn-primary w-100 mt-4 checkout-btn">
+                                        Check Out
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -116,4 +149,5 @@
             </div>
         </div>
     </div>
+    
 @endsection

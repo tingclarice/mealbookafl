@@ -5,6 +5,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\MealOptionController;
+use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
@@ -46,6 +48,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::post('/cart/decrement/{id}', [CartController::class, 'decrement'])->name('cart.decrement');
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+    // Order
+    Route::post('/order/create', [OrderController::class, 'createOrder'])->name('order.create');
+    Route::get('/order/checkout/{order}', [OrderController::class, 'checkout'])->name('order.checkout');
+
+    // Order Status
+    Route::get('/order/success', [PageController::class, 'orderSuccess'])->name('order.success');
+    Route::get('/order/failed', [PageController::class, 'orderFailed'])->name('order.failed');
+
 
     // Settings
     Route::get('/settings', [PageController::class, 'settings'])->name('profile.edit');
@@ -115,6 +126,14 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
 Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
     // Shop Overview (analytics)
 });
+
+
+
+// API For Midtrans
+// Notification
+Route::post('/midtrans/notification', [MidtransController::class, 'handleNotification']);
+
+
 
 
 

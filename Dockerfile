@@ -22,6 +22,10 @@ RUN apt-get update && apt-get install -y \
     pcntl \
     bcmath \
     gd \
+    ca-certificates \
+    curl \
+    openssl \
+    && update-ca-certificates\
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
