@@ -11,31 +11,37 @@ use Illuminate\Support\Facades\Storage;
 
 class ShopController extends Controller
 {
-    public function shopApprovals(){
+    public function shopApprovals()
+    {
         $pendingShops = Shop::where('status', 'PENDING')->get();
         $activeShops = Shop::whereIn('status', ['OPEN', 'CLOSE'])->get();
         $rejectedShops = Shop::where('status', "REJECTED")->get();
-        return view('dashboard.shopApprovals', compact('pendingShops', 'activeShops', 'rejectedShops'));
+        $suspendedShops = Shop::where('status', "SUSPENDED")->get();
+        return view('dashboard.shopApprovals', compact('pendingShops', 'activeShops', 'rejectedShops', 'suspendedShops'));
     }
 
-    public function accept(Shop $shop){
+    public function accept(Shop $shop)
+    {
         $shop->update(['status' => 'OPEN']);
         return back()->with('success', 'Shop accepted successfully');
     }
 
-    public function decline(Shop $shop){
+    public function decline(Shop $shop)
+    {
         $shop->update(['status' => 'REJECTED']);
         return back()->with('success', 'Shop declined successfully');
     }
 
-    public function suspend(Shop $shop){
+    public function suspend(Shop $shop)
+    {
         $shop->update(['status' => 'SUSPENDED']);
         return back()->with('success', 'Shop suspended successfully');
     }
 
-    public function request(Request $request){
+    public function request(Request $request)
+    {
         // Check if user already has a shop
-        if (Shop::where('user_id', $request->user()->id)->exists()) {
+        if (UserRole::where('user_id', $request->user()->id)->exists()) {
             return back()->with('error', 'You have already registered a shop.');
         }
 
@@ -44,7 +50,7 @@ class ShopController extends Controller
             'address' => 'required|string',
             'phone' => 'required|string',
             'description' => 'required|string',
-            'profileImage' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'profileImage' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         DB::beginTransaction();
@@ -70,7 +76,7 @@ class ShopController extends Controller
 
             DB::commit();
 
-            return back()->with('success', 'Shop request submitted for approval!');
+            return back()->with('success', 'Shop request submitted!');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -79,7 +85,8 @@ class ShopController extends Controller
         }
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $request->validate([
             'name' => 'required|string|max:255',
             'profileImage' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // 2MB Max
@@ -87,7 +94,7 @@ class ShopController extends Controller
         ]);
 
         $user = $request->user();
-        $shop = $user->shops()->wherePivot('role', 'OWNER')->first(); 
+        $shop = $user->shops()->wherePivot('role', 'OWNER')->first();
 
         $data = $request->except('profileImage');
 

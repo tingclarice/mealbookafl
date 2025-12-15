@@ -6,7 +6,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\MealOptionController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +16,7 @@ use App\Http\Middleware\OwnerAndStaffForbiddenMiddleware;
 
 // ===== BREEZE AUTH ROUTES =====
 // handles login, register, password reset, etc.
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 // PUBLIC ROUTES
@@ -41,9 +40,6 @@ Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu
 
 // ===== Login Required =====
 Route::middleware(['auth'])->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Cart (logged in users only)
     Route::get('/cart', [CartController::class, 'cart'])->name('cart');
@@ -53,8 +49,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Settings
     Route::get('/settings', [PageController::class, 'settings'])->name('profile.edit');
-    Route::patch('/settings', [ProfileController::class, 'updateProfile'])->name('profile.update');
-    Route::delete('/settings', [ProfileController::class, 'destroyProfile'])->name('profile.destroy');
+    Route::patch('/settings', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::delete('/settings', [UserController::class, 'destroyProfile'])->name('profile.destroy');
 
     // Block Owner and Staff
     Route::middleware([OwnerAndStaffForbiddenMiddleware::class])->group(function () {
@@ -76,7 +72,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::patch('/shops/{shop}/decline', [ShopController::class, 'decline'])->name('shops.decline');
     Route::patch('/shops/{shop}/suspend', [ShopController::class, 'suspend'])->name('shops.suspend');
     Route::patch('/shops/update', [ShopController::class, 'update'])->name('shop.update');
-    
+
 });
 
 
@@ -85,13 +81,13 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
     // Shop Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
 
-    
+
     // Meal Management
     Route::post('/meals', [MealController::class, 'store'])->name('meals.store');
     Route::put('/meals/{id}', [MealController::class, 'update'])->name('meals.update');
     Route::delete('/meals/{id}', [MealController::class, 'destroy'])->name('meals.destroy');
-    
-    
+
+
     // ===== MEAL OPTION MANAGEMENT =====
     // Option Groups
     Route::post('/meals/{meal}/options/groups', [MealOptionController::class, 'storeGroup'])
@@ -100,7 +96,7 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
         ->name('meal.options.groups.update');
     Route::delete('/options/groups/{group}', [MealOptionController::class, 'destroyGroup'])
         ->name('meal.options.groups.destroy');
-    
+
     // Option Values
     Route::post('/options/groups/{group}/values', [MealOptionController::class, 'storeValue'])
         ->name('meal.options.values.store');
@@ -108,7 +104,7 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
         ->name('meal.options.values.update');
     Route::delete('/options/values/{value}', [MealOptionController::class, 'destroyValue'])
         ->name('meal.options.values.destroy');
-    
+
     // Get meal options (AJAX)
     Route::get('/meals/{meal}/options', [MealOptionController::class, 'getMealOptions'])
         ->name('meal.options.get');
@@ -126,7 +122,7 @@ Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
 
 
 // Test route
-Route::get('test', function(){
+Route::get('test', function () {
     $data = \App\Models\Meal::all();
     return view('tes', compact('data'));
 });

@@ -4,6 +4,38 @@
 <link rel="stylesheet" href="css/settings.css">
 
 <div class="container py-5">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+    
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if (session('status') === 'profile-updated')
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ __('Profile information updated successfully !!') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
     <div class="row justify-content-center">
         <div class="col-lg-10">
             
@@ -12,6 +44,8 @@
                 <div class="card-header bg-white border-bottom">
                     <h4 class="mb-0 py-2 fw-bold" style="color: #333;">Account Settings</h4>
                 </div>
+                
+
 
                 <div class="card-body p-0">
                     <div class="row g-0" style="min-height: 400px;">
