@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class MealController extends Controller
 {
@@ -43,7 +44,9 @@ class MealController extends Controller
     // Untuk halaman /menu/{id} (detail)
     public function show($id){
         $meal = Meal::with([
-            'optionGroups.values'
+            'optionGroups.values',
+            'shop', // Load shop relationship
+            'images' // Load images relationship
         ])->findOrFail($id);
 
         // $reviews = $meal->reviews;
@@ -56,6 +59,7 @@ class MealController extends Controller
         $latestReviews = [];
         
         $suggestedMeals = Meal::where('id', '!=', $meal->id)
+                            ->where('shop_id', $meal->shop_id) // Same shop
                             ->inRandomOrder()
                             ->take(4)
                             ->get();
@@ -71,7 +75,7 @@ class MealController extends Controller
     //     return view('menu.reviews', compact('meal', 'reviews', 'averageRating', 'reviewCount'));
     // }
 
-    // Store new meal
+    // Store new meal (w/ multiple images, max 5)
     public function store(Request $request){
         try {
             $validated = $request->validate([
@@ -79,7 +83,8 @@ class MealController extends Controller
                 'description' => 'required|string',
                 'price' => 'required|numeric|min:0',
                 'category' => 'required|in:MEAL,SNACK,DRINK',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+                'images' => 'nullable|array|max:5',
+                'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
             ]);
 
             // Get shop ID from relationship
@@ -89,9 +94,22 @@ class MealController extends Controller
                 return back()->withErrors(['error' => 'User is not assigned to any shop']);
             }
 
-            $validated['shop_id'] = $shop->id;
+            DB::beginTransaction();
 
-            // Handle image upload
+            $validated['shop_id'] = $shop->id;
+            $validated['isAvailable'] = $request->has('isAvailable');
+
+            // Create meal
+            $meal = Meal::create([
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'price' => $validated['price'],
+                'category' => $validated['category'],
+                'shop_id' => $validated['shop_id'],
+                'isAvailable' => $validated['isAvailable']
+            ]);
+
+            // Handle multiple image upload
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('images/meals', 'public');
                 $validated['image_url'] = $imagePath;

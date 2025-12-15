@@ -35,18 +35,21 @@ class CartController extends Controller
 
     public function addToCart(Request $request, $id){
         $user = Auth::user();
+        // dd("Start Transaction");
 
         if (!$user) {
             return redirect()->route('login')->with('error', 'You must be logged in to add to cart.');
         }
+        // dd("Login Allowed");
 
         $meal = Meal::with('optionGroups.values')->findOrFail($id);
 
         // Validate that required option groups have selections
         $selectedOptions = $request->input('options', []); // Array of option value IDs
-
+        // dd("check Options");
         // Check required options
         foreach ($meal->optionGroups as $group) {
+            // dd("Check Required Options Group");
             if ($group->is_required) {
                 $hasSelection = false;
                 foreach ($group->values as $value) {
@@ -56,11 +59,12 @@ class CartController extends Controller
                     }
                 }
                 if (!$hasSelection) {
+                    dd("error Required Options");
                     return redirect()->back()->with('error', "Please select an option for '{$group->name}'.");
                 }
             }
         }
-
+        dd("Chekc Required Options");
         // Validate multiple selection rules
         foreach ($meal->optionGroups as $group) {
             if (!$group->is_multiple) {
@@ -78,10 +82,11 @@ class CartController extends Controller
 
          // Use transaction to ensure data consistency
         DB::beginTransaction();
+        dd("Start Transaction");
         try {
             // Check if exact same item with same options exists
             $existingCartItem = $this->findExistingCartItem($user->id, $meal->id, $selectedOptions);
-
+            dd("Existing Cart Item: " . $existingCartItem);
             if ($existingCartItem) {
                 // Increase quantity if already exists
                 $existingCartItem->quantity += 1;
@@ -95,6 +100,7 @@ class CartController extends Controller
                     'quantity' => 1,
                     'notes' => $request->input('notes', null), 
                 ]);
+                dd("Create Cart Item");
 
                 // Save selected options
                 foreach ($selectedOptions as $optionValueId) {
