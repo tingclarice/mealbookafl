@@ -31,6 +31,30 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', [PageController::class, 'index'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 
+// ===== SHOP-SPECIFIC ROUTES =====
+Route::prefix('shop/{shopSlug}')->group(function () {
+    // Shop home page
+    Route::get('/', [PageController::class, 'shopHome'])->name('shop.home');
+    Route::get('/about', [PageController::class, 'shopAbout'])->name('shop.about');
+    
+    // Menu
+    Route::get('/menu', [MealController::class, 'index'])->name('shop.menu');
+    Route::get('/menu/{id}', [MealController::class, 'show'])->name('shop.menu.show');
+    Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('shop.menu.reviews');
+    
+    // Cart & Checkout (logged in users only)
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/cart', [CartController::class, 'cart'])->name('shop.cart');
+        Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('shop.cart.add');
+        Route::post('/cart/decrement/{id}', [CartController::class, 'decrement'])->name('shop.cart.decrement');
+        Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('shop.cart.remove');
+        
+        // Checkout & Payment
+        Route::get('/checkout', [CartController::class, 'checkout'])->name('shop.checkout');
+        Route::post('/checkout/process', [CartController::class, 'processCheckout'])->name('shop.checkout.process');
+    });
+});
+
 // ===== MENU (Public Routes) =====
 Route::get('/menu', [MealController::class, 'index'])->name('menu');
 Route::get('/menu/{id}', [MealController::class, 'show'])->name('menu.show');
