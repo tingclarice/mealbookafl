@@ -31,6 +31,28 @@ class Meal extends Model
         return $this->hasMany(MealOptionGroup::class);
     }
 
+    // Relationship to shop
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
+    // Relationship to images
+    public function images()
+    {
+        return $this->hasMany(MealImage::class)->orderBy('order');
+    }
+    
+    // Get primary image or first image
+    public function primaryImage()
+    {
+        return $this->hasOne(MealImage::class)
+                    ->where('is_primary', true)
+                    ->orWhere(function($q) {
+                        $q->orderBy('order')->limit(1);
+                    });
+    }
+
     // Accessor untuk format harga
     public function getFormattedPriceAttribute()
     {
@@ -41,5 +63,21 @@ class Meal extends Model
     public function getShortDescriptionAttribute()
     {
         return Str::limit($this->description, 60);
+    }
+
+    // Get display image (prioritize meal_images, fallback to image_url)
+    public function getDisplayImageAttribute()
+    {
+        $primaryImage = $this->images()->where('is_primary', true)->first();
+        if ($primaryImage) {
+            return $primaryImage->image_url;
+        }
+        
+        $firstImage = $this->images()->first();
+        if ($firstImage) {
+            return $firstImage->image_url;
+        }
+        
+        return $this->image_url;
     }
 }
