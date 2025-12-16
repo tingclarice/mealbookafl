@@ -20,6 +20,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'phone' => fake()->optional()->numerify('628##########') ?? '628000000000',
             'email_verified_at' => now(),
             'password' => bcrypt('password'), // default password for testing
             'role' => fake()->randomElement(['ADMIN', 'USER']),
@@ -34,7 +35,7 @@ class UserFactory extends Factory
      */
     public function admin(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'role' => 'ADMIN',
         ]);
     }
@@ -44,7 +45,7 @@ class UserFactory extends Factory
      */
     public function user(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'role' => 'USER',
         ]);
     }
