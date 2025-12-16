@@ -105,7 +105,13 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
     // Shop Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
 
-
+    // Analytics Dashboard (Owner & Staff can view)
+    Route::get('/dashboard/analytics', [DashboardController::class, 'analytics'])->name('dashboard.analytics');
+    
+    // Order Management
+    Route::get('/dashboard/orders', [DashboardController::class, 'dashboardOrders'])->name('dashboard.orders');
+    Route::post('/orders/{order}/scan', [DashboardController::class, 'scanOrderQR'])->name('orders.scan');
+    
     // Meal Management
     Route::post('/meals', [MealController::class, 'store'])->name('meals.store');
     Route::put('/meals/{id}', [MealController::class, 'update'])->name('meals.update');
