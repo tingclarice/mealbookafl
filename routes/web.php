@@ -80,8 +80,8 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // Shop Dashboard (approval)
     Route::get('/admin/shopApprovals', [ShopController::class, 'shopApprovals'])->name('admin.shopApprovals');
     Route::patch('/shops/{shop}/accept', [ShopController::class, 'accept'])->name('shops.accept');
-    Route::patch('/shops/{shop}/decline', [ShopController::class, 'decline'])->name('shops.decline');
-    Route::patch('/shops/{shop}/suspend', [ShopController::class, 'suspend'])->name('shops.suspend');
+    Route::patch('/shops/{shop}/decline/{message}', [ShopController::class, 'decline'])->name('shops.decline');
+    Route::patch('/shops/{shop}/suspend/{message}', [ShopController::class, 'suspend'])->name('shops.suspend');
     Route::patch('/shops/update', [ShopController::class, 'update'])->name('shop.update');
 
 });

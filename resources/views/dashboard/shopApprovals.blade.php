@@ -90,24 +90,21 @@
 
                                 <div class="row g-2">
                                     <div class="col-6">
-                                        <form action="{{ route('shops.decline', $shop->id) }}" method="POST">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" {{ $shop->status == "REJECTED" || $shop->status == "OPEN" || $shop->status == "CLOSE" ? 'disabled' : '' }}
-                                                class="btn btn-outline-theme w-100 btn-sm">
-                                                Decline
-                                            </button>
-                                        </form>
+                                        <button type="button" 
+                                            onclick="openActionModal('{{ route('shops.decline', ['shop' => $shop->id, 'message' => 'PLACEHOLDER']) }}', 'Decline {{ $shop->name }}')"
+                                            class="btn btn-outline-theme w-100 btn-sm"
+                                            {{ $shop->status == "REJECTED" || $shop->status == "OPEN" || $shop->status == "CLOSE" ? 'disabled' : '' }}>
+                                            Decline
+                                        </button>
                                     </div>
 
                                     <div class="col-6">
-                                        <form action="{{ route('shops.suspend', $shop->id) }}" method="POST">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="btn btn-outline-theme w-100 btn-sm" {{ $shop->status == "REJECTED" || $shop->status == "SUSPENDED" ? 'disabled' : '' }}>
-                                                Suspend
-                                            </button>
-                                        </form>
+                                        <button type="button" 
+                                            onclick="openActionModal('{{ route('shops.suspend', ['shop' => $shop->id, 'message' => 'PLACEHOLDER']) }}', 'Suspend {{ $shop->name }}')"
+                                            class="btn btn-outline-theme w-100 btn-sm"
+                                            {{ $shop->status == "REJECTED" || $shop->status == "SUSPENDED" ? 'disabled' : '' }}>
+                                            Suspend
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -119,4 +116,65 @@
         @endif
 
     </div>
+
+    {{-- Hidden Form for Submitting Actions --}}
+    <form id="actionForm" method="POST" style="display: none;">
+        @csrf
+        @method('PATCH')
+    </form>
+
+    {{-- Action Reason Modal --}}
+    <div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="reasonModalTitle">Action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small mb-2">Please provide a reason for this action:</p>
+                    <textarea id="reasonInput" class="form-control" rows="4" placeholder="Enter reason here..."></textarea>
+                    <div id="reasonError" class="text-danger small mt-1" style="display: none;">Reason is required.</div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-theme px-4" onclick="submitAction()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let targetUrlTemplate = '';
+
+        function openActionModal(urlTemplate, title) {
+            targetUrlTemplate = urlTemplate;
+            document.getElementById('reasonModalTitle').innerText = title;
+            document.getElementById('reasonInput').value = ''; 
+            document.getElementById('reasonError').style.display = 'none';
+            
+            new bootstrap.Modal(document.getElementById('reasonModal')).show();
+        }
+
+        function submitAction() {
+            const reasonInput = document.getElementById('reasonInput');
+            const reason = reasonInput.value.trim();
+            
+            if (!reason) {
+                reasonInput.classList.add('is-invalid');
+                document.getElementById('reasonError').style.display = 'block';
+                return;
+            }
+
+            reasonInput.classList.remove('is-invalid');
+            
+            // Replace PLACEHOLDER with encoded reason
+            // The route parameter is 'message'
+            const finalUrl = targetUrlTemplate.replace('PLACEHOLDER', encodeURIComponent(reason));
+            
+            const form = document.getElementById('actionForm');
+            form.action = finalUrl;
+            form.submit();
+        }
+    </script>
 @endsection

@@ -26,14 +26,18 @@ class ShopController extends Controller
         return back()->with('success', 'Shop accepted successfully');
     }
 
-    public function decline(Shop $shop)
+    public function decline(Shop $shop, $message)
     {
+        GowaController::sendMessage($message, $shop->users()->first()->id);
+
         $shop->update(['status' => 'REJECTED']);
         return back()->with('success', 'Shop declined successfully');
     }
 
-    public function suspend(Shop $shop)
+    public function suspend(Shop $shop, $message)
     {
+        GowaController::sendMessage($message, $shop->users()->first()->id);
+
         $shop->update(['status' => 'SUSPENDED']);
         return back()->with('success', 'Shop suspended successfully');
     }
