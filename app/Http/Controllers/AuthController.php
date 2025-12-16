@@ -11,19 +11,21 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     // Google Login
-    function loginGoogle(){
+    function loginGoogle()
+    {
         return Socialite::driver('google')
             ->scopes(['openid', 'profile', 'email'])
             ->redirect();
     }
 
-    function handleGoogleResponse(){
+    function handleGoogleResponse()
+    {
         try {
             // Modern Socialite - just remove stateless() and setHttpClient()
             $googleUser = Socialite::driver('google')
-            ->stateless()
-            ->setHttpClient(new Client(['verify' => base_path('certs/cacert.pem')]))
-            ->user();
+                ->stateless()
+                ->setHttpClient(new Client(['verify' => base_path('certs/cacert.pem')]))
+                ->user();
 
 
             $user = User::updateOrCreate(
@@ -39,7 +41,7 @@ class AuthController extends Controller
 
             Auth::login($user);
             return redirect('/');
-            
+
         } catch (\Exception $e) {
             logger()->error('Google Login Error: ' . $e->getMessage());
             return redirect('/login')->with('error', 'Unable to login with Google. Please try again.');
@@ -75,7 +77,8 @@ class AuthController extends Controller
 
 
     // Logout (works for both regular auth & Google OAuth)
-    function logout(Request $request){
+    function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
