@@ -16,7 +16,28 @@ class MidtransController extends Controller
 
         Log::info('Midtrans Notification', $payload);
 
+        $serverKey = config('services.midtrans.server_key');
+
+        // Create the hash: order_id + status_code + gross_amount + ServerKey
+        $hashed = hash(
+            'sha512',
+            $payload['order_id'] .
+            $payload['status_code'] .
+            $payload['gross_amount'] .
+            $serverKey
+        );
+
+        // Compare your hash with the one Midtrans sent
+        if ($hashed !== $payload['signature_key']) {
+            Log::warning("Midtrans Webhook Signature Mismatch!");
+            return response()->json(['message' => 'Invalid Signature'], 403);
+        }
+
         $order = Order::where('midtrans_order_id', $payload['order_id'])->firstOrFail();
+        if (!$order) {
+            Log::error("Webhook received for unknown Order ID: " . $payload['order_id']);
+            return response()->json(['message' => 'Order not found'], 404);
+        }
 
         switch ($payload['transaction_status']) {
             case 'settlement':
