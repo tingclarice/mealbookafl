@@ -128,15 +128,8 @@ Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
 });
 
 
-
-// API For Midtrans
-// Notification
-Route::post('/midtrans/notification', [MidtransController::class, 'handleNotification']);
-
-
-
-
-
+// Midtrans Webhook
+Route::post('/midtrans/webhook', [MidtransController::class, 'handleNotification']);
 
 
 

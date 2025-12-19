@@ -28,7 +28,8 @@ class ShopController extends Controller
 
     public function decline(Shop $shop, $message)
     {
-        GowaController::sendMessage($message, $shop->users()->first()->id);
+        // GowaController::sendMessage($message, $shop->users()->first()->id);
+        GowaController::sendMessage($message, $shop->phone);
 
         $shop->update(['status' => 'REJECTED']);
         return back()->with('success', 'Shop declined successfully');
@@ -36,7 +37,8 @@ class ShopController extends Controller
 
     public function suspend(Shop $shop, $message)
     {
-        GowaController::sendMessage($message, $shop->users()->first()->id);
+        // GowaController::sendMessage($message, $shop->users()->first()->id);
+        GowaController::sendMessage($message, $shop->phone);
 
         $shop->update(['status' => 'SUSPENDED']);
         return back()->with('success', 'Shop suspended successfully');
