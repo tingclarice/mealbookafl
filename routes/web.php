@@ -36,7 +36,7 @@ Route::get('/about', [PageController::class, 'about'])->name('about');
 // ===== MENU (Public Routes) =====
 Route::get('/menu', [MealController::class, 'index'])->name('menu');
 Route::get('/menu/{id}', [MealController::class, 'show'])->name('menu.show');
-Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu.reviews');
+// Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu.reviews');
 
 
 
