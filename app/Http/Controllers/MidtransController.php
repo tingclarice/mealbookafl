@@ -14,7 +14,12 @@ class MidtransController extends Controller
     {
         $payload = $request->all();
 
-        Log::info('Midtrans Notification', $payload);
+        Log::info('\n\n Midtrans Notification \n requested payload : \n', $payload);
+
+        // Log::channel('daily')->info('MIDTRANS HIT', [
+        //     'headers' => $request->headers->all(),
+        //     'body' => $request->getContent(),
+        // ]);
 
         $serverKey = config('services.midtrans.server_key');
 
@@ -26,6 +31,7 @@ class MidtransController extends Controller
             $payload['gross_amount'] .
             $serverKey
         );
+        Log::info('\n\ninternal signature key : ' . $hashed);
 
         // Compare your hash with the one Midtrans sent
         if ($hashed !== $payload['signature_key']) {
