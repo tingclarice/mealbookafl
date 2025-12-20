@@ -22,6 +22,8 @@ class MidtransController extends Controller
         // ]);
 
         $serverKey = config('services.midtrans.server_key');
+        Log::info("");
+        Log::info("server key : ", $serverKey);
 
         // Create the hash: order_id + status_code + gross_amount + ServerKey
         $hashed = hash(
