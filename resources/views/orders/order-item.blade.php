@@ -1,0 +1,141 @@
+@php
+    // 1. Determine Status Logic based on your Model's attributes
+    // Priority: Check Payment first, then Order Progress
+
+    $paymentStatus = $order->payment_status; // PENDING, PAID, FAILED, EXPIRED, CANCELLED
+    $orderStatus = $order->order_status;   // PENDING, CONFIRMED, READY, COMPLETED
+
+    $color = 'secondary';
+    $text = $orderStatus;
+    $isActionable = false; // For Pay Button
+
+    // Logic: If Payment is not success, show Payment Status. 
+    // If Payment is success, show Order Status.
+    if ($paymentStatus === 'PENDING') {
+        $color = 'warning';
+        $text = 'Waiting for Payment';
+        $isActionable = true;
+    } elseif ($paymentStatus === 'FAILED' || $paymentStatus === 'EXPIRED' || $paymentStatus === 'CANCELLED') {
+        $color = 'danger';
+        $text = 'Payment ' . ucfirst(strtolower($paymentStatus));
+    } else {
+        // Payment is PAID, now check Order Status
+        switch ($orderStatus) {
+            case 'PENDING':
+                $color = 'info';
+                $text = 'Order Placed'; // Paid but shop hasn't confirmed
+                break;
+            case 'CONFIRMED': // Mapped to "Cooking"
+                $color = 'primary';
+                $text = 'Cooking';
+                break;
+            case 'READY':
+                $color = 'success';
+                $text = 'Ready for Pickup';
+                break;
+            case 'COMPLETED':
+                $color = 'dark';
+                $text = 'Completed';
+                break;
+            default:
+                $text = $orderStatus;
+        }
+    }
+
+    // Safety check for items
+    $firstItem = $order->items->first();
+    $itemCount = $order->items->count();
+@endphp
+
+<div class="list-group-item p-4 border-bottom order-card bg-white">
+    <div class="row align-items-center">
+
+        {{-- Column 1: Image & Main Info --}}
+        <div class="col-md-5 mb-3 mb-md-0">
+            <div class="d-flex align-items-center">
+                {{-- Icon/Image Placeholder --}}
+                <div class="me-3 flex-shrink-0">
+                    <div class="rounded-3 d-flex align-items-center justify-content-center"
+                        style="width: 64px; height: 64px; background-color: #fff4f2; color: #F97352;">
+                        <i class="bi bi-bag-check-fill fs-3"></i>
+                    </div>
+                </div>
+                <div>
+                    {{-- Title: Order ID --}}
+                    <h6 class="fw-bold mb-1 text-dark">
+                        Order #{{ $order->id }}
+                    </h6>
+
+                    {{-- Subtitle: First Item Name or Generic --}}
+                    <small class="text-muted d-block text-truncate" style="max-width: 200px;">
+                        @if($firstItem)
+                            {{-- Assuming OrderItem has 'product_name' or similar, adapt as needed --}}
+                            {{ $firstItem->product_name ?? 'Item List' }}
+                            @if($itemCount > 1)
+                                <span class="fw-semibold">+{{ $itemCount - 1 }} more</span>
+                            @endif
+                        @else
+                            No items
+                        @endif
+                    </small>
+
+                    {{-- Date --}}
+                    <small class="text-muted">
+                        {{ $order->created_at->format('d M Y, H:i') }}
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        {{-- Column 2: Price & Payment Method --}}
+        <div class="col-md-3 mb-3 mb-md-0">
+            <div class="small text-muted mb-1">Total Amount</div>
+            <h6 class="fw-bold text-dark mb-1">
+                Rp {{ number_format($order->total_amount, 0, ',', '.') }}
+            </h6>
+            <small class="badge bg-light text-muted border">
+                {{ $order->payment_method ?? 'Unknown Payment' }}
+            </small>
+        </div>
+
+        {{-- Column 3: Status & Buttons --}}
+        <div class="col-md-4 text-md-end">
+            {{-- Status Badge --}}
+            <span
+                class="badge bg-{{ $color }} bg-opacity-10 text-{{ $color }} px-3 py-2 rounded-pill fw-bold mb-2 d-inline-block">
+                {{ $text }}
+            </span>
+
+            {{-- Action Buttons --}}
+            <div class="mt-1">
+                {{-- 1. PAY NOW (Midtrans) --}}
+                @if($paymentStatus === 'PENDING' && $order->snap_token)
+                    <button id="pay-button-{{ $order->id }}"
+                        class="btn btn-sm text-white fw-bold px-4 rounded-pill shadow-sm" style="background-color: #F97352;"
+                        onclick="snap.pay('{{ $order->snap_token }}')">
+                        Pay Now
+                    </button>
+
+                    {{-- 2. SHOW QR (Ready) --}}
+                @elseif($orderStatus === 'READY' && $paymentStatus === 'PAID')
+                    <a href="#" class="btn btn-sm btn-outline-success fw-bold px-3 rounded-pill">
+                        <i class="bi bi-qr-code"></i> Pickup QR
+                    </a>
+
+                    {{-- 3. DISABLED (Cooking/Confirmed) --}}
+                @elseif($orderStatus === 'CONFIRMED' && $paymentStatus === 'PAID')
+                    <button disabled class="btn btn-sm btn-light border text-muted px-3 rounded-pill">
+                        Preparing...
+                    </button>
+
+                    {{-- 4. VIEW DETAILS (Default) --}}
+                @else
+                    <a href="#" class="btn btn-sm btn-outline-secondary px-3 rounded-pill">
+                        View Details
+                    </a>
+                @endif
+            </div>
+        </div>
+
+    </div>
+</div>

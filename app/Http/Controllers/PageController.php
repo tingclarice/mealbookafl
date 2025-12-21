@@ -51,5 +51,17 @@ class PageController extends Controller
         return view('orderStatus.failed', compact('order'));
     }
 
+    // My Orders
+    public function myOrders()
+    {
+        $allOrder = Order::where('user_id', Auth::user()->id)->get();
+        $pendingOrder = Order::where('user_id', Auth::user()->id)->where('order_status', 'PENDING')->get();
+        $confirmedOrder = Order::where('user_id', Auth::user()->id)->where('order_status', 'CONFIRMED')->get();
+        $readyOrder = Order::where('user_id', Auth::user()->id)->where('order_status', 'READY')->get();
+        $completedOrder = Order::where('user_id', Auth::user()->id)->where('order_status', 'COMPLETED')->get();
+
+        return view('myOrders', compact('allOrder', 'pendingOrder', 'confirmedOrder', 'readyOrder', 'completedOrder'));
+    }
+
 
 }

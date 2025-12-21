@@ -20,7 +20,8 @@ return new class extends Migration {
                 'PENDING',
                 'CONFIRMED',
                 'READY',
-                'CANCELLED'
+                'CANCELLED',
+                'COMPLETED'
             ])->default('PENDING');
 
             // Payment lifecycle (Midtrans)
