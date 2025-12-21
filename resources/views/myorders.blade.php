@@ -2,6 +2,8 @@
 
 @section('content')
     <link rel="stylesheet" href="css/settings.css">
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.client_key') }}"></script>
 
     <style>
         .nav-pills .nav-link.active,
