@@ -57,6 +57,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/order/success', [PageController::class, 'orderSuccess'])->name('order.success');
     Route::get('/order/failed', [PageController::class, 'orderFailed'])->name('order.failed');
 
+    // My Orders
+    Route::get('/myOrders', [PageController::class, 'myOrders'])->name('myOrders');
+
 
     // Settings
     Route::get('/settings', [PageController::class, 'settings'])->name('profile.edit');

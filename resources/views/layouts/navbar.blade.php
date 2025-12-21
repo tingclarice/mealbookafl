@@ -14,7 +14,8 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav align-items-center gap-lg-4 gap-2">
                 <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ route('home') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ route('about') }}">About</a></li>
+                <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ route('about') }}">About</a>
+                </li>
                 <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ route('menu') }}">Menu</a></li>
 
                 @auth
@@ -26,33 +27,41 @@
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#"
+                            id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             @if(Auth::user()->avatar)
-                                <img src="{{ Auth::user()->avatar }}" alt="Avatar" class="rounded-circle me-2 border border-light" width="34" height="34" style="object-fit: cover;">
+                                <img src="{{ Auth::user()->avatar }}" alt="Avatar"
+                                    class="rounded-circle me-2 border border-light" width="34" height="34"
+                                    style="object-fit: cover;">
                             @else
-                                <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-2" style="width:34px; height:34px;">
+                                <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-2"
+                                    style="width:34px; height:34px;">
                                     <i class="bi bi-person-fill text-secondary"></i>
                                 </div>
                             @endif
                             <span class="fw-semibold">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
-                            {{-- <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person-circle me-2"></i>Profile</a></li> --}}
-                            
-                            {{-- Settings --}}
+
+                            {{-- If user is SITE MANAGER; show shop dashboard --}}
                             @if(Auth::user()->isAdmin())
                                 <a class="dropdown-item" href="{{ route('admin.shopApprovals') }}">
                                     <i class="bi bi-shop me-2"></i> Shop Dashboard
                                 </a>
                             @endif
-                            
-                            
+
+                            <!-- If user is owner or staff; show menu for menu dashboard -->
                             @if(Auth::user()->isOwnerOrStaff())
                                 <a class="dropdown-item" href="{{ route('dashboard') }}">
                                     <i class="bi bi-layout-text-sidebar-reverse me-2"></i> Menu Dashboard
                                 </a>
                             @endif
-                            
+
+                            <li>
+                                <a class="dropdown-item" href="{{ route('myOrders') }}">
+                                    <i class="bi bi-box-seam me-2"></i> My Orders
+                                </a>
+                            </li>
 
                             <li>
                                 <a class="dropdown-item" href="{{ route('profile.edit') }}">
@@ -60,7 +69,9 @@
                                 </a>
                             </li>
 
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -75,16 +86,14 @@
                     {{-- Auth buttons (balanced size & tone) --}}
                     <li class="nav-item">
                         <a class="btn btn-outline-light px-4 py-2 rounded-pill fw-semibold me-2"
-                            style="transition: all 0.2s;"
-                            href="{{ route('login') }}">
+                            style="transition: all 0.2s;" href="{{ route('login') }}">
                             Log In
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="btn fw-semibold px-4 py-2 rounded-pill"
                             style="background-color: #fff; color: #F97352; transition: all 0.2s;"
-                            href="{{ route('register') }}"
-                            onmouseover="this.style.backgroundColor='#ffe4dd';"
+                            href="{{ route('register') }}" onmouseover="this.style.backgroundColor='#ffe4dd';"
                             onmouseout="this.style.backgroundColor='#fff';">
                             Register
                         </a>
