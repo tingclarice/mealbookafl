@@ -60,7 +60,7 @@ class PageController extends Controller
         $readyOrder = Order::where('user_id', Auth::user()->id)->where('order_status', 'READY')->get();
         $completedOrder = Order::where('user_id', Auth::user()->id)->where('order_status', 'COMPLETED')->get();
 
-        return view('myOrders', compact('allOrder', 'pendingOrder', 'confirmedOrder', 'readyOrder', 'completedOrder'));
+        return view('myorders', compact('allOrder', 'pendingOrder', 'confirmedOrder', 'readyOrder', 'completedOrder'));
     }
 
 
