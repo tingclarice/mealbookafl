@@ -65,6 +65,7 @@ class Order extends Model
             'payment_status' => 'PAID',
             'payment_time' => now(),
             'raw_midtrans_response' => $midtransPayload,
+            'payment_method'=> $midtransPayload['payment_method'],
         ]);
     }
 

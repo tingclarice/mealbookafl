@@ -1,7 +1,4 @@
 @php
-    // 1. Determine Status Logic based on your Model's attributes
-    // Priority: Check Payment first, then Order Progress
-
     $paymentStatus = $order->payment_status; // PENDING, PAID, FAILED, EXPIRED, CANCELLED
     $orderStatus = $order->order_status;   // PENDING, CONFIRMED, READY, COMPLETED
 
@@ -9,8 +6,6 @@
     $text = $orderStatus;
     $isActionable = false; // For Pay Button
 
-    // Logic: If Payment is not success, show Payment Status. 
-    // If Payment is success, show Order Status.
     if ($paymentStatus === 'PENDING') {
         $color = 'warning';
         $text = 'Waiting for Payment';
@@ -19,13 +14,13 @@
         $color = 'danger';
         $text = 'Payment ' . ucfirst(strtolower($paymentStatus));
     } else {
-        // Payment is PAID, now check Order Status
+
         switch ($orderStatus) {
             case 'PENDING':
                 $color = 'info';
-                $text = 'Order Placed'; // Paid but shop hasn't confirmed
+                $text = 'Order Placed';
                 break;
-            case 'CONFIRMED': // Mapped to "Cooking"
+            case 'CONFIRMED':
                 $color = 'primary';
                 $text = 'Cooking';
                 break;
@@ -112,9 +107,10 @@
                 @if($paymentStatus === 'PENDING' && $order->snap_token)
                     <button id="pay-button-{{ $order->id }}"
                         class="btn btn-sm text-white fw-bold px-4 rounded-pill shadow-sm" style="background-color: #F97352;"
-                        onclick="snap.pay('{{ $order->snap_token }}')">
+                        onclick="startPayment('{{ $order->snap_token }}')">
                         Pay Now
                     </button>
+
 
                     {{-- 2. SHOW QR (Ready) --}}
                 @elseif($orderStatus === 'READY' && $paymentStatus === 'PAID')
@@ -139,3 +135,22 @@
 
     </div>
 </div>
+<script type="text/javascript">
+    function startPayment(token) {
+        snap.pay(token, {
+            onSuccess: function (result) {
+                location.reload();
+            },
+            onPending: function (result) {
+                location.reload();
+            },
+            onError: function (result) {
+                alert('Payment failed');
+                location.reload();
+            },
+            onClose: function () {
+                location.reload();
+            }
+        });
+    }
+</script>

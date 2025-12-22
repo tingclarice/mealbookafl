@@ -2,8 +2,6 @@
 
 @section('head')
     <link rel="stylesheet" href="css/cart.css">
-    <!-- <script src="https://app.sandbox.midtrans.com/snap/snap.js"
-          data-client-key="{{ config('midtrans.client_key') }}"></script> -->
 @endsection
 
 @section('content')
