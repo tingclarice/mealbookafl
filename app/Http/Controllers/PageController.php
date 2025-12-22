@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Meal;
 use App\Models\Order;
-use Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
+use Midtrans\Config;
 use Midtrans\Snap;
 use Str;
 
@@ -61,8 +61,8 @@ class PageController extends Controller
         // Set Midtrans Config
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config('midtrans.is_3ds');
 
         // 1. Get ALL orders in ONE query
         // Using 'latest()' puts the newest orders at the top
