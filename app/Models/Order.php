@@ -61,24 +61,43 @@ class Order extends Model
 
     public function markAsPaid(array $midtransPayload = []): void
     {
-        // Logic to get a more specific payment name (e.g., "bank_transfer - BCA")
-        // If it's a VA, we grab the bank name; otherwise we use the payment_type.
-        $method = $midtransPayload['payment_type'] ?? 'unknown';
-        
-        if (isset($midtransPayload['va_numbers'][0]['bank'])) {
-            $method = $method . ' (' . strtoupper($midtransPayload['va_numbers'][0]['bank']) . ')';
+        $rawType = $midtransPayload['payment_type'] ?? 'unknown';
+        $method = $rawType; 
+
+        // 1. Handle Virtual Accounts (e.g. BCA, BNI, BRI)
+        if ($rawType === 'bank_transfer') {
+            if (isset($midtransPayload['va_numbers'][0]['bank'])) {
+                $bank = strtoupper($midtransPayload['va_numbers'][0]['bank']);
+                $method = "$bank Virtual Account"; // Result: "BCA Virtual Account"
+            } elseif (isset($midtransPayload['permata_va_number'])) {
+                $method = "Permata Virtual Account";
+            }
+        }
+        // 2. Handle Mandiri Bill Payment (Midtrans specific type 'echannel')
+        elseif ($rawType === 'echannel') {
+            $method = 'Mandiri Bill Payment';
+        }
+        // 3. Handle Convenience Stores (Indomaret/Alfamart)
+        elseif ($rawType === 'cstore' && isset($midtransPayload['store'])) {
+            $method = ucfirst($midtransPayload['store']); // Result: "Indomaret"
+        }
+        // 4. Handle E-Wallets & Others (Manual fix for proper capitalization)
+        else {
+            $method = match ($rawType) {
+                'gopay' => 'GoPay',
+                'shopeepay' => 'ShopeePay',
+                'qris' => 'QRIS',
+                'credit_card' => 'Credit Card',
+                'akulaku' => 'Akulaku',
+                default => ucwords(str_replace('_', ' ', $rawType)), // Fallback: "some_method" -> "Some Method"
+            };
         }
 
         $this->update([
             'payment_status' => 'PAID',
-            
-            // Prefer settlement_time (when money is confirmed), fallback to transaction_time or now()
             'payment_time' => $midtransPayload['settlement_time'] ?? $midtransPayload['transaction_time'] ?? now(),
-            
-            'raw_midtrans_response' => $midtransPayload, // Ensure your model casts this to 'array' or use json_encode()
-            
-            // Fix: Changed from 'payment_method' to 'payment_type' logic derived above
-            'payment_method' => $method, 
+            'raw_midtrans_response' => $midtransPayload,
+            'payment_method' => $method, // Now saves "BCA Virtual Account" or "GoPay"
         ]);
     }
 
