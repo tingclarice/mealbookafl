@@ -61,11 +61,24 @@ class Order extends Model
 
     public function markAsPaid(array $midtransPayload = []): void
     {
+        // Logic to get a more specific payment name (e.g., "bank_transfer - BCA")
+        // If it's a VA, we grab the bank name; otherwise we use the payment_type.
+        $method = $midtransPayload['payment_type'] ?? 'unknown';
+        
+        if (isset($midtransPayload['va_numbers'][0]['bank'])) {
+            $method = $method . ' (' . strtoupper($midtransPayload['va_numbers'][0]['bank']) . ')';
+        }
+
         $this->update([
             'payment_status' => 'PAID',
-            'payment_time' => now(),
-            'raw_midtrans_response' => $midtransPayload,
-            'payment_method'=> $midtransPayload['payment_method'],
+            
+            // Prefer settlement_time (when money is confirmed), fallback to transaction_time or now()
+            'payment_time' => $midtransPayload['settlement_time'] ?? $midtransPayload['transaction_time'] ?? now(),
+            
+            'raw_midtrans_response' => $midtransPayload, // Ensure your model casts this to 'array' or use json_encode()
+            
+            // Fix: Changed from 'payment_method' to 'payment_type' logic derived above
+            'payment_method' => $method, 
         ]);
     }
 
@@ -104,13 +117,13 @@ class Order extends Model
     /**
      * Query scopes
      */
-    public function scopePaid($query)
-    {
-        return $query->where('payment_status', 'PAID');
-    }
+    // public function scopePaid($query)
+    // {
+    //     return $query->where('payment_status', 'PAID');
+    // }
 
-    public function scopePending($query)
-    {
-        return $query->where('payment_status', 'PENDING');
-    }
+    // public function scopePending($query)
+    // {
+    //     return $query->where('payment_status', 'PENDING');
+    // }
 }
