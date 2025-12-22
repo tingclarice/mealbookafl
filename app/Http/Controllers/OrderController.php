@@ -131,4 +131,17 @@ class OrderController extends Controller
 
         return view('checkout', compact('order'));
     }
+
+    public function orderDetails(Order $order)
+    {
+        // 1. Authorization: check if the logged-in user owns this order
+        if ($order->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        // 2. use load for loading relationships
+        $order->load('items.options');
+
+        return view('orders.details-order', compact('order'));
+    }
 }

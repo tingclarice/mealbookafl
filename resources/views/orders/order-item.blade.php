@@ -42,7 +42,8 @@
     $itemCount = $order->items->count();
 @endphp
 
-<div class="list-group-item p-4 border-bottom order-card bg-white">
+<div class="list-group-item p-4 border-bottom order-card bg-white" style="cursor: pointer;"
+    onclick="window.location='{{ route('order.details', $order->id) }}'">
     <div class="row align-items-center">
 
         {{-- Column 1: Image & Main Info --}}
@@ -107,14 +108,14 @@
                 @if($paymentStatus === 'PENDING' && $order->snap_token)
                     <button id="pay-button-{{ $order->id }}"
                         class="btn btn-sm text-white fw-bold px-4 rounded-pill shadow-sm" style="background-color: #F97352;"
-                        onclick="startPayment('{{ $order->snap_token }}')">
+                        onclick="event.stopPropagation(); startPayment('{{ $order->snap_token }}')">
                         Pay Now
                     </button>
 
-
                     {{-- 2. SHOW QR (Ready) --}}
                 @elseif($orderStatus === 'READY' && $paymentStatus === 'PAID')
-                    <a href="#" class="btn btn-sm btn-outline-success fw-bold px-3 rounded-pill">
+                    <a href="#" class="btn btn-sm btn-outline-success fw-bold px-3 rounded-pill"
+                        onclick="event.stopPropagation();">
                         <i class="bi bi-qr-code"></i> Pickup QR
                     </a>
 
@@ -126,13 +127,14 @@
 
                     {{-- 4. VIEW DETAILS (Default) --}}
                 @else
-                    <a href="#" class="btn btn-sm btn-outline-secondary px-3 rounded-pill">
+                    <a href="{{ route('order.details', $order->id) }}"
+                        class="btn btn-sm btn-outline-secondary px-3 rounded-pill" onclick="event.stopPropagation();">
                         View Details
                     </a>
                 @endif
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
 <script type="text/javascript">

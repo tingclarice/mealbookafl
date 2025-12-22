@@ -59,6 +59,8 @@ Route::middleware(['auth'])->group(function () {
 
     // My Orders
     Route::get('/myOrders', [PageController::class, 'myOrders'])->name('myOrders');
+    Route::get('/myOrders/{order}', [OrderController::class, 'orderDetails'])->name('order.details');
+    
 
 
     // Settings
