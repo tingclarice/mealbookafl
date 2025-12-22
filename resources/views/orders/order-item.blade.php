@@ -120,17 +120,17 @@
                     </a>
 
                     {{-- 3. DISABLED (Cooking/Confirmed) --}}
-                @elseif($orderStatus === 'CONFIRMED' && $paymentStatus === 'PAID')
+                    {{-- @elseif($orderStatus === 'CONFIRMED' && $paymentStatus === 'PAID')
                     <button disabled class="btn btn-sm btn-light border text-muted px-3 rounded-pill">
                         Preparing...
-                    </button>
+                    </button> --}}
 
                     {{-- 4. VIEW DETAILS (Default) --}}
-                @else
+                    {{-- @else
                     <a href="{{ route('order.details', $order->id) }}"
                         class="btn btn-sm btn-outline-secondary px-3 rounded-pill" onclick="event.stopPropagation();">
                         View Details
-                    </a>
+                    </a> --}}
                 @endif
             </div>
 
