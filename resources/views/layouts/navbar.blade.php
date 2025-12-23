@@ -41,7 +41,7 @@
                             @endif
                             <span class="fw-semibold">{{ Auth::user()->name }}</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" style="z-index: 9999;">
 
                             {{-- If user is SITE MANAGER; show Shop Approvals --}}
                             @if(Auth::user()->isAdmin())
