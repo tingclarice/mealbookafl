@@ -43,13 +43,13 @@
             <div class="mb-3">
                 <small class="text-muted d-block">Total Amount</small>
                 <h5 class="fw-bold" style="color: #F97352;">
-                    Rp {{ number_format($order->total_price, 0, ',', '.') }}
+                    Rp {{ number_format($order->total_amount, 0, ',', '.') }}
                 </h5>
             </div>
 
             {{-- Status Badge --}}
             @php
-                $statusColor = match ($order->status) {
+                $statusColor = match ($order->order_status) {
                     'PENDING' => 'warning',
                     'COOKING' => 'info',
                     'READY' => 'primary',
@@ -59,7 +59,7 @@
                 };
             @endphp
             <span class="badge bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }} px-3 py-2 rounded-pill">
-                {{ $order->status }}
+                {{ $order->order_status }}
             </span>
         </div>
     </div>

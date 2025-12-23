@@ -123,7 +123,7 @@
                             <li class="nav-item">
                                 <button class="nav-link rounded-pill px-4" id="pills-completed-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-completed" type="button" role="tab">
-                                    History
+                                    Completed
                                 </button>
                             </li>
                         </ul>
@@ -133,20 +133,20 @@
                     <div class="card-body bg-light p-0">
                         <div class="tab-content" id="pills-tabContent">
 
-                            {{-- 1. ALL / INCOMING --}}
+                            {{-- 1. INCOMING (Awaiting Payment) --}}
                             <div class="tab-pane fade show active" id="pills-all" role="tabpanel">
                                 <div class="list-group list-group-flush">
-                                    @forelse($allOrder as $order)
+                                    @forelse($pendingPayOrder as $order)
                                         @include('shopOrders.order-card-staff', ['order' => $order])
                                     @empty
                                         <div class="text-center py-5">
-                                            <p class="text-muted">No orders found.</p>
+                                            <p class="text-muted">No incoming orders.</p>
                                         </div>
                                     @endforelse
                                 </div>
                             </div>
 
-                            {{-- 2. PENDING --}}
+                            {{-- 2. PENDING (Paid, Awaiting Confirmation) --}}
                             <div class="tab-pane fade" id="pills-pending" role="tabpanel">
                                 <div class="list-group list-group-flush">
                                     @forelse($pendingOrder as $order)

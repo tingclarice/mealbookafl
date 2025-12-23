@@ -213,13 +213,16 @@ class OrderController extends Controller
     public function shopOrders(){
         $shop = Auth::user()->shops()->first();
 
-        $allOrder = Order::where('shop_id', auth()->id())->get();
-        $pendingOrder   = $allOrder->where('order_status', 'PENDING');
-        $confirmedOrder = $allOrder->where('order_status', 'CONFIRMED');
-        $readyOrder     = $allOrder->where('order_status', 'READY');
-        $completedOrder = $allOrder->where('order_status', 'COMPLETED');
+        $allOrder = Order::where('shop_id', $shop->id)->get();
+        $pendingPayOrder   = $allOrder->where('payment_status', 'PENDING');
+        $paidOrder         = $allOrder->where('payment_status', 'PAID');
 
-        return view('shopOrders.shopOrder', compact('allOrder', 'shop', 'pendingOrder', 'confirmedOrder', 'readyOrder', 'completedOrder'));
+        $pendingOrder   = $paidOrder->where('order_status', 'PENDING');
+        $confirmedOrder = $paidOrder->where('order_status', 'CONFIRMED');
+        $readyOrder     = $paidOrder->where('order_status', 'READY');
+        $completedOrder = $paidOrder->where('order_status', 'COMPLETED');
+
+        return view('shopOrders.shopOrder', compact('allOrder', 'shop', 'pendingPayOrder', 'pendingOrder', 'paidOrder', 'confirmedOrder', 'readyOrder', 'completedOrder'));
     }
 
 }
