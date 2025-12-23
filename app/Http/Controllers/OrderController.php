@@ -35,7 +35,7 @@ class OrderController extends Controller
 
         // Calculate total
         $subtotal = $cartItems->sum->total_price;
-        $fee = 1000;
+        $fee = 0;
         $totalAmount = $subtotal + $fee;
 
         DB::beginTransaction();

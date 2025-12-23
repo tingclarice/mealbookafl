@@ -159,10 +159,12 @@
                                     <span class="text-muted">Subtotal</span>
                                     <span class="fw-bold" id="summary-subtotal">Rp 0</span>
                                 </div>
+                                @if($fee > 0)
                                 <div class="d-flex justify-content-between mb-3">
                                     <span class="text-muted">Fee</span>
                                     <span class="fw-bold">Rp {{ number_format($fee, 0, ',', '.') }}</span>
                                 </div>
+                                @endif
 
                                 <hr>
 

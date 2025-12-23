@@ -28,7 +28,7 @@ class CartController extends Controller
 
         // We don't calculate a single global subtotal anymore because 
         // the total depends on which shop is selected.
-        $fee = 1000;
+        $fee = 0;
 
         return view('cart', [
             'groupedCartItems' => $groupedCartItems,
