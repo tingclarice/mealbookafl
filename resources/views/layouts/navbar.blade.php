@@ -43,10 +43,10 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
 
-                            {{-- If user is SITE MANAGER; show shop dashboard --}}
+                            {{-- If user is SITE MANAGER; show Shop Approvals --}}
                             @if(Auth::user()->isAdmin())
                                 <a class="dropdown-item" href="{{ route('admin.shopApprovals') }}">
-                                    <i class="bi bi-shop me-2"></i> Shop Dashboard
+                                    <i class="bi bi-shop me-2"></i> Shop Approvals
                                 </a>
                             @endif
 
@@ -54,6 +54,10 @@
                             @if(Auth::user()->isOwnerOrStaff())
                                 <a class="dropdown-item" href="{{ route('dashboard') }}">
                                     <i class="bi bi-layout-text-sidebar-reverse me-2"></i> Menu Dashboard
+                                </a>
+
+                                <a class="dropdown-item" href="{{ route('shopOrders') }}">
+                                    <i class="bi bi-layout-text-sidebar-reverse me-2"></i> Shop Orders
                                 </a>
                             @endif
 

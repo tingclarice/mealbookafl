@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 
     // Order
-    Route::post('/order/create', [OrderController::class, 'createOrder'])->name('order.create');
+    Route::post('/order/create/{shop}', [OrderController::class, 'createOrder'])->name('order.create');
     Route::get('/order/checkout/{order}', [OrderController::class, 'checkout'])->name('order.checkout');
 
     // Order Status
@@ -58,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/order/failed', [PageController::class, 'orderFailed'])->name('order.failed');
 
     // My Orders
-    Route::get('/myOrders', [PageController::class, 'myOrders'])->name('myOrders');
+    Route::get('/myOrders', [OrderController::class, 'myOrders'])->name('myOrders');
     Route::get('/myOrders/{order}', [OrderController::class, 'orderDetails'])->name('order.details');
     
 
@@ -82,7 +82,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard/users', [DashboardController::class, 'dashboardUsers'])->name('dashboard.users');
     Route::patch('admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
 
-    // Shop Dashboard (approval)
+    // Shop Approval 
     Route::get('/admin/shopApprovals', [ShopController::class, 'shopApprovals'])->name('admin.shopApprovals');
     Route::patch('/shops/{shop}/accept', [ShopController::class, 'accept'])->name('shops.accept');
     Route::patch('/shops/{shop}/decline/{message}', [ShopController::class, 'decline'])->name('shops.decline');
@@ -94,8 +94,11 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
 // ===== STAFF & OWNER ONLY ROUTES =====
 Route::middleware(['auth', StaffMiddleware::class])->group(function () {
-    // Shop Dashboard
+    // Meal Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
+    
+    // Shop Orders 
+    Route::get('/shopOrders', [OrderController::class, 'shopOrders'])->name('shopOrders');
 
 
     // Meal Management

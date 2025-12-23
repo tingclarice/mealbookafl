@@ -15,6 +15,10 @@ return new class extends Migration {
                 ->constrained()
                 ->cascadeOnDelete();
 
+            $table->foreignId('shop_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
             // Order lifecycle
             $table->enum('order_status', [
                 'PENDING',
