@@ -1,4 +1,5 @@
-<div class="list-group-item p-4 shop-order-card border-bottom">
+<a href="{{ route('order.details', $order) }}"
+    class="list-group-item list-group-item-action p-4 shop-order-card border-bottom text-decoration-none text-reset">
     <div class="d-flex justify-content-between align-items-start">
 
         {{-- Left Side: Order Info --}}
@@ -62,5 +63,5 @@
                 {{ $order->order_status }}
             </span>
         </div>
-    </div>
+</a>
 </div>

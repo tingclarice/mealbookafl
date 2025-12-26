@@ -138,8 +138,8 @@ class OrderController extends Controller
 
     public function orderDetails(Order $order)
     {
-        // 1. Authorization: check if the logged-in user owns this order
-        if ($order->user_id !== auth()->id()) {
+        // 1. Authorization: check if the logged-in user owns this order OR is staff/owner
+        if ($order->user_id !== auth()->id() && !$order->isStaffOrOwner()) {
             abort(403);
         }
 

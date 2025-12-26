@@ -45,6 +45,19 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function shop(): BelongsTo
+    {
+        return $this->belongsTo(Shop::class);
+    }
+    
+    public function isStaffOrOwner()
+    {
+        return auth()->user()->shops()
+            ->where('shops.id', $this->shop_id)
+            ->wherePivotIn('role', ['STAFF', 'OWNER'])
+            ->exists();
+    }
+
     public function items()
     {
         return $this->hasMany(OrderItem::class);

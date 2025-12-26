@@ -68,8 +68,8 @@
 
                 {{-- Back Button --}}
                 <div class="mb-4">
-                    <a href="{{ route('myOrders') }}" class="text-decoration-none text-secondary">
-                        <i class="bi bi-arrow-left me-2"></i> Back to My Orders
+                    <a href="{{ url()->previous() }}" class="text-decoration-none text-secondary">
+                        <i class="bi bi-arrow-left me-2"></i> Back
                     </a>
                 </div>
 
@@ -188,17 +188,27 @@
                         </div>
 
                         {{-- Actions --}}
-                        <div class="mt-5 text-end">
-                            @if($order->payment_status === 'PENDING' && $order->snap_token)
-                                <button id="pay-button" 
-                                    class="btn text-white fw-bold px-5 py-2 rounded-pill shadow-sm"
-                                    style="background-color: #F97352;"
-                                    onclick="startPayment('{{ $order->snap_token }}')">
-                                    Pay Now
-                                </button>
-                            @elseif($order->order_status === 'READY')
-                                <button class="btn btn-outline-success fw-bold px-4 py-2 rounded-pill">
-                                    <i class="bi bi-qr-code me-2"></i> Show Pickup QR
+                        <div class="mt-5 text-end d-flex justify-content-end gap-2">
+                            {{-- Buyer Actions --}}
+                            @if(auth()->id() === $order->user_id)
+                                @if($order->payment_status === 'PENDING' && $order->snap_token)
+                                    <button id="pay-button" 
+                                        class="btn text-white fw-bold px-5 py-2 rounded-pill shadow-sm"
+                                        style="background-color: #F97352;"
+                                        onclick="startPayment('{{ $order->snap_token }}')">
+                                        Pay Now
+                                    </button>
+                                @elseif($order->order_status === 'READY')
+                                    <button class="btn btn-outline-success fw-bold px-4 py-2 rounded-pill">
+                                        <i class="bi bi-qr-code me-2"></i> Show Pickup QR
+                                    </button>
+                                @endif
+                            @endif
+
+                            {{-- Seller Actions --}}
+                            @if($order->isStaffOrOwner())
+                                <button class="btn btn-primary fw-bold px-4 py-2 rounded-pill">
+                                    Update Status
                                 </button>
                             @endif
                         </div>
