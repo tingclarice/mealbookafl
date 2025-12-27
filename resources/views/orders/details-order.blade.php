@@ -207,9 +207,37 @@
 
                             {{-- Seller Actions --}}
                             @if($order->isStaffOrOwner())
-                                <button class="btn btn-primary fw-bold px-4 py-2 rounded-pill">
-                                    Update Status
-                                </button>
+                                @if($order->order_status === 'PENDING')
+                                    @if($order->payment_status === 'PAID')
+                                        <form action="{{ route('orders.updateStatus', $order) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-primary fw-bold px-4 py-2 rounded-pill">
+                                                Confirm Order
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Waiting for Payment</span>
+                                    @endif
+                                @elseif($order->order_status === 'CONFIRMED')
+                                    <form action="{{ route('orders.updateStatus', $order) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-info text-white fw-bold px-4 py-2 rounded-pill">
+                                            Mark as Ready
+                                        </button>
+                                    </form>
+                                @elseif($order->order_status === 'READY')
+                                    <form action="{{ route('orders.updateStatus', $order) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-success fw-bold px-4 py-2 rounded-pill">
+                                            Complete Order
+                                        </button>
+                                    </form>
+                                @elseif($order->order_status === 'COMPLETED')
+                                    <span class="badge bg-success px-3 py-2 rounded-pill">Order Completed</span>
+                                @endif
                             @endif
                         </div>
 

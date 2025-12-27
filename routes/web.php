@@ -60,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
     // My Orders
     Route::get('/myOrders', [OrderController::class, 'myOrders'])->name('myOrders');
     Route::get('/myOrders/{order}', [OrderController::class, 'orderDetails'])->name('order.details');
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
     
 
 

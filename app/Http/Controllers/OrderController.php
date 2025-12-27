@@ -136,6 +136,34 @@ class OrderController extends Controller
         return view('checkout', compact('order'));
     }
 
+    public function updateStatus(Request $request, Order $order)
+    {
+        // 1. Authorization: check if the logged-in user owns this order OR is staff/owner
+        if (!$order->isStaffOrOwner()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // 2. Determine next status based on current status
+        $newStatus = null;
+        if ($order->order_status === 'PENDING' && $order->payment_status === 'PAID') {
+            $newStatus = 'CONFIRMED';
+        } elseif ($order->order_status === 'CONFIRMED') {
+            $newStatus = 'READY';
+        } elseif ($order->order_status === 'READY') {
+            $newStatus = 'COMPLETED';
+        }
+
+        if (!$newStatus) {
+            return redirect()->back()->with('error', 'Cannot update status. Order might be unpaid or already completed.');
+        }
+
+        // 3. Update Status
+        $order->order_status = $newStatus;
+        $order->save();
+
+        return redirect()->route('shopOrders')->with('success', "Order updated to $newStatus!");
+    }
+
     public function orderDetails(Order $order)
     {
         // 1. Authorization: check if the logged-in user owns this order OR is staff/owner
