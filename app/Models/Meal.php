@@ -32,8 +32,39 @@ class Meal extends Model
     }
 
     // Relation to Shop
-    public function shop(){
+    public function shop()
+    {
         return $this->belongsTo(Shop::class);
+    }
+
+    // Relationship to meal images
+    public function images()
+    {
+        return $this->hasMany(MealImage::class)->orderBy('order');
+    }
+
+    // Get primary image
+    public function primaryImage()
+    {
+        return $this->hasOne(MealImage::class)->where('is_primary', true);
+    }
+
+    // Helper to get primary image URL (fallback to old image_url)
+    public function getPrimaryImageUrlAttribute()
+    {
+        // First check if there's a primary image in the images relationship
+        if ($this->relationLoaded('primaryImage') && $this->primaryImage) {
+            return $this->primaryImage->image_path;
+        }
+
+        // Check if there are any images at all
+        $primaryImage = $this->images()->where('is_primary', true)->first();
+        if ($primaryImage) {
+            return $primaryImage->image_path;
+        }
+
+        // Fallback to old single image
+        return $this->image_url;
     }
 
     // Accessor untuk format harga

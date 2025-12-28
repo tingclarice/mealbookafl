@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MealController;
@@ -63,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/myOrders', [OrderController::class, 'myOrders'])->name('myOrders');
     Route::get('/myOrders/{order}', [OrderController::class, 'orderDetails'])->name('order.details');
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
-    
+
 
 
     // Settings
@@ -90,7 +91,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::patch('/shops/{shop}/accept', [ShopController::class, 'accept'])->name('shops.accept');
     Route::patch('/shops/{shop}/decline/{message}', [ShopController::class, 'decline'])->name('shops.decline');
     Route::patch('/shops/{shop}/suspend/{message}', [ShopController::class, 'suspend'])->name('shops.suspend');
-    
+
 });
 
 
@@ -103,15 +104,23 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
 
         // Meal Dashboard
         Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
-        
+
         // Shop Orders 
         Route::get('/shopOrders', [OrderController::class, 'shopOrders'])->name('shopOrders');
-        
+
         // Meal Management
         Route::post('/meals', [MealController::class, 'store'])->name('meals.store');
         Route::put('/meals/{id}', [MealController::class, 'update'])->name('meals.update');
         Route::delete('/meals/{id}', [MealController::class, 'destroy'])->name('meals.destroy');
-        
+
+        // Meal Image Management
+        Route::get('/meals/{meal}/images', [MealController::class, 'getMealImages'])
+            ->name('meals.images.get');
+        Route::delete('/meals/{meal}/images/{image}', [MealController::class, 'deleteImage'])
+            ->name('meals.images.delete');
+        Route::post('/meals/{meal}/images/{image}/set-primary', [MealController::class, 'setPrimaryImage'])
+            ->name('meals.images.setPrimary');
+
         // ===== MEAL OPTION MANAGEMENT =====
         // Option Groups
         Route::post('/meals/{meal}/options/groups', [MealOptionController::class, 'storeGroup'])
@@ -120,7 +129,7 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
             ->name('meal.options.groups.update');
         Route::delete('/options/groups/{group}', [MealOptionController::class, 'destroyGroup'])
             ->name('meal.options.groups.destroy'); // ...
-            
+
         // Option Values
         Route::post('/options/groups/{group}/values', [MealOptionController::class, 'storeValue'])
             ->name('meal.options.values.store');
@@ -132,8 +141,18 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
         // Get meal options (AJAX)
         Route::get('/meals/{meal}/options', [MealOptionController::class, 'getMealOptions'])
             ->name('meal.options.get');
+
+        // Analytics Dashboard
+        Route::get('/analytics', [AnalyticsController::class, 'index'])
+            ->name('analytics');
+        Route::get('/analytics/export', [AnalyticsController::class, 'export'])
+            ->name('analytics.export');
+
+        // Order Scan (QR)
+        Route::post('/orders/scan-completion', [OrderController::class, 'completeOrderViaQr'])
+            ->name('orders.scan-completion');
     });
-        
+
     // Shop Cancel Request
     Route::delete('/shops/cancel', [ShopController::class, 'cancelRequest'])->name('shops.cancel');
 

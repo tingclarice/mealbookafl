@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Midtrans\Snap;
 use Str;
 use Midtrans\Config;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -164,6 +165,63 @@ class OrderController extends Controller
         return redirect()->route('shopOrders')->with('success', "Order updated to $newStatus!");
     }
 
+    /**
+     * Complete order using QR Scan
+     */
+    public function completeOrderViaQr(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|string',
+        ]);
+
+        // Find using midtrans_order_id (which is what we'll put in the QR)
+        $order = Order::where('midtrans_order_id', $request->order_id)->first();
+
+        if (!$order) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order not found.'
+            ], 404);
+        }
+
+        // Check if user is authorized (must be shop owner/staff)
+        // We use the helper method on User model or check manually
+        $user = auth()->user();
+        $isAuthorized = $user->shops()->where('shops.id', $order->shop_id)->exists();
+
+        if (!$isAuthorized) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. This order belongs to another shop.'
+            ], 403);
+        }
+
+        if ($order->payment_status !== 'PAID') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order is not paid yet.'
+            ], 400);
+        }
+
+        // Check if already completed
+        if ($order->order_status === 'COMPLETED') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order is already completed.'
+            ], 400);
+        }
+
+        // Update status to COMPLETED
+        $order->order_status = 'COMPLETED';
+        $order->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => "Order #{$order->id} marked as COMPLETED!",
+            'order' => $order
+        ]);
+    }
+
     public function orderDetails(Order $order)
     {
         // 1. Authorization: check if the logged-in user owns this order OR is staff/owner
@@ -195,13 +253,13 @@ class OrderController extends Controller
         // Loop through orders to check if any pending token is expired
         foreach ($allOrder as $order) {
             if ($order->order_status == 'PENDING' && $order->snap_token) {
-                
+
                 // Check if token was created more than 24 hours ago.
                 if ($order->updated_at->diffInHours(now()) >= 24) {
-                    
+
                     // Regenerate Token
                     $newOrderId = $order->id . '-' . Str::random(5);
-                    
+
                     $params = [
                         'transaction_details' => [
                             'order_id' => $newOrderId,
@@ -215,7 +273,7 @@ class OrderController extends Controller
 
                     try {
                         $snapToken = Snap::getSnapToken($params);
-                        
+
                         // Update the order with the new token
                         $order->snap_token = $snapToken;
                         $order->save();
@@ -228,9 +286,9 @@ class OrderController extends Controller
         }
 
         // 3. FILTERING (Done in memory, no new DB queries)
-        $pendingOrder   = $allOrder->where('order_status', 'PENDING');
+        $pendingOrder = $allOrder->where('order_status', 'PENDING');
         $confirmedOrder = $allOrder->where('order_status', 'CONFIRMED');
-        $readyOrder     = $allOrder->where('order_status', 'READY');
+        $readyOrder = $allOrder->where('order_status', 'READY');
         $completedOrder = $allOrder->where('order_status', 'COMPLETED');
 
         return view('myorders', compact('allOrder', 'pendingOrder', 'confirmedOrder', 'readyOrder', 'completedOrder'));
@@ -238,16 +296,17 @@ class OrderController extends Controller
 
 
     // Shop POV
-    public function shopOrders(){
+    public function shopOrders()
+    {
         $shop = Auth::user()->shops()->first();
 
         $allOrder = Order::where('shop_id', $shop->id)->get();
-        $pendingPayOrder   = $allOrder->where('payment_status', 'PENDING');
-        $paidOrder         = $allOrder->where('payment_status', 'PAID');
+        $pendingPayOrder = $allOrder->where('payment_status', 'PENDING');
+        $paidOrder = $allOrder->where('payment_status', 'PAID');
 
-        $pendingOrder   = $paidOrder->where('order_status', 'PENDING');
+        $pendingOrder = $paidOrder->where('order_status', 'PENDING');
         $confirmedOrder = $paidOrder->where('order_status', 'CONFIRMED');
-        $readyOrder     = $paidOrder->where('order_status', 'READY');
+        $readyOrder = $paidOrder->where('order_status', 'READY');
         $completedOrder = $paidOrder->where('order_status', 'COMPLETED');
 
         return view('shopOrders.shopOrder', compact('allOrder', 'shop', 'pendingPayOrder', 'pendingOrder', 'paidOrder', 'confirmedOrder', 'readyOrder', 'completedOrder'));

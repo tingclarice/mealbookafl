@@ -204,4 +204,114 @@
             </div>
         </div>
     </div>
+
+    {{-- SCANNER MODAL --}}
+    <div class="modal fade" id="qrScanModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Scan Customer QR</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="reader" style="width: 100%; min-height: 300px; background: #000;"></div>
+                    <p class="text-muted mt-3 small">Point camera at customer's order QR code</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- SCRIPTS --}}
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let html5QrcodeScanner = null;
+
+            // Open Modal & Start Scanner
+            const scanBtn = document.querySelector('.btn-theme'); // The button we added earlier
+            if (scanBtn) {
+                scanBtn.setAttribute('data-bs-toggle', 'modal');
+                scanBtn.setAttribute('data-bs-target', '#qrScanModal');
+
+                scanBtn.addEventListener('click', function () {
+                    startScanner();
+                });
+            }
+
+            // Clean up when modal closes
+            const qrModal = document.getElementById('qrScanModal');
+            qrModal.addEventListener('hidden.bs.modal', function () {
+                if (html5QrcodeScanner) {
+                    html5QrcodeScanner.clear();
+                }
+            });
+
+            function startScanner() {
+                // Wait for modal to render
+                setTimeout(() => {
+                    html5QrcodeScanner = new Html5QrcodeScanner(
+                        "reader",
+                        { fps: 10, qrbox: { width: 250, height: 250 } },
+                            /* verbose= */ false
+                    );
+
+                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+                }, 300);
+            }
+
+            function onScanSuccess(decodedText, decodedResult) {
+                // Handle the scanned code
+                console.log(`Scan result: ${decodedText}`);
+
+                // Stop scanning
+                html5QrcodeScanner.clear();
+
+                // Send to backend
+                processQrCode(decodedText);
+            }
+
+            function onScanFailure(error) {
+                // handle scan failure, usually better to ignore and keep scanning.
+                // console.warn(`Code scan error = ${error}`);
+            }
+
+            function processQrCode(orderId) {
+                // Show loading
+                document.getElementById('reader').innerHTML = '<div class="py-5 text-center"><div class="spinner-border text-primary" role="status"></div><p class="mt-2">Processing...</p></div>';
+
+                fetch('{{ route("orders.scan-completion") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ order_id: orderId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Success!
+                            // Close modal
+                            const modalEl = document.getElementById('qrScanModal');
+                            const modal = bootstrap.Modal.getInstance(modalEl);
+                            modal.hide();
+
+                            // Show success alert
+                            alert('✅ ' + data.message);
+                            location.reload();
+                        } else {
+                            // Error
+                            alert('❌ Error: ' + data.message);
+                            // Restart scanner?
+                            startScanner();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('❌ Connection failed');
+                        startScanner();
+                    });
+            }
+        });
+    </script>
 @endsection

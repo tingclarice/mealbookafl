@@ -41,8 +41,44 @@
             <div class="row justify-content-center align-items-center g-5">
                 
                 <div class="col-md-5 text-center">
-                    <img src="{{ asset('storage/' . $meal->image_url) }}" alt="{{ $meal->name }}"
-                        style="border-radius: 25px; width: 100%; max-width: 400px; height: auto; object-fit: cover;">
+                    @if($meal->images->count() > 0)
+                        {{-- Image Carousel for multiple images --}}
+                        <div id="mealImageCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner" style="border-radius: 25px; overflow: hidden;">
+                                @foreach($meal->images as $index => $image)
+                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                        <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                             class="d-block w-100" 
+                                             alt="{{ $meal->name }}"
+                                             style="width: 100%; max-width: 400px; height: 400px; object-fit: cover;">
+                                    </div>
+                                @endforeach
+                            </div>
+                            @if($meal->images->count() > 1)
+                                <button class="carousel-control-prev" type="button" data-bs-target="#mealImageCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#mealImageCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                                {{-- Indicators --}}
+                                <div class="carousel-indicators">
+                                    @foreach($meal->images as $index => $image)
+                                        <button type="button" data-bs-target="#mealImageCarousel" data-bs-slide-to="{{ $index }}" 
+                                                class="{{ $index === 0 ? 'active' : '' }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}" 
+                                                aria-label="Slide {{ $index + 1 }}"></button>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    @else
+                        {{-- Fallback to old single image --}}
+                        <img src="{{ asset('storage/' . $meal->image_url) }}" alt="{{ $meal->name }}"
+                            style="border-radius: 25px; width: 100%; max-width: 400px; height: auto; object-fit: cover;">
+                    @endif
+                    
                     {{-- Shop Name Link --}}
                     @if($meal->shop)
                         <div class="mt-2">
@@ -75,6 +111,7 @@
                                 <h5 class="fw-bold mb-3">Customize Your Order</h5>
 
                                 @foreach ($meal->optionGroups as $group)
+                                    @if($group->values->isNotEmpty())
                                     <div class="mb-4 p-3 border rounded">
                                         <h6 class="fw-bold">
                                             {{ $group->name }}
@@ -98,6 +135,7 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                    @endif
                                 @endforeach
                             </div>
                         @endif

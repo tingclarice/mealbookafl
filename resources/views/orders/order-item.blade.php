@@ -112,12 +112,12 @@
                         Pay Now
                     </button>
 
-                    {{-- 2. SHOW QR (Ready) --}}
-                @elseif($orderStatus === 'READY' && $paymentStatus === 'PAID')
-                    <a href="#" class="btn btn-sm btn-outline-success fw-bold px-3 rounded-pill"
-                        onclick="event.stopPropagation();">
-                        <i class="bi bi-qr-code"></i> Pickup QR
-                    </a>
+                    {{-- 2. SHOW QR (For any PAID order that is active) --}}
+                @elseif($paymentStatus === 'PAID' && $orderStatus !== 'COMPLETED' && $orderStatus !== 'CANCELLED')
+                    <button class="btn btn-sm btn-outline-dark fw-bold px-3 rounded-pill"
+                        onclick="event.stopPropagation(); showQr('#{{ $order->id }}', '{{ $order->midtrans_order_id }}')">
+                        <i class="bi bi-qr-code me-1"></i> Show QR
+                    </button>
 
                     {{-- 3. DISABLED (Cooking/Confirmed) --}}
                     {{-- @elseif($orderStatus === 'CONFIRMED' && $paymentStatus === 'PAID')
