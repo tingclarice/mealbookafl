@@ -150,4 +150,55 @@
             </div>
         </div>
     </div>
+
+    {{-- SHARED QR MODAL --}}
+    <div class="modal fade" id="qrDisplayModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content text-center p-4">
+                <div class="modal-header border-0 pb-0 justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <h5 class="fw-bold mb-3">Order QR Code</h5>
+                    <p class="text-muted small mb-4">Show this to the shop staff to complete your order.</p>
+
+                    {{-- QR Container --}}
+                    <div id="qrcode" class="d-flex justify-content-center mb-3"></div>
+
+                    <div class="p-2 bg-light rounded text-muted mt-2">
+                        <small class="d-block fw-bold text-uppercase">Order ID</small>
+                        <span id="qrOrderId" class="font-monospace"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- SCRIPTS --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        function showQr(displayId, midtransId) {
+            // 1. Set ID text
+            document.getElementById('qrOrderId').innerText = displayId;
+
+            // 2. Clear previous QR
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+
+            // 3. Generate new QR
+            // We encode the sensitive midtrans_order_id because that's what the backend expects
+            new QRCode(qrContainer, {
+                text: midtransId,
+                width: 200,
+                height: 200,
+                colorDark: "#2D114B",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // 4. Show Modal
+            const modal = new bootstrap.Modal(document.getElementById('qrDisplayModal'));
+            modal.show();
+        }
+    </script>
 @endsection
