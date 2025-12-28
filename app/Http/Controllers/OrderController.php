@@ -221,7 +221,7 @@ class OrderController extends Controller
                         $order->save();
                     } catch (\Exception $e) {
                         // Handle error if midtrans fails
-                        Log::info($e->getMessage());
+                        \Log::info($e->getMessage());
                     }
                 }
             }
