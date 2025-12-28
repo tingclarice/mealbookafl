@@ -120,7 +120,6 @@ class ShopController extends Controller
         }
     }
 
-<<<<<<< HEAD
     public function show(Shop $shop){
         // Only show approved shops to public
         if (!in_array($shop->status, ['OPEN', 'CLOSE'])) {
@@ -132,7 +131,7 @@ class ShopController extends Controller
         }]);
         
         return view('shop.show', compact('shop'));
-=======
+    }
     public function cancelRequest(Request $request)
     {
         $user = $request->user();
@@ -204,6 +203,5 @@ class ShopController extends Controller
         $shop->update($data);
 
         return Redirect::route('profile.edit')->with('status', 'shop-updated');
->>>>>>> main
     }
 }
