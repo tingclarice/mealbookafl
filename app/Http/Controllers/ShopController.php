@@ -181,7 +181,6 @@ class ShopController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'profileImage' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // 2MB Max
-            // ... other validations
         ]);
 
         $user = $request->user();
@@ -202,6 +201,6 @@ class ShopController extends Controller
 
         $shop->update($data);
 
-        return Redirect::route('profile.edit')->with('status', 'shop-updated');
+        return Redirect::route('profile.edit')->with('success', 'Shop information updated successfully');
     }
 }

@@ -83,15 +83,14 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // User Management
     Route::get('/dashboard/users', [DashboardController::class, 'dashboardUsers'])->name('dashboard.users');
-    Route::patch('admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::patch('admin/users/{user}', [UserController::class, 'updateAdmin'])->name('admin.users.update');
 
     // Shop Approval 
     Route::get('/admin/shopApprovals', [ShopController::class, 'shopApprovals'])->name('admin.shopApprovals');
     Route::patch('/shops/{shop}/accept', [ShopController::class, 'accept'])->name('shops.accept');
     Route::patch('/shops/{shop}/decline/{message}', [ShopController::class, 'decline'])->name('shops.decline');
     Route::patch('/shops/{shop}/suspend/{message}', [ShopController::class, 'suspend'])->name('shops.suspend');
-    Route::patch('/shops/update', [ShopController::class, 'update'])->name('shop.update');
-
+    
 });
 
 
@@ -99,6 +98,9 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 Route::middleware(['auth', StaffMiddleware::class])->group(function () {
     // === Owned Shop Must Active (PENDING, SUSPENDED, REJECTED shop are not allowed) ===
     Route::middleware([ShopApprovedMiddleware::class])->group(function () {
+        // Update Shop Information
+        Route::patch('/shops/update', [ShopController::class, 'update'])->name('shop.update');
+
         // Meal Dashboard
         Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
         

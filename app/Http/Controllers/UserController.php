@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
-    public function update(Request $request, User $user)
+    // Update User Role (Site Manager or User)
+    public function updateAdmin(Request $request, User $user)
     {
-        // 1. Validate the incoming request
         $validated = $request->validate([
             'role' => [
                 'required',
@@ -22,26 +22,12 @@ class UserController extends Controller
             ],
         ]);
 
-        // 2. Update the user
-        // Because we used route-model binding (User $user),
-        // Laravel automatically fetched the correct user from the database.
         $user->update([
             'role' => $validated['role'],
         ]);
 
-        // 3. Redirect back to the index page with a success message
-        return redirect()->route('dashboard.users') // Assumes your index route is named 'admin.users.index'
+        return redirect()->route('dashboard.users')
             ->with('success', 'User role updated successfully!');
-    }
-
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request)
-    {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
     }
 
     /**
@@ -57,7 +43,7 @@ class UserController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with('success', 'Profile information updated successfully!');
     }
 
     /**

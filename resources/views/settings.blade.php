@@ -29,13 +29,6 @@
             </div>
         @endif
 
-        @if (session('status') === 'profile-updated')
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ __('Profile information updated successfully.') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
         <div class="row justify-content-center">
             <div class="col-lg-10">
 
