@@ -119,6 +119,9 @@ class MealController extends Controller
                         'is_primary' => $index === 0, // First image is primary
                     ]);
                 }
+
+                // Sync legacy column with the new primary image
+                $this->syncPrimaryImage($meal);
             }
 
             return redirect()->route('dashboard')->with('success', 'Menu berhasil ditambahkan!');
@@ -170,6 +173,8 @@ class MealController extends Controller
                     'is_primary' => $isPrimary,
                 ]);
             }
+
+            $this->syncPrimaryImage($meal);
         }
 
         $shop = $request->user()->shops()->first();
@@ -223,6 +228,8 @@ class MealController extends Controller
             }
         }
 
+        $this->syncPrimaryImage($meal);
+
         return response()->json(['success' => true, 'message' => 'Image deleted successfully']);
     }
 
@@ -255,6 +262,28 @@ class MealController extends Controller
         $image = MealImage::where('meal_id', $mealId)->where('id', $imageId)->firstOrFail();
         $image->update(['is_primary' => true]);
 
+        // Sync with legacy column
+        $this->syncPrimaryImage($meal);
+
         return response()->json(['success' => true, 'message' => 'Primary image updated']);
+    }
+
+    private function syncPrimaryImage(Meal $meal)
+    {
+        $primaryImage = $meal->images()->where('is_primary', true)->first();
+
+        if ($primaryImage) {
+            $meal->update(['image_url' => $primaryImage->image_path]);
+        } else {
+            // If no images left, fallback to null or keep existing if manually set?
+            // Safer to set null if we are strictly using meal_images as source of truth.
+            // But if user used legacy upload without MealImage record, we might lose data.
+            // However, our new logic creates MealImage for everything.
+            if ($meal->images()->count() === 0) {
+                // only clear if truly no images
+                // $meal->update(['image_url' => null]); 
+                // actually, let's just leave it alone if no primary found to avoid accidental deletion of legitimate legacy data
+            }
+        }
     }
 }
