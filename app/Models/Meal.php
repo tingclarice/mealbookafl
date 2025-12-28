@@ -31,9 +31,14 @@ class Meal extends Model
         return $this->hasMany(MealOptionGroup::class);
     }
 
+<<<<<<< HEAD
     // Relationship to shop
     public function shop()
     {
+=======
+    // shop
+    public function shop(){
+>>>>>>> main
         return $this->belongsTo(Shop::class);
     }
 

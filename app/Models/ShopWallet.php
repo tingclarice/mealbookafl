@@ -26,6 +26,11 @@ class ShopWallet extends Model
         return $this->belongsTo(Shop::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'wallet_id');
+    }
+
     // Helpers for cleaner business logic
     public function addBalance(float $amount): void
     {

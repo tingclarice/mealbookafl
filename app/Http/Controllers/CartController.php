@@ -12,27 +12,27 @@ use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
-    public function cart(){
+    public function cart()
+    {
         $cartItems = CartItem::where('user_id', Auth::user()->id)
             ->with([
-                'meal',
+                'meal.shop', // Load the shop!
                 'selectedOptions.optionValue.group'
             ])
             ->get();
 
-        // Calculate subtotal using the total_price attribute (includes options)
-        $subtotal = $cartItems->sum(function ($item) {
-            return $item->total_price;
+        // Group items by Shop ID
+        $groupedCartItems = $cartItems->groupBy(function ($item) {
+            return $item->meal->shop_id;
         });
 
-        $fee = 1000; 
-        $totalPrice = $subtotal + $fee;
+        // We don't calculate a single global subtotal anymore because 
+        // the total depends on which shop is selected.
+        $fee = 0;
 
         return view('cart', [
-            'cartItems'  => $cartItems,
-            'subtotal'   => $subtotal,
-            'fee'        => $fee,
-            'totalPrice' => $totalPrice,
+            'groupedCartItems' => $groupedCartItems,
+            'fee' => $fee,
         ]);
     }
 
