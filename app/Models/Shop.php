@@ -40,6 +40,11 @@ class Shop extends Model
             ->withTimestamps();
     }
 
+    // Check if shop is approved
+    public function isApproved(){
+        return $this->status == 'OPEN' || $this->status == 'CLOSED';
+    }
+
     // Auto create wallet when a shop is created
     protected static function booted(){
         static::created(function ($shop) {

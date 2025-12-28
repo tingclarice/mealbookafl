@@ -51,7 +51,7 @@
                             @endif
 
                             <!-- If user is owner or staff; show menu for menu dashboard -->
-                            @if(Auth::user()->isOwnerOrStaff())
+                            @if(Auth::user()->isOwnerOrStaff() && Auth::user()->shops->first()->isApproved())
                                 <a class="dropdown-item" href="{{ route('dashboard') }}">
                                     <i class="bi bi-layout-text-sidebar-reverse me-2"></i> Menu Dashboard
                                 </a>
