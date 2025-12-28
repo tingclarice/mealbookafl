@@ -46,7 +46,13 @@ class ShopController extends Controller
 
     public function request(Request $request)
     {
-        // dd($request->all());
+        // dd(
+        //     $request->all(),
+        //     $request->file('profileImage')->getMimeType(),
+        //     $request->file('profileImage')->getClientOriginalExtension(),
+        //     $request->file('profileImage')->getSize(),
+        //     file_get_contents($request->file('profileImage')->getPathname(), false, null, 0, 20)
+        // );
 
         // Check if user already has a shop
         if (UserRole::where('user_id', $request->user()->id)->exists()) {

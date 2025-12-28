@@ -145,7 +145,7 @@
                                                     shop is approved!
                                                 </p>
 
-                                                {{-- Optional: Cancel Button --}}
+                                                {{-- Cancel Button --}}
 
                                                 <form action="{{ route('shops.cancel') }}" method="POST" class="d-inline"
                                                     onsubmit="return confirm('Are you sure you want to cancel your shop request? This action cannot be undone.');">
