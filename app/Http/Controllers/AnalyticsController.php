@@ -243,31 +243,44 @@ class AnalyticsController extends Controller
     // Phase 2: Peak Hours Analysis
     private function getPeakHoursData($shopId, $startDate, $endDate)
     {
+        // Detect database driver
+        $driver = DB::connection()->getDriverName();
+
+        // Database-agnostic hour extraction
+        if ($driver === 'sqlite') {
+            $hourSelect = "CAST(strftime('%H', created_at) AS INTEGER) as hour";
+            $daySelect = "CAST(strftime('%w', created_at) AS INTEGER) as day";
+        } else {
+            // MySQL/MariaDB
+            $hourSelect = "HOUR(created_at) as hour";
+            $daySelect = "DAYOFWEEK(created_at) - 1 as day"; // MySQL returns 1-7, we want 0-6
+        }
+
         // Orders by hour of day
         $hourlyOrders = Order::where('shop_id', $shopId)
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('HOUR(created_at) as hour')
+            ->selectRaw($hourSelect)
             ->selectRaw('COUNT(*) as count')
             ->groupBy('hour')
             ->orderBy('hour')
             ->get()
             ->pluck('count', 'hour');
 
-        // Orders by day of week (1=Sunday, 7=Saturday)
+        // Orders by day of week (0=Sunday, 6=Saturday for both)
         $dailyOrders = Order::where('shop_id', $shopId)
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('DAYOFWEEK(created_at) as day')
+            ->selectRaw($daySelect)
             ->selectRaw('COUNT(*) as count')
             ->groupBy('day')
             ->orderBy('day')
             ->get()
             ->pluck('count', 'day');
 
-        // Map day numbers to names
+        // Map day numbers to names (0=Sunday, 6=Saturday)
         $dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         $dailyOrdersNamed = [];
         foreach ($dailyOrders as $dayNum => $count) {
-            $dailyOrdersNamed[$dayNames[$dayNum - 1]] = $count;
+            $dailyOrdersNamed[$dayNames[$dayNum]] = $count;
         }
 
         return [

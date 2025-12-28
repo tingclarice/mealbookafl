@@ -36,7 +36,8 @@ class CartController extends Controller
         ]);
     }
 
-    public function addToCart(Request $request, $id){
+    public function addToCart(Request $request, $id)
+    {
         $user = Auth::user();
 
         if (!$user) {
@@ -50,7 +51,8 @@ class CartController extends Controller
 
         // Check required options
         foreach ($meal->optionGroups as $group) {
-            if ($group->is_required) {
+            // Only enforce required if the group actually has options to choose from
+            if ($group->is_required && $group->values->isNotEmpty()) {
                 $hasSelection = false;
                 foreach ($group->values as $value) {
                     if (in_array($value->id, $selectedOptions)) {
@@ -79,7 +81,7 @@ class CartController extends Controller
             }
         }
 
-         // Use transaction to ensure data consistency
+        // Use transaction to ensure data consistency
         DB::beginTransaction();
         try {
             // Check if exact same item with same options exists
@@ -96,7 +98,7 @@ class CartController extends Controller
                     'user_id' => $user->id,
                     'meal_id' => $meal->id,
                     'quantity' => 1,
-                    'notes' => $request->input('notes', null), 
+                    'notes' => $request->input('notes', null),
                 ]);
 
                 // Save selected options
@@ -117,7 +119,8 @@ class CartController extends Controller
         }
     }
 
-    public function decrement($id){
+    public function decrement($id)
+    {
         $user = Auth::user();
 
         if (!$user) {

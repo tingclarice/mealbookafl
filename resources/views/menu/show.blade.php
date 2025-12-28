@@ -111,6 +111,7 @@
                                 <h5 class="fw-bold mb-3">Customize Your Order</h5>
 
                                 @foreach ($meal->optionGroups as $group)
+                                    @if($group->values->isNotEmpty())
                                     <div class="mb-4 p-3 border rounded">
                                         <h6 class="fw-bold">
                                             {{ $group->name }}
@@ -134,6 +135,7 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                    @endif
                                 @endforeach
                             </div>
                         @endif
