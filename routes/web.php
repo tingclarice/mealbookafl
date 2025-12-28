@@ -96,7 +96,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
 // ===== STAFF & OWNER ONLY ROUTES =====
 Route::middleware(['auth', StaffMiddleware::class])->group(function () {
-    // === Owned Shop Must Active ===
+    // === Owned Shop Must Active (PENDING, SUSPENDED, REJECTED shop are not allowed) ===
     Route::middleware([ShopApprovedMiddleware::class])->group(function () {
         // Meal Dashboard
         Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
