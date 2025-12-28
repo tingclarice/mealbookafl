@@ -29,7 +29,10 @@ class ShopController extends Controller
     public function decline(Shop $shop, $message)
     {
         // GowaController::sendMessage($message, $shop->users()->first()->id);
-        GowaController::sendMessage($message, $shop->phone);
+
+        $whatsappMessage = "Terima kasih telah mendaftarkan toko Anda di MealBook. Kami menghargai minat Anda untuk bergabung dengan platform kami. Setelah melakukan peninjauan, pendaftaran toko Anda belum dapat kami setujui untuk saat ini karena alasan sebagai berikut :\n\n" . $message . "\n\nJangan khawatir! Anda dapat melakukan perbaikan pada data toko dan mengajukan ulang pendaftaran kapan saja.";
+
+        GowaController::sendMessage($whatsappMessage, $shop->phone);
 
         $shop->update(['status' => 'REJECTED']);
         return back()->with('success', 'Shop declined successfully');
@@ -70,16 +73,16 @@ class ShopController extends Controller
             // Name Messages
             'name.required' => 'Please enter the shop name.',
             'name.max' => 'The shop name cannot exceed 255 characters.',
-            
+
             // Address Messages
             'address.required' => 'The shop address is required.',
-            
+
             // Phone Messages
             'phone.required' => 'Please provide a contact phone number.',
-            
+
             // Description Messages
             'description.required' => 'A description of your shop is required.',
-            
+
             // Profile Image Messages
             'profileImage.required' => 'You must upload a profile image for the shop.',
             'profileImage.image' => 'The uploaded file must be an image.',
@@ -120,22 +123,25 @@ class ShopController extends Controller
         }
     }
 
-    public function show(Shop $shop){
+    public function show(Shop $shop)
+    {
         // Only show approved shops to public
         if (!in_array($shop->status, ['OPEN', 'CLOSE'])) {
             abort(404, 'Shop not found');
         }
-        
-        $shop->load(['meals' => function($query) {
-            $query->where('isAvailable', true)->latest();
-        }]);
-        
+
+        $shop->load([
+            'meals' => function ($query) {
+                $query->where('isAvailable', true)->latest();
+            }
+        ]);
+
         return view('shop.show', compact('shop'));
     }
     public function cancelRequest(Request $request)
     {
         $user = $request->user();
-        
+
         // Find the shop where the user is an owner, even if pending/rejected
         // We use the relationship defined in User model (assuming one exists) or query UserRole
         $userRole = UserRole::where('user_id', $user->id)->where('role', 'OWNER')->first();
@@ -147,7 +153,7 @@ class ShopController extends Controller
         $shop = Shop::find($userRole->shop_id);
 
         if (!$shop) {
-             // Clean up orphan role if shop is gone
+            // Clean up orphan role if shop is gone
             $userRole->delete();
             return back()->with('error', 'Shop not found.');
         }
