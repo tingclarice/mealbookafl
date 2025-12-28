@@ -95,12 +95,15 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
 // ===== STAFF & OWNER ONLY ROUTES =====
 Route::middleware(['auth', StaffMiddleware::class])->group(function () {
+    // Shop Cancel Request
+    Route::delete('/shops/cancel', [ShopController::class, 'cancelRequest'])->name('shops.cancel');
+
+    
     // Meal Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboardMeal'])->name('dashboard');
     
     // Shop Orders 
     Route::get('/shopOrders', [OrderController::class, 'shopOrders'])->name('shopOrders');
-
 
     // Meal Management
     Route::post('/meals', [MealController::class, 'store'])->name('meals.store');

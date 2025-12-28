@@ -46,18 +46,41 @@ class ShopController extends Controller
 
     public function request(Request $request)
     {
+        // dd($request->all());
+
         // Check if user already has a shop
         if (UserRole::where('user_id', $request->user()->id)->exists()) {
             return back()->with('error', 'You have already registered a shop.');
         }
 
         $request->validate([
+            // 1. The Rules
             'name' => 'required|string|max:255',
             'address' => 'required|string',
             'phone' => 'required|string',
             'description' => 'required|string',
-            'profileImage' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            // 'profileImage' => 'required|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            // Name Messages
+            'name.required' => 'Please enter the shop name.',
+            'name.max' => 'The shop name cannot exceed 255 characters.',
+            
+            // Address Messages
+            'address.required' => 'The shop address is required.',
+            
+            // Phone Messages
+            'phone.required' => 'Please provide a contact phone number.',
+            
+            // Description Messages
+            'description.required' => 'A description of your shop is required.',
+            
+            // Profile Image Messages
+            'profileImage.required' => 'You must upload a profile image for the shop.',
+            'profileImage.image' => 'The uploaded file must be an image.',
+            'profileImage.mimes' => 'The image must be a file of type: jpg, jpeg, png, or webp.',
+            'profileImage.max' => 'Maximum image size is 2 MB.',
         ]);
+
 
         DB::beginTransaction();
 
@@ -88,6 +111,50 @@ class ShopController extends Controller
             DB::rollBack();
 
             return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+    }
+
+    public function cancelRequest(Request $request)
+    {
+        $user = $request->user();
+        
+        // Find the shop where the user is an owner, even if pending/rejected
+        // We use the relationship defined in User model (assuming one exists) or query UserRole
+        $userRole = UserRole::where('user_id', $user->id)->where('role', 'OWNER')->first();
+
+        if (!$userRole) {
+            return back()->with('error', 'No shop request found to cancel.');
+        }
+
+        $shop = Shop::find($userRole->shop_id);
+
+        if (!$shop) {
+             // Clean up orphan role if shop is gone
+            $userRole->delete();
+            return back()->with('error', 'Shop not found.');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // Delete Image
+            if ($shop->profileImage) {
+                Storage::disk('public')->delete($shop->profileImage);
+            }
+
+            // Delete Role
+            $userRole->delete();
+
+            // Delete Shop
+            $shop->delete();
+
+            DB::commit();
+
+            return back()->with('success', 'Shop request cancelled successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Failed to cancel request: ' . $e->getMessage());
         }
     }
 
