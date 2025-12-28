@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MealController;
@@ -140,6 +141,12 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
         // Get meal options (AJAX)
         Route::get('/meals/{meal}/options', [MealOptionController::class, 'getMealOptions'])
             ->name('meal.options.get');
+
+        // Analytics Dashboard
+        Route::get('/analytics', [AnalyticsController::class, 'index'])
+            ->name('analytics');
+        Route::get('/analytics/export', [AnalyticsController::class, 'export'])
+            ->name('analytics.export');
     });
 
     // Shop Cancel Request

@@ -57,7 +57,11 @@
                                 </a>
 
                                 <a class="dropdown-item" href="{{ route('shopOrders') }}">
-                                    <i class="bi bi-layout-text-sidebar-reverse me-2"></i> Shop Orders
+                                    <i class="bi bi-box-seam me-2"></i> Shop Orders
+                                </a>
+
+                                <a class="dropdown-item" href="{{ route('analytics') }}">
+                                    <i class="bi bi-graph-up me-2"></i> Analytics
                                 </a>
                             @endif
 
