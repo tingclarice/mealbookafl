@@ -230,7 +230,7 @@ class OrderController extends Controller
         }
 
         // 2. use load for loading relationships
-        $order->load('items.options');
+        $order->load(['items.options', 'shop']);
 
         return view('orders.details-order', compact('order'));
     }
