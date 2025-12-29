@@ -295,7 +295,7 @@ class OrderController extends Controller
     }
 
 
-    // Shop POV
+    // Shop order POV
     public function shopOrders()
     {
         $shop = Auth::user()->shops()->first();
