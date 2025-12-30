@@ -149,6 +149,8 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
             ->name('analytics.export');
 
         // Order Scan (QR)
+        Route::post('/orders/scan-check', [OrderController::class, 'checkOrderViaQr'])
+            ->name('orders.scan-check');
         Route::post('/orders/scan-completion', [OrderController::class, 'completeOrderViaQr'])
             ->name('orders.scan-completion');
     });
