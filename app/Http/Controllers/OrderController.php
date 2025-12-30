@@ -346,7 +346,7 @@ class OrderController extends Controller
     {
         $shop = Auth::user()->shops()->first();
 
-        $allOrder = Order::where('shop_id', $shop->id)->get();
+        $allOrder = Order::where('shop_id', $shop->id)->latest()->get();
         $pendingPayOrder = $allOrder->where('payment_status', 'PENDING');
         $paidOrder = $allOrder->where('payment_status', 'PAID');
 
