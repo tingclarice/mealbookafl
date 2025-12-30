@@ -79,6 +79,7 @@
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <h5 class="mb-1 text-white opacity-75">Order Invoice</h5>
+                                <h6 class="text-white opacity-75 mb-2"><i class="bi bi-shop me-1"></i> {{ $order->shop->name }}</h6>
                                 <h3 class="fw-bold mb-0">#{{ $order->id }}</h3>
                                 <div class="mt-2 text-white-50">
                                     {{ $order->created_at->format('F d, Y \a\t H:i') }}

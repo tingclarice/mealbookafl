@@ -137,6 +137,7 @@ class OrderController extends Controller
         return view('checkout', compact('order'));
     }
 
+    // Manual Update
     public function updateStatus(Request $request, Order $order)
     {
         // 1. Authorization: check if the logged-in user owns this order OR is staff/owner
@@ -163,6 +164,51 @@ class OrderController extends Controller
         $order->save();
 
         return redirect()->route('shopOrders')->with('success', "Order updated to $newStatus!");
+    }
+
+    /**
+     * Check order status via QR Scan (without updating)
+     */
+    public function checkOrderViaQr(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|string',
+        ]);
+
+        // Find using midtrans_order_id
+        $order = Order::where('midtrans_order_id', $request->order_id)->first();
+
+        if (!$order) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order not found.'
+            ], 404);
+        }
+
+        // Authorization check
+        $user = auth()->user();
+        $isAuthorized = $user->shops()->where('shops.id', $order->shop_id)->exists();
+
+        if (!$isAuthorized) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. This order belongs to another shop.'
+            ], 403);
+        }
+
+        // Return order info
+        return response()->json([
+            'success' => true,
+            'order' => [
+                'id' => $order->id,
+                'midtrans_order_id' => $order->midtrans_order_id, // keep using midtrans id for consistency
+                'customer_name' => $order->user->name ?? 'Guest',
+                'total_price' => number_format($order->total_price, 0, ',', '.'),
+                'status' => $order->order_status,
+                'payment_status' => $order->payment_status,
+                'items_count' => $order->items->count()
+            ]
+        ]);
     }
 
     /**
@@ -230,7 +276,7 @@ class OrderController extends Controller
         }
 
         // 2. use load for loading relationships
-        $order->load('items.options');
+        $order->load(['items.options', 'shop']);
 
         return view('orders.details-order', compact('order'));
     }
@@ -295,7 +341,7 @@ class OrderController extends Controller
     }
 
 
-    // Shop POV
+    // Shop order POV
     public function shopOrders()
     {
         $shop = Auth::user()->shops()->first();

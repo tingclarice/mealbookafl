@@ -212,20 +212,14 @@
             const shopId = radioButton.value;
             const total = subtotal + FEE;
 
-            // --- NEW CODE STARTS HERE ---
-            
-            // Create the URL template. 'PLACEHOLDER' satisfies Laravel so the page loads.
-            // We use the :id placeholder to replace it with JS.
+        
             let routeUrl = "{{ route('order.create', ['shop' => 0]) }}";
 
-            // 2. Replace the '/0' at the end of the URL with the actual Shop ID
-            // We verify we are replacing the specific segment to avoid replacing other zeros
             routeUrl = routeUrl.replace('/0', '/' + shopId); 
 
             // Update the form action
             document.getElementById('checkout-form').action = routeUrl;
             
-            // --- NEW CODE ENDS HERE ---
 
             // 2. Update Summary UI
             document.getElementById('summary-subtotal').innerText = formatRupiah(subtotal);
