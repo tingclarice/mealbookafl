@@ -137,6 +137,7 @@ class OrderController extends Controller
         return view('checkout', compact('order'));
     }
 
+    // Manual Update
     public function updateStatus(Request $request, Order $order)
     {
         // 1. Authorization: check if the logged-in user owns this order OR is staff/owner
