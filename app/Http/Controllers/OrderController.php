@@ -166,6 +166,54 @@ class OrderController extends Controller
     }
 
     /**
+<<<<<<< Updated upstream
+=======
+     * Check order status via QR Scan (without updating)
+     */
+    public function checkOrderViaQr(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|string',
+        ]);
+
+        // Find using midtrans_order_id
+        $order = Order::where('midtrans_order_id', $request->order_id)->first();
+
+        if (!$order) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order not found.'
+            ], 404);
+        }
+
+        // Authorization check
+        $user = auth()->user();
+        $isAuthorized = $user->shops()->where('shops.id', $order->shop_id)->exists();
+
+        if (!$isAuthorized) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. This order belongs to another shop.'
+            ], 403);
+        }
+
+        // Return order info
+        return response()->json([
+            'success' => true,
+            'order' => [
+                'id' => $order->id,
+                'midtrans_order_id' => $order->midtrans_order_id, // keep using midtrans id for consistency
+                'customer_name' => $order->user->name ?? 'Guest',
+                'total_price' => number_format($order->total_amount, 0, ',', '.'),
+                'status' => $order->order_status,
+                'payment_status' => $order->payment_status,
+                'items_count' => $order->items->count()
+            ]
+        ]);
+    }
+
+    /**
+>>>>>>> Stashed changes
      * Complete order using QR Scan
      */
     public function completeOrderViaQr(Request $request)
@@ -263,7 +311,7 @@ class OrderController extends Controller
                     $params = [
                         'transaction_details' => [
                             'order_id' => $newOrderId,
-                            'gross_amount' => (int) $order->total_price,
+                            'gross_amount' => (int) $order->total_amount,
                         ],
                         'customer_details' => [
                             'first_name' => Auth::user()->name,
