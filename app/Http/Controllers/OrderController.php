@@ -285,7 +285,7 @@ class OrderController extends Controller
             }
         }
 
-        // 3. FILTERING (Done in memory, no new DB queries)
+        // 3. FILTERING 
         $pendingOrder = $allOrder->where('order_status', 'PENDING');
         $confirmedOrder = $allOrder->where('order_status', 'CONFIRMED');
         $readyOrder = $allOrder->where('order_status', 'READY');
@@ -300,7 +300,7 @@ class OrderController extends Controller
     {
         $shop = Auth::user()->shops()->first();
 
-        $allOrder = Order::where('shop_id', $shop->id)->get();
+        $allOrder = Order::where('shop_id', $shop->id)->latest()->get();
         $pendingPayOrder = $allOrder->where('payment_status', 'PENDING');
         $paidOrder = $allOrder->where('payment_status', 'PAID');
 
