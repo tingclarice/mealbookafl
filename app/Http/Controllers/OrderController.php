@@ -309,7 +309,7 @@ class OrderController extends Controller
                     $params = [
                         'transaction_details' => [
                             'order_id' => $newOrderId,
-                            'gross_amount' => (int) $order->total_price,
+                            'gross_amount' => (int) $order->total_amount,
                         ],
                         'customer_details' => [
                             'first_name' => Auth::user()->name,
