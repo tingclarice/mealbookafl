@@ -28,11 +28,10 @@ class ShopController extends Controller
 
     public function decline(Shop $shop, $message)
     {
-        // GowaController::sendMessage($message, $shop->users()->first()->id);
-
         $whatsappMessage = "Terima kasih telah mendaftarkan toko Anda di MealBook. Kami menghargai minat Anda untuk bergabung dengan platform kami. Setelah melakukan peninjauan, pendaftaran toko Anda belum dapat kami setujui untuk saat ini karena alasan sebagai berikut :\n\n" . $message . "\n\nJangan khawatir! Anda dapat melakukan perbaikan pada data toko dan mengajukan ulang pendaftaran kapan saja.";
-
-        GowaController::sendMessage($whatsappMessage, $shop->phone);
+        
+        GowaController::sendMessage($whatsappMessage, $shop->users()->first()->phone);
+        // GowaController::sendMessage($whatsappMessage, $shop->phone);
 
         $shop->update(['status' => 'REJECTED']);
         return back()->with('success', 'Shop declined successfully');
@@ -40,22 +39,22 @@ class ShopController extends Controller
 
     public function suspend(Shop $shop, $message)
     {
-        // GowaController::sendMessage($message, $shop->users()->first()->id);
-        GowaController::sendMessage($message, $shop->phone);
+        // Professional template for Suspension
+        $whatsappMessage = "Pemberitahuan dari MealBook. Kami menginformasikan bahwa untuk sementara waktu, akun toko Anda telah ditangguhkan (SUSPENDED) karena alasan sebagai berikut:\n\n" . 
+                        "\"" . $message . "\"\n\n" .
+                        "Selama masa penangguhan, toko Anda tidak akan dapat menerima pesanan atau muncul di halaman pencarian pelanggan. Silakan hubungi tim dukungan kami atau perbaiki kendala terkait untuk proses pengaktifan kembali.";
 
+        // Send via WhatsApp
+        GowaController::sendMessage($whatsappMessage, $shop->users()->first()->phone);
+
+        // Update status in database
         $shop->update(['status' => 'SUSPENDED']);
+
         return back()->with('success', 'Shop suspended successfully');
     }
 
     public function request(Request $request)
     {
-        // dd(
-        //     $request->all(),
-        //     $request->file('profileImage')->getMimeType(),
-        //     $request->file('profileImage')->getClientOriginalExtension(),
-        //     $request->file('profileImage')->getSize(),
-        //     file_get_contents($request->file('profileImage')->getPathname(), false, null, 0, 20)
-        // );
 
         // Check if user already has a shop
         if (UserRole::where('user_id', $request->user()->id)->exists()) {
