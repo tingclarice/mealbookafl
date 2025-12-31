@@ -166,6 +166,30 @@ class OrderController extends Controller
         return redirect()->route('shopOrders')->with('success', "Order updated to $newStatus!");
     }
 
+    // Cancel Order (Buyer)
+    public function cancel(Order $order)
+    {
+        // 1. Authorization: check if the logged-in user owns this order
+        if (auth()->id() !== $order->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // 2. Validate State
+        if ($order->payment_status === 'PAID') {
+            return redirect()->back()->with('error', 'Cannot cancel a paid order.');
+        }
+
+        if ($order->order_status === 'CANCELLED') {
+            return redirect()->back()->with('error', 'Order is already cancelled.');
+        }
+
+        // 3. Update Status
+        $order->order_status = 'CANCELLED';
+        $order->save();
+
+        return redirect()->back()->with('success', 'Order cancelled successfully.');
+    }
+
     /**
      * Check order status via QR Scan (without updating)
      */

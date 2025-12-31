@@ -88,7 +88,9 @@
                             <div class="text-end">
                                 @php
                                     $statusText = $order->order_status;
-                                    if ($order->payment_status === 'PENDING') {
+                                    if ($order->order_status === 'CANCELLED') {
+                                        $statusText = 'Cancelled';
+                                    } elseif ($order->payment_status === 'PENDING') {
                                         $statusText = 'Unpaid';
                                     } elseif ($order->payment_status === 'FAILED') {
                                         $statusText = 'Payment Failed';
@@ -189,10 +191,21 @@
                         </div>
 
                         {{-- Actions --}}
+                        @if($order->order_status !== 'CANCELLED')
                         <div class="mt-5 text-end d-flex justify-content-end gap-2">
                             {{-- Buyer Actions --}}
                             @if(auth()->id() === $order->user_id)
-                                @if($order->payment_status === 'PENDING' && $order->snap_token)
+                                @if($order->payment_status !== 'PAID' && $order->order_status !== 'CANCELLED')
+                                    <form action="{{ route('orders.cancel', $order) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-outline-danger fw-bold px-4 py-2 rounded-pill">
+                                            Cancel Order
+                                        </button>
+                                    </form>
+                                @endif
+
+                                @if($order->payment_status === 'PENDING' && $order->snap_token && $order->order_status !== 'CANCELLED')
                                     <button id="pay-button" 
                                         class="btn text-white fw-bold px-5 py-2 rounded-pill shadow-sm"
                                         style="background-color: #F97352;"
@@ -241,6 +254,7 @@
                                 @endif
                             @endif
                         </div>
+                        @endif
 
                     </div>
                 </div>
