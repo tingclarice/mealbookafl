@@ -33,7 +33,12 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($activeOwnedShop->users()->wherePivot('role', 'STAFF')->get() as $staff)
+            @php
+                $allStaff = $activeOwnedShop->users()->wherePivotIn('role', ['OWNER', 'STAFF'])->get()->sortBy(function($user) {
+                    return $user->pivot->role === 'OWNER' ? 0 : 1;
+                });
+            @endphp
+            @foreach ($allStaff as $staff)
                 <tr>
                     <td class="ps-3">
                         <div class="d-flex align-items-center">
@@ -47,7 +52,10 @@
                                     {{ substr($staff->name, 0, 1) }}
                                 </div>
                             @endif
-                            <span class="fw-semibold">{{ $staff->name }}</span>
+                            <span class="fw-semibold">
+                                {{ $staff->name }}
+                                
+                            </span>
                         </div>
                     </td>
                     <td class="text-muted">{{ $staff->email }}</td>
@@ -63,11 +71,17 @@
                         </div>
                     </td>
                     <td class="text-end pe-3">
-                        <button class="btn btn-link text-danger p-0 delete-staff-btn"
-                            data-shop-id="{{ $activeOwnedShop->id }}"
-                            data-user-id="{{ $staff->id }}">
-                            <i class="bi bi-trash"></i>
-                        </button>
+                        @if($staff->pivot->role === 'OWNER')
+                             <button class="btn btn-link text-muted p-0" disabled style="opacity: 0.5; cursor: not-allowed;">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        @else
+                            <button class="btn btn-link text-danger p-0 delete-staff-btn"
+                                data-shop-id="{{ $activeOwnedShop->id }}"
+                                data-user-id="{{ $staff->id }}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        @endif
                     </td>
                 </tr>
             @endforeach
