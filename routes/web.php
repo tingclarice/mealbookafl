@@ -158,21 +158,23 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
 
 // ===== OWNER ONLY ROUTES =====
 Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
-
-    // Analytics Dashboard
-    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
-    Route::get('/analytics/export', [AnalyticsController::class, 'export'])->name('analytics.export');
-
-    // Shop Overview (analytics)
-    Route::get('/owner/analytics', [AnalyticsController::class, 'ownerIndex'])->name('owner.analytics');
-
-    // Manage Staff
-    Route::post('/shops/{shop}/staff', [ShopController::class, 'addStaff'])->name('shops.staff.add');
-    Route::delete('/shops/{shop}/staff/{user}', [ShopController::class, 'removeStaff'])->name('shops.staff.remove');
+    // Shop must be approved
+    Route::middleware([ShopApprovedMiddleware::class])->group(function () {
+        
+        // Analytics Dashboard
+        Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+        Route::get('/analytics/export', [AnalyticsController::class, 'export'])->name('analytics.export');
     
-    // API for staff_notification toggle
-    Route::patch('/shops/{shop}/staff/{user}/notification', [ShopController::class, 'updateStaffNotification'])->name('shops.staff.notification');
-
+        // Shop Overview (analytics)
+        Route::get('/owner/analytics', [AnalyticsController::class, 'ownerIndex'])->name('owner.analytics');
+    
+        // Manage Staff
+        Route::post('/shops/{shop}/staff', [ShopController::class, 'addStaff'])->name('shops.staff.add');
+        Route::delete('/shops/{shop}/staff/{user}', [ShopController::class, 'removeStaff'])->name('shops.staff.remove');
+        
+        // API for staff_notification toggle
+        Route::patch('/shops/{shop}/staff/{user}/notification', [ShopController::class, 'updateStaffNotification'])->name('shops.staff.notification');
+    });
 });
 
 
