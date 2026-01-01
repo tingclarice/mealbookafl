@@ -51,7 +51,7 @@
                             @endif
 
                             {{-- If user is shop OWNER --}}
-                            @if(Auth::user()->isOwner())
+                            @if(Auth::user()->isOwner() && Auth::user()->shops->first()->isApproved())
                                 <a class="dropdown-item" href="{{ route('analytics') }}">
                                     <i class="bi bi-graph-up me-2"></i> Shop Analytics
                                 </a>
