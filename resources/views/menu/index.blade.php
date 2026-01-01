@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('head')
-<link rel="stylesheet" href="css/menuIndex.css">
+    <link rel="stylesheet" href="css/menuIndex.css">
 @endsection
 
 
 @section('content')
     {{-- Hero Section --}}
     <section class="text-center text-white d-flex align-items-center justify-content-center flex-column"
-                style="background: linear-gradient(rgba(249, 115, 82, 0.8), rgba(249, 115, 82, 0.8)), url('{{ asset('images/hero-bg.webp') }}') center/cover no-repeat; height: 40vh;">
+        style="background: linear-gradient(rgba(249, 115, 82, 0.8), rgba(249, 115, 82, 0.8)), url('{{ asset('images/hero-bg.webp') }}') center/cover no-repeat; height: 40vh;">
         <h1 class="mb-3" style="font-family: 'Pacifico'; font-size: 3.5rem;">Menu Kami</h1>
         <p class="lead" style="font-size: 1.2rem; max-width: 600px;">Pilih makanan favoritmu!</p>
     </section>
@@ -22,30 +22,19 @@
                     @if($currentCategory)
                         <input type="hidden" name="category" value="{{ $currentCategory }}">
                     @endif
-                    
-                    <input 
-                        type="text" 
-                        name="search" 
-                        class="form-control" 
-                        placeholder="Cari menu..." 
+
+                    <input type="text" name="search" class="form-control" placeholder="Cari menu..."
                         value="{{ $searchQuery ?? '' }}"
-                        style="border: 2px solid #F97352; border-radius: 10px; padding: 12px 20px;"
-                    >
-                    <button 
-                        type="submit" 
-                        class="btn"
-                        style="background-color: #F97352; color: white; border-radius: 10px; padding: 12px 24px; border: none; white-space: nowrap;"
-                    >
+                        style="border: 2px solid #F97352; border-radius: 10px; padding: 12px 20px;">
+                    <button type="submit" class="btn"
+                        style="background-color: #F97352; color: white; border-radius: 10px; padding: 12px 24px; border: none; white-space: nowrap;">
                         <i class="bi bi-search"></i> Cari
                     </button>
-                    
+
                     {{-- Clear button if search is active --}}
                     @if($searchQuery)
-                        <a 
-                            href="{{ route('menu', ['category' => $currentCategory]) }}" 
-                            class="btn"
-                            style="background-color: #64748B; color: white; border-radius: 10px; padding: 12px 24px; border: none;"
-                        >
+                        <a href="{{ route('menu', ['category' => $currentCategory]) }}" class="btn"
+                            style="background-color: #64748B; color: white; border-radius: 10px; padding: 12px 24px; border: none;">
                             <i class="bi bi-x-circle"></i>
                         </a>
                     @endif
@@ -61,11 +50,7 @@
                 {{-- Loop Categories from Controller --}}
                 <x-filter-button label="Semua" :isActive="!$currentCategory" />
                 @foreach($categories as $key => $label)
-                    <x-filter-button 
-                        :label="$label" 
-                        :category="$key" 
-                        :isActive="$currentCategory == $key" 
-                    />
+                    <x-filter-button :label="$label" :category="$key" :isActive="$currentCategory == $key" />
                 @endforeach
             </div>
         </div>
@@ -79,13 +64,26 @@
                     <h3 style="color: #64748B;">Tidak ada menu tersedia.</h3>
                 </div>
             @else
-                <div class="d-flex flex-wrap gap-4 justify-content-center">
-                    @foreach ($meals as $meal)
-                        <div class="meal-card-wrapper">
-                            <x-meal-card :meal="$meal" />
+                @php
+                    $groupedMeals = $meals->groupBy(function ($meal) {
+                        return $meal->shop ? $meal->shop->name : 'Unassigned Shop';
+                    });
+                @endphp
+
+                @foreach($groupedMeals as $shopName => $shopMeals)
+                    <div class="mb-5">
+                        <h3 class="mb-3 fw-bold px-3" style="color: #1E293B; border-left: 5px solid #F97352;">
+                            {{ $shopName }}
+                        </h3>
+                        <div class="d-flex flex-wrap gap-4 justify-content-center justify-content-md-start">
+                            @foreach ($shopMeals as $meal)
+                                <div class="meal-card-wrapper">
+                                    <x-meal-card :meal="$meal" />
+                                </div>
+                            @endforeach
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
 
                 {{-- Pagination --}}
                 @if($meals->hasPages())
@@ -95,14 +93,16 @@
                                 {{-- Previous Page Link --}}
                                 @if ($meals->onFirstPage())
                                     <li class="page-item disabled">
-                                        <span class="page-link" style="background-color: #fff; border: 2px solid #F97352; color: #64748B; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
+                                        <span class="page-link"
+                                            style="background-color: #fff; border: 2px solid #F97352; color: #64748B; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
                                             {{-- Teks diganti dengan ikon --}}
                                             <i class="bi bi-chevron-left"></i>
                                         </span>
                                     </li>
                                 @else
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $meals->previousPageUrl() }}" style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
+                                        <a class="page-link" href="{{ $meals->previousPageUrl() }}"
+                                            style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
                                             {{-- Teks diganti dengan ikon --}}
                                             <i class="bi bi-chevron-left"></i>
                                         </a>
@@ -113,11 +113,13 @@
                                 @foreach ($meals->getUrlRange(1, $meals->lastPage()) as $page => $url)
                                     @if ($page == $meals->currentPage())
                                         <li class="page-item active">
-                                            <span class="page-link" style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; min-width: 45px; text-align: center; padding: 10px;">{{ $page }}</span>
+                                            <span class="page-link"
+                                                style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; min-width: 45px; text-align: center; padding: 10px;">{{ $page }}</span>
                                         </li>
                                     @else
                                         <li class="page-item">
-                                            <a class="page-link" href="{{ $url }}" style="background-color: #fff; border: 2px solid #F97352; color: #1E293B; border-radius: 10px; margin: 0 5px; min-width: 45px; text-align: center; padding: 10px;">{{ $page }}</a>
+                                            <a class="page-link" href="{{ $url }}"
+                                                style="background-color: #fff; border: 2px solid #F97352; color: #1E293B; border-radius: 10px; margin: 0 5px; min-width: 45px; text-align: center; padding: 10px;">{{ $page }}</a>
                                         </li>
                                     @endif
                                 @endforeach
@@ -125,14 +127,16 @@
                                 {{-- Next Page Link --}}
                                 @if ($meals->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $meals->nextPageUrl() }}" style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
+                                        <a class="page-link" href="{{ $meals->nextPageUrl() }}"
+                                            style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
                                             {{-- Teks diganti dengan ikon --}}
                                             <i class="bi bi-chevron-right"></i>
                                         </a>
                                     </li>
                                 @else
                                     <li class="page-item disabled">
-                                        <span class="page-link" style="background-color: #fff; border: 2px solid #F97352; color: #64748B; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
+                                        <span class="page-link"
+                                            style="background-color: #fff; border: 2px solid #F97352; color: #64748B; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
                                             {{-- Teks diganti dengan ikon --}}
                                             <i class="bi bi-chevron-right"></i>
                                         </span>

@@ -15,7 +15,7 @@ class MealController extends Controller
     // Untuk halaman /menu (list + filter)
     public function index(Request $request)
     {
-        $query = Meal::where('isAvailable', true);
+        $query = Meal::with('shop')->where('isAvailable', true);
 
         $currentCategory = $request->get('category');
 
