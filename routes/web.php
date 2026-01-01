@@ -11,6 +11,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
 use App\Http\Middleware\OwnerMiddleware;
@@ -181,6 +182,12 @@ Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
 // Midtrans Webhook
 Route::post('/midtrans/webhook', [MidtransController::class, 'handleNotification']);
 
+// Set Timezone
+Route::post('/timezone', function (Request $request) {
+    if ($request->timezone) {
+        session(['timezone' => $request->timezone]);
+    }
+});
 
 
 // Test route
