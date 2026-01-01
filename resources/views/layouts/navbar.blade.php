@@ -50,6 +50,13 @@
                                 </a>
                             @endif
 
+                            {{-- If user is shop OWNER --}}
+                            @if(Auth::user()->isOwner())
+                                <a class="dropdown-item" href="{{ route('analytics') }}">
+                                    <i class="bi bi-graph-up me-2"></i> Shop Analytics
+                                </a>
+                            @endif
+
                             <!-- If user is owner or staff; show menu for menu dashboard -->
                             @if(Auth::user()->isOwnerOrStaff() && Auth::user()->shops->first()->isApproved())
                                 <a class="dropdown-item" href="{{ route('dashboard') }}">
@@ -59,11 +66,8 @@
                                 <a class="dropdown-item" href="{{ route('shopOrders') }}">
                                     <i class="bi bi-box-seam me-2"></i> Shop Orders
                                 </a>
-
-                                <a class="dropdown-item" href="{{ route('analytics') }}">
-                                    <i class="bi bi-graph-up me-2"></i> Analytics
-                                </a>
                             @endif
+                                
 
                             <li>
                                 <a class="dropdown-item" href="{{ route('myOrders') }}">

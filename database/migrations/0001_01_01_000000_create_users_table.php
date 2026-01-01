@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['ADMIN', 'USER'])->default('USER');
+            $table->boolean('staff_notification')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

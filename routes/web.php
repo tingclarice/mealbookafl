@@ -40,7 +40,7 @@ Route::get('/menu', [MealController::class, 'index'])->name('menu');
 Route::get('/menu/{id}', [MealController::class, 'show'])->name('menu.show');
 // Route::get('/menu/{id}/reviews', [MealController::class, 'reviews'])->name('menu.reviews');
 
-// ===== SHOP VIEW (for guests) =====
+// ===== SHOP VIEW =====
 Route::get('/shops/{shop}', [ShopController::class, 'show'])->name('shop.show');
 
 // ===== Login Required =====
@@ -139,15 +139,9 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
         Route::delete('/options/values/{value}', [MealOptionController::class, 'destroyValue'])
             ->name('meal.options.values.destroy');
 
-        // Get meal options (AJAX)
+        // Get meal options
         Route::get('/meals/{meal}/options', [MealOptionController::class, 'getMealOptions'])
             ->name('meal.options.get');
-
-        // Analytics Dashboard
-        Route::get('/analytics', [AnalyticsController::class, 'index'])
-            ->name('analytics');
-        Route::get('/analytics/export', [AnalyticsController::class, 'export'])
-            ->name('analytics.export');
 
         // Order Scan (QR)
         Route::post('/orders/scan-check', [OrderController::class, 'checkOrderViaQr'])
@@ -164,7 +158,21 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
 
 // ===== OWNER ONLY ROUTES =====
 Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
+
+    // Analytics Dashboard
+    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+    Route::get('/analytics/export', [AnalyticsController::class, 'export'])->name('analytics.export');
+
     // Shop Overview (analytics)
+    Route::get('/owner/analytics', [AnalyticsController::class, 'ownerIndex'])->name('owner.analytics');
+
+    // Manage Staff
+    Route::post('/shops/{shop}/staff', [ShopController::class, 'addStaff'])->name('shops.staff.add');
+    Route::delete('/shops/{shop}/staff/{user}', [ShopController::class, 'removeStaff'])->name('shops.staff.remove');
+    
+    // API for staff_notification toggle
+    Route::patch('/shops/{shop}/staff/{user}/notification', [ShopController::class, 'updateStaffNotification'])->name('shops.staff.notification');
+
 });
 
 

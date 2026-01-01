@@ -35,10 +35,8 @@
                 <div class="card shadow-sm border-0 overflow-hidden">
 
                     <div class="card-header bg-white border-bottom">
-                        <h4 class="mb-0 py-2 fw-bold" style="color: #333;">Account Settings</h4>
+                        <h4 class="mb-0 py-2 fw-bold" style="color: #333;">Settings</h4>
                     </div>
-
-
 
                     <div class="card-body p-0">
                         <div class="row g-0" style="min-height: 400px;">
@@ -55,11 +53,29 @@
 
                                     {{-- If user has active shop --}}
                                     @if ($activeOwnedShop)
+                                        {{-- Edit Shop Information --}}
                                         <a class="list-group-item list-group-item-action" id="v-pills-seller-tab"
                                             data-bs-toggle="pill" href="#v-pills-seller" role="tab"
                                             aria-controls="v-pills-seller" aria-selected="false">
                                             <i class="bi bi-shop me-2"></i>
                                             Edit Shop Information
+                                        </a>
+
+                                        {{-- Manage Staff (add/delete staff) --}}
+                                        <a class="list-group-item list-group-item-action" id="v-pills-staff-tab"
+                                            data-bs-toggle="pill" href="#v-pills-staff" role="tab"
+                                            aria-controls="v-pills-staff" aria-selected="false">
+                                            <i class="bi bi-people me-2"></i> Manage Staff
+                                        </a>
+                                    @endif
+
+                                    {{-- If user has pending shop or doesnt have shop --}}
+                                    @if ($pendingOwnedShop || !Auth::user()->isOwnerOrStaff())
+                                        <a class="list-group-item list-group-item-action" id="v-pills-seller-tab"
+                                            data-bs-toggle="pill" href="#v-pills-seller" role="tab"
+                                            aria-controls="v-pills-seller" aria-selected="false">
+                                            <i class="bi bi-shop me-2"></i>
+                                            Register as Seller
                                         </a>
                                     @endif
 
@@ -69,15 +85,7 @@
                                         <i class="bi bi-shield-lock me-2"></i> Security
                                     </a>
 
-                                    {{-- If user has pending owned shop or user is not owner or staff --}}
-                                    @if ($pendingOwnedShop || !Auth::user()->isOwnerOrStaff())
-                                        <a class="list-group-item list-group-item-action" id="v-pills-seller-tab"
-                                            data-bs-toggle="pill" href="#v-pills-seller" role="tab"
-                                            aria-controls="v-pills-seller" aria-selected="false">
-                                            <i class="bi bi-shop me-2"></i>
-                                            Register as Seller
-                                        </a>
-                                    @endif
+                                    
 
 
                                     <a class="list-group-item list-group-item-action" id="v-pills-danger-tab"
@@ -101,15 +109,7 @@
                                         @include('profile.partials.update-profile-information-form')
                                     </div>
 
-                                    {{-- Security Tab --}}
-                                    <div class="tab-pane fade" id="v-pills-security" role="tabpanel"
-                                        aria-labelledby="v-pills-security-tab">
-                                        <h5 class="mb-4 fw-bold" style="color: #333;">Security Settings</h5>
-                                        <hr class="mb-4 text-muted">
-
-                                        @include('profile.partials.update-password-form')
-                                    </div>
-
+                                    {{-- [Show Register Status, Register as Seller, Edit Shop Information] --}}
                                     <div class="tab-pane fade" id="v-pills-seller" role="tabpanel">
                                         {{-- Show Message info Shops Approvals --}}
                                         @if ($pendingOwnedShop && $pendingOwnedShop->status == "PENDING")
@@ -257,6 +257,24 @@
 
                                     </div>
 
+                                    {{-- Manage Staff --}}
+                                    @if($activeOwnedShop)
+                                    <div class="tab-pane fade" id="v-pills-staff" role="tabpanel"
+                                        aria-labelledby="v-pills-staff-tab">
+                                        <h5 class="mb-4 fw-bold" style="color: #333;">Manage Staff</h5>
+                                        <hr class="mb-4 text-muted">
+                                        @include('profile.partials.manage-staff')
+                                    </div>
+                                    @endif
+
+                                    {{-- Security Tab --}}
+                                    <div class="tab-pane fade" id="v-pills-security" role="tabpanel"
+                                        aria-labelledby="v-pills-security-tab">
+                                        <h5 class="mb-4 fw-bold" style="color: #333;">Security Settings</h5>
+                                        <hr class="mb-4 text-muted">
+
+                                        @include('profile.partials.update-password-form')
+                                    </div>
 
                                     {{-- Danger Zone Tab --}}
                                     <div class="tab-pane fade" id="v-pills-danger" role="tabpanel"

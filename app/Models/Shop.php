@@ -54,4 +54,30 @@ class Shop extends Model
             ]);
         });
     }
+
+    /*
+    * Add Staff to Shop
+    */
+    public function addStaff($email)
+    {
+        // 1. Check if user is registered
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            throw new \Exception('Email is not registered in our system.');
+        }
+
+        // 2. Check if user already has roles on that shop
+        $exists = $this->userRoles()->where('user_id', $user->id)->exists();
+        if ($exists) {
+            throw new \Exception('User is already registered in this shop.');
+        }
+
+        // 3. Add Staff Role
+        $this->userRoles()->create([
+            'user_id' => $user->id,
+            'role' => 'STAFF'
+        ]);
+
+        return true;
+    }
 }

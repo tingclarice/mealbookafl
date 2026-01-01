@@ -109,7 +109,7 @@ class MealOptionController extends Controller
     // HELPER METHOD
     // ========================================
     
-    // Get all options for a specific meal (for AJAX)
+    // Get all options for a specific meal
     public function getMealOptions(Meal $meal)
     {
         $meal->load(['optionGroups.values']);

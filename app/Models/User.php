@@ -23,7 +23,8 @@ class User extends Authenticatable
         'role',
         'google_id', // for Google OAuth
         'avatar', // for Google OAuth
-        'email_verified_at'
+        'email_verified_at',
+        'staff_notification'
     ];
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shop;
+use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -207,5 +208,54 @@ class ShopController extends Controller
         $shop->update($data);
 
         return Redirect::route('profile.edit')->with('success', 'Shop information updated successfully');
+    }
+    public function addStaff(Request $request, Shop $shop)
+    {        
+        // double check if user is owner of this shop
+        // if ($request->user()->shops()->where('shops.id', $shop->id)->wherePivot('role', 'OWNER')->doesntExist()) {
+        //     abort(403, 'Unauthorized');
+        // }
+
+        $request->validate(['email' => 'required|email']);
+
+        try {
+            $shop->addStaff($request->email);
+            return back()->with('success', 'Staff added successfully!');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function removeStaff(Shop $shop, User $user)
+    {
+        // double check if user is owner of this shop
+        // if (request()->user()->shops()->where('shops.id', $shop->id)->wherePivot('role', 'OWNER')->doesntExist()) {
+        //      abort(403, 'Unauthorized');
+        // }
+
+        // Remove from UserRole
+        UserRole::where('shop_id', $shop->id)
+            ->where('user_id', $user->id)
+            ->where('role', 'STAFF')
+            ->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function updateStaffNotification(Shop $shop, User $user)
+    {
+        // double check if user is owner of this shop
+        // if (request()->user()->shops()->where('shops.id', $shop->id)->wherePivot('role', 'OWNER')->doesntExist()) {
+        //      abort(403, 'Unauthorized');
+        // }
+
+        if (empty($user->phone)) {
+            return response()->json(['success' => false, 'message' => 'Phone number must be filled.']);
+        }
+
+        $user->staff_notification = !$user->staff_notification;
+        $user->save();
+
+        return response()->json(['success' => true, 'status' => $user->staff_notification]);
     }
 }
