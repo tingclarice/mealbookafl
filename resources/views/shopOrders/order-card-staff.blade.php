@@ -9,7 +9,7 @@
                     #{{ $order->id }}
                 </span>
                 <span class="text-muted small">
-                    {{ $order->created_at->format('d M Y, H:i') }}
+                    {{ $order->created_at->timezone(session('timezone', config('app.timezone')))->format('d M Y, H:i') }}
                 </span>
             </div>
 

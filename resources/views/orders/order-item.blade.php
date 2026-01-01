@@ -80,7 +80,10 @@
 
                     {{-- Date --}}
                     <small class="text-muted">
-                        {{ $order->created_at->format('d M Y, H:i') }}
+                        {{ $order->created_at
+                            ->timezone(session('timezone', config('app.timezone')))
+                            ->format('d M Y, H:i') 
+                        }}
                     </small>
                 </div>
             </div>

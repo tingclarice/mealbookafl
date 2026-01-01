@@ -82,7 +82,7 @@
                                 <h6 class="text-white opacity-75 mb-2"><i class="bi bi-shop me-1"></i> {{ $order->shop->name }}</h6>
                                 <h3 class="fw-bold mb-0">#{{ $order->id }}</h3>
                                 <div class="mt-2 text-white-50">
-                                    {{ $order->created_at->format('F d, Y \a\t H:i') }}
+                                    {{ $order->created_at->timezone(session('timezone', config('app.timezone')))->format('F d, Y \a\t H:i') }}
                                 </div>
                             </div>
                             <div class="text-end">
@@ -132,7 +132,12 @@
                                 @if($order->payment_time)
                                 <p class="mb-0">
                                     <span class="text-muted">Paid at:</span> 
-                                    <span class="fw-semibold text-dark">{{ $order->payment_time->format('d M Y, H:i') }}</span>
+                                    <span class="fw-semibold text-dark">
+                                        {{ $order->created_at
+                                            ->timezone(session('timezone', config('app.timezone')))
+                                            ->format('d M Y, H:i') 
+                                        }}
+                                    </span>
                                 </p>
                                 @endif
                             </div>
