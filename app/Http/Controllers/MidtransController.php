@@ -70,7 +70,7 @@ class MidtransController extends Controller
                 $order->markAsExpired($payload);
                 break;
 
-            case 'cancel':
+            // case 'cancel':
             case 'deny':
                 $order->markAsFailed($payload);
                 break;

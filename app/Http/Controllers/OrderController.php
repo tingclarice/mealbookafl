@@ -166,6 +166,30 @@ class OrderController extends Controller
         return redirect()->route('shopOrders')->with('success', "Order updated to $newStatus!");
     }
 
+    // Cancel Order (Buyer)
+    public function cancel(Order $order)
+    {
+        // 1. Authorization: check if the logged-in user owns this order
+        if (auth()->id() !== $order->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // 2. Validate State
+        if ($order->payment_status === 'PAID') {
+            return redirect()->back()->with('error', 'Cannot cancel a paid order.');
+        }
+
+        if ($order->order_status === 'CANCELLED') {
+            return redirect()->back()->with('error', 'Order is already cancelled.');
+        }
+
+        // 3. Update Status
+        $order->order_status = 'CANCELLED';
+        $order->save();
+
+        return redirect()->back()->with('success', 'Order cancelled successfully.');
+    }
+
     /**
      * Check order status via QR Scan (without updating)
      */
@@ -285,51 +309,47 @@ class OrderController extends Controller
     // My Order (User POV)
     public function myOrders()
     {
-        // Set Midtrans Config
+        // Set Midtrans Config (will be used on Snap::getSnapToken)
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = config('midtrans.is_sanitized');
         Config::$is3ds = config('midtrans.is_3ds');
 
-        // 1. Get ALL orders in ONE query
+        // Get ALL orders
         // Using 'latest()' puts the newest orders at the top
         $allOrder = Order::where('user_id', Auth::id())->latest()->get();
 
-        // 2. REGENERATION LOGIC
-        // Loop through orders to check if any pending token is expired
-        foreach ($allOrder as $order) {
-            if ($order->order_status == 'PENDING' && $order->snap_token) {
+        // // Loop through orders to check if any pending token is expired
+        // foreach ($allOrder as $order) {
+        //     if ($order->payment_status == 'EXPIRED' && $order->snap_token) {
 
-                // Check if token was created more than 24 hours ago.
-                if ($order->updated_at->diffInHours(now()) >= 24) {
+        //         // Regenerate Token
+        //         $newOrderId = $order->id . '-' . Str::random(5);
 
-                    // Regenerate Token
-                    $newOrderId = $order->id . '-' . Str::random(5);
+        //         $params = [
+        //             'transaction_details' => [
+        //                 'order_id' => $newOrderId,
+        //                 'gross_amount' => (int) $order->total_amount,
+        //             ],
+        //             'customer_details' => [
+        //                 'first_name' => Auth::user()->name,
+        //                 'email' => Auth::user()->email,
+        //             ],
+        //         ];
 
-                    $params = [
-                        'transaction_details' => [
-                            'order_id' => $newOrderId,
-                            'gross_amount' => (int) $order->total_amount,
-                        ],
-                        'customer_details' => [
-                            'first_name' => Auth::user()->name,
-                            'email' => Auth::user()->email,
-                        ],
-                    ];
+        //         try {
+        //             $snapToken = Snap::getSnapToken($params);
 
-                    try {
-                        $snapToken = Snap::getSnapToken($params);
+        //             // Update the order with the new token
+        //             $order->snap_token = $snapToken;
+        //             $order->save();
+        //         } catch (\Exception $e) {
+        //             // Handle error if midtrans fails
+        //             \Log::info($e->getMessage());
+        //         }
 
-                        // Update the order with the new token
-                        $order->snap_token = $snapToken;
-                        $order->save();
-                    } catch (\Exception $e) {
-                        // Handle error if midtrans fails
-                        \Log::info($e->getMessage());
-                    }
-                }
-            }
-        }
+        //     }
+        // }
 
         // 3. FILTERING 
         $pendingOrder = $allOrder->where('order_status', 'PENDING');

@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/myOrders', [OrderController::class, 'myOrders'])->name('myOrders');
     Route::get('/myOrders/{order}', [OrderController::class, 'orderDetails'])->name('order.details');
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 
 
 

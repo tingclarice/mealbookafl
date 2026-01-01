@@ -6,7 +6,7 @@
     $text = $orderStatus;
     $isActionable = false; // For Pay Button
 
-    if ($paymentStatus === 'PENDING') {
+    if ($paymentStatus === 'PENDING' && $orderStatus !== 'CANCELLED') {
         $color = 'warning';
         $text = 'Waiting for Payment';
         $isActionable = true;
@@ -14,8 +14,11 @@
         $color = 'danger';
         $text = 'Payment ' . ucfirst(strtolower($paymentStatus));
     } else {
-
         switch ($orderStatus) {
+            case 'CANCELLED':
+                $color = 'danger';
+                $text = 'Order Cancelled';
+                break;
             case 'PENDING':
                 $color = 'info';
                 $text = 'Order Placed';
@@ -103,6 +106,7 @@
             </span>
 
             {{-- Action Buttons --}}
+            @if($order->order_status !== 'CANCELLED')
             <div class="mt-1">
                 {{-- 1. PAY NOW (Midtrans) --}}
                 @if($paymentStatus === 'PENDING' && $order->snap_token)
@@ -118,21 +122,10 @@
                         onclick="event.stopPropagation(); showQr('#{{ $order->id }}', '{{ $order->midtrans_order_id }}')">
                         <i class="bi bi-qr-code me-1"></i> Show QR
                     </button>
-
-                    {{-- 3. DISABLED (Cooking/Confirmed) --}}
-                    {{-- @elseif($orderStatus === 'CONFIRMED' && $paymentStatus === 'PAID')
-                    <button disabled class="btn btn-sm btn-light border text-muted px-3 rounded-pill">
-                        Preparing...
-                    </button> --}}
-
-                    {{-- 4. VIEW DETAILS (Default) --}}
-                    {{-- @else
-                    <a href="{{ route('order.details', $order->id) }}"
-                        class="btn btn-sm btn-outline-secondary px-3 rounded-pill" onclick="event.stopPropagation();">
-                        View Details
-                    </a> --}}
                 @endif
             </div>
+            @endif
+            
 
         </div>
     </div>

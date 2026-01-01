@@ -6,6 +6,8 @@ services:
     container_name: mealbook_app
     restart: unless-stopped
     working_dir: /var/www
+    env_file:
+      - .env.production
     volumes:
       - .:/var/www
       - /home/mealbookafl/storage/app/public:/var/www/storage/app/public

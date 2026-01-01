@@ -135,6 +135,7 @@ class Order extends Model
     {
         $this->update([
             'payment_status' => 'EXPIRED',
+            'order_status' => 'CANCELLED',
             'raw_midtrans_response' => $midtransPayload,
         ]);
     }
