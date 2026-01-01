@@ -149,6 +149,7 @@ class OrderController extends Controller
         $newStatus = null;
         if ($order->order_status === 'PENDING' && $order->payment_status === 'PAID') {
             $newStatus = 'CONFIRMED';
+
         } elseif ($order->order_status === 'CONFIRMED') {
             $newStatus = 'READY';
 
@@ -166,6 +167,10 @@ class OrderController extends Controller
             $message .= "Terima kasih telah berbelanja di " . $order->shop->name . "!";
             
             GowaController::sendMessage($message, $order->user->phone);
+
+            // Create transaction (credit money to shop)
+            $order->shop->wallet->creditBalance($order->total_amount, "Payment from Order #{$order->id}");
+        
         } elseif ($order->order_status === 'READY') {
             $newStatus = 'COMPLETED';
         }

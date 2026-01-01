@@ -54,7 +54,7 @@ class ShopWallet extends Model
         $this->decrement('balance', $amount);
 
         $this->transactions()->create([
-            'type' => 'debit',
+            'type' => 'withdrawal',
             'amount' => $amount,
             'description' => $message,
         ]);
