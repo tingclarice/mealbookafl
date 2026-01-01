@@ -33,11 +33,15 @@ class Shop extends Model
         return $this->hasMany(UserRole::class);
     }
 
-    // Users connected through roles
+    // Users connected through roles (including owner and staff)
     public function users(){
         return $this->belongsToMany(User::class, 'user_roles')
             ->withPivot('role')
             ->withTimestamps();
+    }
+    // get owner
+    public function owner(){
+        return $this->users()->wherePivot('role', 'OWNER')->first();
     }
 
     // Check if shop is approved

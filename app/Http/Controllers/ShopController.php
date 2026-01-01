@@ -31,7 +31,7 @@ class ShopController extends Controller
     {
         $whatsappMessage = "Terima kasih telah mendaftarkan toko Anda di MealBook. Kami menghargai minat Anda untuk bergabung dengan platform kami. Setelah melakukan peninjauan, pendaftaran toko Anda belum dapat kami setujui untuk saat ini karena alasan sebagai berikut :\n\n" . $message . "\n\nJangan khawatir! Anda dapat melakukan perbaikan pada data toko dan mengajukan ulang pendaftaran kapan saja.";
         
-        GowaController::sendMessage($whatsappMessage, $shop->users()->first()->phone);
+        GowaController::sendMessage($whatsappMessage, $shop->owner()->phone);
         // GowaController::sendMessage($whatsappMessage, $shop->phone);
 
         $shop->update(['status' => 'REJECTED']);
@@ -46,7 +46,7 @@ class ShopController extends Controller
                         "Selama masa penangguhan, toko Anda tidak akan dapat menerima pesanan atau muncul di halaman pencarian pelanggan. Silakan hubungi tim dukungan kami atau perbaiki kendala terkait untuk proses pengaktifan kembali.";
 
         // Send via WhatsApp
-        GowaController::sendMessage($whatsappMessage, $shop->users()->first()->phone);
+        GowaController::sendMessage($whatsappMessage, $shop->owner()->phone);
 
         // Update status in database
         $shop->update(['status' => 'SUSPENDED']);
@@ -123,6 +123,7 @@ class ShopController extends Controller
         }
     }
 
+    // Show Shop Details and their Menus
     public function show(Shop $shop)
     {
         // Only show approved shops to public
