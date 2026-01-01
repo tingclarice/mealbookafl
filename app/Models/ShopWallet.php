@@ -31,25 +31,34 @@ class ShopWallet extends Model
         return $this->hasMany(Transaction::class, 'wallet_id');
     }
 
-    // Helpers for cleaner business logic
-    public function addBalance(float $amount): void
+
+    // Static helper to Credit Balance (Add)
+    // usually for: Topup, Order Payout, Refund from platform
+    public function creditBalance($amount, $message)
     {
         $this->increment('balance', $amount);
+
+        $this->transactions()->create([
+            'type' => 'credit',
+            'amount' => $amount,
+            'description' => $message,
+        ]);
+        
+        return $this;
     }
 
-    public function subtractBalance(float $amount): void
+    // Static helper to Debit Balance (Subtract)
+    // usually for: Withdrawal, Penalty, Monthly Fee
+    public function debitBalance($amount, $message)
     {
         $this->decrement('balance', $amount);
-    }
 
-    public function addPending(float $amount): void
-    {
-        $this->increment('pending_balance', $amount);
-    }
+        $this->transactions()->create([
+            'type' => 'debit',
+            'amount' => $amount,
+            'description' => $message,
+        ]);
 
-    public function clearPending(float $amount): void
-    {
-        $this->decrement('pending_balance', $amount);
-        $this->increment('balance', $amount);
+        return $this;
     }
 }

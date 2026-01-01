@@ -14,6 +14,7 @@ use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\WithdrawalController;
 use App\Http\Middleware\OwnerMiddleware;
 use App\Http\Middleware\StaffMiddleware;
 use App\Http\Middleware\OwnerAndStaffForbiddenMiddleware;
@@ -94,6 +95,12 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::patch('/shops/{shop}/decline/{message}', [ShopController::class, 'decline'])->name('shops.decline');
     Route::patch('/shops/{shop}/suspend/{message}', [ShopController::class, 'suspend'])->name('shops.suspend');
 
+    // Money Withdrawal
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/withdrawal', [WithdrawalController::class, 'index'])->name('withdrawal.index');
+        Route::get('/withdrawal/search', [WithdrawalController::class, 'search'])->name('withdrawal.search');
+        Route::post('/withdrawal/store', [WithdrawalController::class, 'store'])->name('withdrawal.store');
+    });
 });
 
 
@@ -177,6 +184,9 @@ Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
         Route::patch('/shops/{shop}/staff/{user}/notification', [ShopController::class, 'updateStaffNotification'])->name('shops.staff.notification');
     });
 });
+
+
+
 
 
 // Midtrans Webhook

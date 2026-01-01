@@ -43,15 +43,23 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" style="z-index: 9999;">
 
-                            {{-- If user is SITE MANAGER; show Shop Approvals --}}
+                            {{-- If user is SITE MANAGER --}}
                             @if(Auth::user()->isAdmin())
+                                {{-- Shop Approvals --}}
                                 <a class="dropdown-item" href="{{ route('admin.shopApprovals') }}">
                                     <i class="bi bi-shop me-2"></i> Shop Approvals
                                 </a>
+
+                                {{-- Money Withdrawal --}}
+                                <a class="dropdown-item" href="{{ route('admin.withdrawal.index') }}">
+                                    <i class="bi bi-cash-stack me-2"></i> Money Withdrawal
+                                </a>
+
                             @endif
 
                             {{-- If user is shop OWNER --}}
                             @if(Auth::user()->isOwner() && Auth::user()->shops->first()->isApproved())
+                                {{-- Shop Analytics --}}
                                 <a class="dropdown-item" href="{{ route('analytics') }}">
                                     <i class="bi bi-graph-up me-2"></i> Shop Analytics
                                 </a>

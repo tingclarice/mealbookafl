@@ -21,7 +21,6 @@ return new class extends Migration {
                 ->nullOnDelete();
 
             // Transaction info
-            $table->enum('source', ['order', 'withdrawal', 'refund']);
             $table->enum('type', ['credit', 'debit']);
 
             $table->decimal('amount', 12, 2);
