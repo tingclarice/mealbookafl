@@ -153,15 +153,15 @@ class OrderController extends Controller
             $newStatus = 'READY';
 
             $message = "Halo " . $order->user->name . ",\n\n";
-            $message .= "Pesanan Anda #" . $order->id . " *SIAP DIAMBIL*.\n\n";
+            $message .= "Pesanan Anda #" . $order->id . "\n*SIAP DIAMBIL*.\n\n";
             $message .= "Rincian Pesanan:\n";
 
             foreach ($order->items as $item) {
                 $message .= "- " . $item->quantity . "x " . $item->meal_name . "\n";
             }
 
-            $message .= "\nTotal Biaya: Rp " . number_format($order->total_amount, 0, ',', '.') . "\n\n";
-            $message .= "Status pembayaran: LUNAS (" . $order->payment_method . ")\n";
+            $message .= "\nTotal Biaya: Rp " . number_format($order->total_amount, 0, ',', '.') . "\n";
+            $message .= "Status pembayaran: LUNAS (" . $order->payment_method . ")\n\n";
             $message .= "Silakan datang ke kantin untuk mengambil pesanan Anda.\n";
             $message .= "Terima kasih telah berbelanja di " . $order->shop->name . "!";
             
