@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\GowaController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -113,6 +114,34 @@ class Order extends Model
             'raw_midtrans_response' => $midtransPayload,
             'payment_method' => $method, // Now saves "BCA Virtual Account" or "GoPay"
         ]);
+
+        // Send gowa message to staff
+        $staffs = $this->shop->users()->where('staff_notification', true)->get();
+
+        if ($staffs->isNotEmpty()) {
+            $message = "*New Order Received!*\n";
+            $message .= "Order ID: #{$this->id}\n";
+            $message .= "Payment Status: PAID ({$method})\n\n";
+
+            $message .= "Items:\n";
+            foreach ($this->items as $item) {
+                // Determine options string if any
+                $options = $item->options->pluck('option_name')->implode(', ');
+                $optionStr = $options ? " ({$options})" : "";
+                
+                $message .= "- {$item->quantity}x {$item->meal_name}{$optionStr}\n";
+            }
+            
+            $message .= "\nTotal: Rp " . number_format($this->total_amount, 0, ',', '.') . "\n";
+            $message .= "Customer: {$this->user->name}\n";
+            $message .= "Time: " . now()->timezone('Asia/Jakarta')->format('d M Y, H:i') . " WIB";
+
+            foreach ($staffs as $staff) {
+                if ($staff->phone) {
+                    GowaController::sendMessage($message, $staff->phone);
+                }
+            }
+        }
     }
 
     public function markAsPending(array $midtransPayload = []): void
