@@ -75,7 +75,7 @@
                         <h3 class="mb-3 fw-bold px-3" style="color: #1E293B; border-left: 5px solid #F97352;">
                             {{ $shopName }}
                         </h3>
-                        <div class="d-flex flex-wrap gap-4 justify-content-center justify-content-md-start">
+                        <div class="d-flex flex-wrap gap-4 justify-content-center justify-content-md">
                             @foreach ($shopMeals as $meal)
                                 <div class="meal-card-wrapper">
                                     <x-meal-card :meal="$meal" />
