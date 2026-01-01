@@ -35,15 +35,19 @@ class UserController extends Controller
      */
     public function updateProfile(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        try {
+            $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+            if ($request->user()->isDirty('email')) {
+                $request->user()->email_verified_at = null;
+            }
+
+            $request->user()->save();
+
+            return Redirect::route('profile.edit')->with('success', 'Profile information updated successfully!');
+        } catch (\Exception $e) {
+            return Redirect::route('profile.edit')->with('error', 'Failed to update profile. ' . $e->getMessage());
         }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('success', 'Profile information updated successfully!');
     }
 
     /**

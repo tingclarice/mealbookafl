@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         User::forceCreate([
             "name" => "Felix",
             "email" => "ffelixrichardo@gmail.com",
-            "phone" => "628123456789",
+            "phone" => "6289604920030",
             "password" => bcrypt("password"),
             "role" => "ADMIN"
         ]);
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
         ]);
         User::forceCreate([
             "name" => "Clarice",
-            "phone" => "8888888888",
+            "phone" => "6285106059999",
             "email" => "clarice.ciputra@gmail.com",
             "password" => bcrypt("password"),
             "role" => "ADMIN"

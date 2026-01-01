@@ -137,6 +137,7 @@ class OrderController extends Controller
         return view('checkout', compact('order'));
     }
 
+    // Manual Update
     public function updateStatus(Request $request, Order $order)
     {
         // 1. Authorization: check if the logged-in user owns this order OR is staff/owner
@@ -166,8 +167,6 @@ class OrderController extends Controller
     }
 
     /**
-<<<<<<< Updated upstream
-=======
      * Check order status via QR Scan (without updating)
      */
     public function checkOrderViaQr(Request $request)
@@ -204,7 +203,7 @@ class OrderController extends Controller
                 'id' => $order->id,
                 'midtrans_order_id' => $order->midtrans_order_id, // keep using midtrans id for consistency
                 'customer_name' => $order->user->name ?? 'Guest',
-                'total_price' => number_format($order->total_amount, 0, ',', '.'),
+                'total_price' => number_format($order->total_price, 0, ',', '.'),
                 'status' => $order->order_status,
                 'payment_status' => $order->payment_status,
                 'items_count' => $order->items->count()
@@ -213,7 +212,6 @@ class OrderController extends Controller
     }
 
     /**
->>>>>>> Stashed changes
      * Complete order using QR Scan
      */
     public function completeOrderViaQr(Request $request)
@@ -278,7 +276,7 @@ class OrderController extends Controller
         }
 
         // 2. use load for loading relationships
-        $order->load('items.options');
+        $order->load(['items.options', 'shop']);
 
         return view('orders.details-order', compact('order'));
     }
@@ -343,7 +341,7 @@ class OrderController extends Controller
     }
 
 
-    // Shop POV
+    // Shop order POV
     public function shopOrders()
     {
         $shop = Auth::user()->shops()->first();
