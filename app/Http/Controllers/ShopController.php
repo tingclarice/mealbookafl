@@ -24,6 +24,10 @@ class ShopController extends Controller
     public function accept(Shop $shop)
     {
         $shop->update(['status' => 'OPEN']);
+
+        $whatsappMessage = "Selamat! Pendaftaran toko Anda di MealBook telah disetujui.\n\nToko Anda sekarang telah aktif dan siap menerima pesanan. Anda dapat segera login ke dashboard untuk mulai mengelola menu dan pesanan.\n\nSelamat berjualan dan terima kasih telah bergabung dengan MealBook!";
+        GowaController::sendMessage($whatsappMessage, $shop->owner()->phone);
+
         return back()->with('success', 'Shop accepted successfully');
     }
 
