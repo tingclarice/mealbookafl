@@ -222,6 +222,11 @@ class ShopController extends Controller
         // Authorization handled by ShopOwnerRequest
         $request->validate(['email' => 'required|email']);
 
+        $user = User::where('email', $request->email)->first();
+        if ($user && ($user->isOwner() || $user->isStaff())) {
+            return back()->with('error', 'This user is already an Owner or Staff of a shop.');
+        }
+
         try {
             $shop->addStaff($request->email);
             return back()->with('success', 'Staff added successfully!');
