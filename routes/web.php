@@ -186,6 +186,9 @@ Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
 
         // Shop Wallet
         Route::get('/shop/wallet', [ShopWalletController::class, 'index'])->name('shop.wallet');
+
+        // Delete Shop
+        Route::delete('/shops/{shop}', [ShopController::class, 'destroy'])->name('shops.destroy');
     });
 });
 

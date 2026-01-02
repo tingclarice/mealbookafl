@@ -263,4 +263,51 @@ class ShopController extends Controller
 
         return response()->json(['success' => true, 'status' => $user->staff_notification]);
     }
+    public function destroy(Request $request, Shop $shop)
+    {
+        // Authorization: Ensure the user is the owner of THIS specific shop
+        $user = $request->user();
+        if (!$shop->users()->where('users.id', $user->id)->wherePivot('role', 'OWNER')->exists()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $hasActiveOrders = \App\Models\Order::where('shop_id', $shop->id)
+            ->whereIn('order_status', ['PENDING', 'CONFIRMED', 'READY'])
+            ->exists();
+
+        if ($hasActiveOrders) {
+            return back()->with('error', 'Cannot delete shop. There are active orders (Pending, Confirmed, or Ready). Please complete or cancel them first.');
+        }
+
+        // Deletion
+        DB::beginTransaction();
+        try {
+            // Cleanup Images
+            if ($shop->profileImage) {
+                Storage::disk('public')->delete($shop->profileImage);
+            }
+            // Get all meals to delete their images
+            $meals = $shop->meals;
+            foreach ($meals as $meal) {
+                foreach($meal->images as $image) {
+                     Storage::disk('public')->delete($image->image_path);
+                }
+            }
+
+            // Detach all users (Owner & Staff)
+            $shop->users()->detach();
+
+            // delete meals then shop
+            $shop->meals()->delete();
+            $shop->delete();
+
+            DB::commit();
+
+            return redirect()->route('profile.edit')->with('success', 'Shop deleted successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Failed to delete shop: ' . $e->getMessage());
+        }
+    }
 }

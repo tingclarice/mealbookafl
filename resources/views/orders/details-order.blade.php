@@ -218,7 +218,9 @@
                                         Pay Now
                                     </button>
                                 @elseif($order->order_status === 'READY')
-                                    <button class="btn btn-outline-success fw-bold px-4 py-2 rounded-pill">
+                                    <button class="btn btn-outline-success fw-bold px-4 py-2 rounded-pill"
+                                        onclick="event.stopPropagation(); showQr('#{{ $order->id }}', '{{ $order->midtrans_order_id }}')"
+                                    >
                                         <i class="bi bi-qr-code me-2"></i> Show Pickup QR
                                     </button>
                                 @endif
@@ -267,7 +269,30 @@
             </div>
         </div>
     </div>
+    {{-- SHARED QR MODAL --}}
+    <div class="modal fade" id="qrDisplayModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content text-center p-4">
+                <div class="modal-header border-0 pb-0 justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <h5 class="fw-bold mb-3">Order QR Code</h5>
+                    <p class="text-muted small mb-4">Show this to the shop staff to complete your order.</p>
 
+                    {{-- QR Container --}}
+                    <div id="qrcode" class="d-flex justify-content-center mb-3"></div>
+
+                    <div class="p-2 bg-light rounded text-muted mt-2">
+                        <small class="d-block fw-bold text-uppercase">Order ID</small>
+                        <span id="qrOrderId" class="font-monospace"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Qr Code for generate --}}
+    <script src="{{ asset('js/generateQR.js') }}"></script>
     <script type="text/javascript">
         function startPayment(token) {
             snap.pay(token, {

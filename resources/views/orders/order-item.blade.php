@@ -81,8 +81,8 @@
                     {{-- Date --}}
                     <small class="text-muted">
                         {{ $order->created_at
-                            ->timezone(session('timezone', config('app.timezone')))
-                            ->format('d M Y, H:i') 
+    ->timezone(session('timezone', config('app.timezone')))
+    ->format('d M Y, H:i') 
                         }}
                     </small>
                 </div>
@@ -110,25 +110,25 @@
 
             {{-- Action Buttons --}}
             @if($order->order_status !== 'CANCELLED')
-            <div class="mt-1">
-                {{-- 1. PAY NOW (Midtrans) --}}
-                @if($paymentStatus === 'PENDING' && $order->snap_token)
-                    <button id="pay-button-{{ $order->id }}"
-                        class="btn btn-sm text-white fw-bold px-4 rounded-pill shadow-sm" style="background-color: #F97352;"
-                        onclick="event.stopPropagation(); startPayment('{{ $order->snap_token }}')">
-                        Pay Now
-                    </button>
+                <div class="mt-1">
+                    {{-- 1. PAY NOW (Midtrans) --}}
+                    @if($paymentStatus === 'PENDING' && $order->snap_token)
+                        <button id="pay-button-{{ $order->id }}"
+                            class="btn btn-sm text-white fw-bold px-4 rounded-pill shadow-sm" style="background-color: #F97352;"
+                            onclick="event.stopPropagation(); startPayment('{{ $order->snap_token }}')">
+                            Pay Now
+                        </button>
 
-                    {{-- 2. SHOW QR (Only when READY) --}}
-                @elseif($orderStatus === 'READY')
-                    <button class="btn btn-sm btn-outline-dark fw-bold px-3 rounded-pill"
-                        onclick="event.stopPropagation(); showQr('#{{ $order->id }}', '{{ $order->midtrans_order_id }}')">
-                        <i class="bi bi-qr-code me-1"></i> Show QR
-                    </button>
-                @endif
-            </div>
+                        {{-- 2. SHOW QR (Only when READY) --}}
+                    @elseif($orderStatus === 'READY')
+                        <button class="btn btn-sm btn-outline-success fw-bold px-3 rounded-pill"
+                            onclick="event.stopPropagation(); showQr('#{{ $order->id }}', '{{ $order->midtrans_order_id }}')">
+                            <i class="bi bi-qr-code me-1"></i> Show QR
+                        </button>
+                    @endif
+                </div>
             @endif
-            
+
 
         </div>
     </div>
