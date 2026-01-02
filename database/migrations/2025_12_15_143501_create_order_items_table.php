@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->string('meal_name', 100);
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
+            $table->string('notes')->nullable();
 
             // Review
             $table->integer('rate')->nullable();

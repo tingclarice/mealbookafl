@@ -166,8 +166,8 @@
                                                         @endforeach
                                                     </div>
                                                 @endif
-                                                @if($item->review_msg)
-                                                     <div class="small text-info mt-1 fst-italic">Note: "{{ $item->review_msg }}"</div>
+                                                @if($item->notes)
+                                                     <div class="small mt-1`">Note: "{{ $item->notes }}"</div>
                                                 @endif
                                             </td>
                                             <td class="text-center">Rp {{ number_format($item->price, 0, ',', '.') }}</td>

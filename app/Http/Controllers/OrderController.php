@@ -60,6 +60,7 @@ class OrderController extends Controller
                     'quantity' => $item->quantity,
                     'shop_id' => $item->meal->shop_id,
                     'price' => $item->meal->price,
+                    'notes' => $item->notes,
                 ]);
 
                 // Create OrderItemOptions
