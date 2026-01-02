@@ -63,6 +63,11 @@
                                 <a class="dropdown-item" href="{{ route('analytics') }}">
                                     <i class="bi bi-graph-up me-2"></i> Shop Analytics
                                 </a>
+
+                                {{-- Shop Wallet --}}
+                                <a class="dropdown-item" href="{{ route('shop.wallet') }}">
+                                    <i class="bi bi-wallet2 me-2"></i> Shop Wallet
+                                </a>
                             @endif
 
                             <!-- If user is owner or staff; show menu for menu dashboard -->

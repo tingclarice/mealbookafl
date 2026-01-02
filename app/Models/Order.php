@@ -117,7 +117,6 @@ class Order extends Model
 
         // Send gowa message to staff
         $staffs = $this->shop->users()->where('staff_notification', true)->get();
-
         if ($staffs->isNotEmpty()) {
             $message = "*New Order Received!*\n";
             $message .= "Order ID: #{$this->id}\n";
@@ -142,6 +141,9 @@ class Order extends Model
                 }
             }
         }
+
+        // Update shop wallet
+        $this->shop->wallet()->increment('pending_balance', $this->total_amount);
     }
 
     public function markAsPending(array $midtransPayload = []): void

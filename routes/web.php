@@ -14,6 +14,7 @@ use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ShopWalletController;
 use App\Http\Controllers\WithdrawalController;
 use App\Http\Middleware\OwnerMiddleware;
 use App\Http\Middleware\StaffMiddleware;
@@ -182,6 +183,9 @@ Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
         
         // API for staff_notification toggle
         Route::patch('/shops/{shop}/staff/{user}/notification', [ShopController::class, 'updateStaffNotification'])->name('shops.staff.notification');
+
+        // Shop Wallet
+        Route::get('/shop/wallet', [ShopWalletController::class, 'index'])->name('shop.wallet');
     });
 });
 

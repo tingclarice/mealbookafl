@@ -170,6 +170,8 @@ class OrderController extends Controller
 
             // Create transaction (credit money to shop)
             $order->shop->wallet->creditBalance($order->total_amount, "Payment from Order #{$order->id}");
+            // Update pending balance
+            $order->shop->wallet->decrement('pending_balance', $order->total_amount);
         
         } elseif ($order->order_status === 'READY') {
             $newStatus = 'COMPLETED';
