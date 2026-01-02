@@ -71,7 +71,7 @@
                             <h3 class="display-6 fw-bold text-secondary mb-1">
                                 Rp {{ number_format($wallet->pending_balance, 0, ',', '.') }}
                             </h3>
-                            <p class="text-muted small mb-0">Will be available after order completion</p>
+                            <p class="text-muted small mb-0">Will be available after order is Ready</p>
                         </div>
                     </div>
                 </div>
@@ -125,8 +125,12 @@
                                     @empty
                                     <tr>
                                         <td colspan="4" class="text-center py-5">
-                                            <img src="https://illustrations.popsy.co/amber/payment-processed.svg" alt="Empty" style="width: 150px;" class="mb-3 opacity-50">
-                                            <p class="text-muted">No transactions recorded yet.</p>
+                                            <div class="mb-3">
+                                                <i class="bi bi-wallet2 opacity-25" style="font-size: 5rem; color: #F97352;"></i>
+                                            </div>
+                                            
+                                            <h5 class="fw-bold text-secondary mb-1">No Transactions Yet</h5>
+                                            <p class="text-muted small">Your wallet activity will appear here once you start selling.</p>
                                         </td>
                                     </tr>
                                     @endforelse
