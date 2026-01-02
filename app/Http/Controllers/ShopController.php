@@ -6,6 +6,8 @@ use App\Models\Shop;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
+use App\Http\Requests\ShopUpdateRequest;
+use App\Http\Requests\ShopOwnerRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -187,15 +189,16 @@ class ShopController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(ShopUpdateRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'profileImage' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // 2MB Max
-        ]);
 
         $user = $request->user();
         $shop = $user->shops()->wherePivot('role', 'OWNER')->first();
+
+        // Safety check if authorize() passed but somehow shop retrieval fails
+        if (!$shop) {
+             abort(404, 'Shop not found.');
+        }
 
         $data = $request->except('profileImage');
 
@@ -214,13 +217,9 @@ class ShopController extends Controller
 
         return Redirect::route('profile.edit')->with('success', 'Shop information updated successfully');
     }
-    public function addStaff(Request $request, Shop $shop)
+    public function addStaff(ShopOwnerRequest $request, Shop $shop)
     {        
-        // double check if user is owner of this shop
-        // if ($request->user()->shops()->where('shops.id', $shop->id)->wherePivot('role', 'OWNER')->doesntExist()) {
-        //     abort(403, 'Unauthorized');
-        // }
-
+        // Authorization handled by ShopOwnerRequest
         $request->validate(['email' => 'required|email']);
 
         try {
@@ -231,12 +230,9 @@ class ShopController extends Controller
         }
     }
 
-    public function removeStaff(Shop $shop, User $user)
+    public function removeStaff(ShopOwnerRequest $request, Shop $shop, User $user)
     {
-        // double check if user is owner of this shop
-        // if (request()->user()->shops()->where('shops.id', $shop->id)->wherePivot('role', 'OWNER')->doesntExist()) {
-        //      abort(403, 'Unauthorized');
-        // }
+        // Authorization handled by ShopOwnerRequest
 
         // Remove from UserRole
         UserRole::where('shop_id', $shop->id)
@@ -247,12 +243,9 @@ class ShopController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function updateStaffNotification(Shop $shop, User $user)
+    public function updateStaffNotification(ShopOwnerRequest $request, Shop $shop, User $user)
     {
-        // double check if user is owner of this shop
-        // if (request()->user()->shops()->where('shops.id', $shop->id)->wherePivot('role', 'OWNER')->doesntExist()) {
-        //      abort(403, 'Unauthorized');
-        // }
+        // Authorization handled by ShopOwnerRequest
 
         if (empty($user->phone)) {
             return response()->json(['success' => false, 'message' => 'Phone number must be filled.']);
@@ -263,13 +256,10 @@ class ShopController extends Controller
 
         return response()->json(['success' => true, 'status' => $user->staff_notification]);
     }
-    public function destroy(Request $request, Shop $shop)
+
+    public function destroy(ShopOwnerRequest $request, Shop $shop)
     {
-        // Authorization: Ensure the user is the owner of THIS specific shop
-        $user = $request->user();
-        if (!$shop->users()->where('users.id', $user->id)->wherePivot('role', 'OWNER')->exists()) {
-            abort(403, 'Unauthorized action.');
-        }
+        // Authorization handled by ShopOwnerRequest
 
         $hasActiveOrders = \App\Models\Order::where('shop_id', $shop->id)
             ->whereIn('order_status', ['PENDING', 'CONFIRMED', 'READY'])
