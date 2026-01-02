@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
     // Cart (logged in users only)
     Route::get('/cart', [CartController::class, 'cart'])->name('cart');
     Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/increment/{id}', [CartController::class, 'increment'])->name('cart.increment');
     Route::post('/cart/decrement/{id}', [CartController::class, 'decrement'])->name('cart.decrement');
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 

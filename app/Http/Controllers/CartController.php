@@ -84,30 +84,20 @@ class CartController extends Controller
         // Use transaction to ensure data consistency
         DB::beginTransaction();
         try {
-            // Check if exact same item with same options exists
-            $existingCartItem = $this->findExistingCartItem($user->id, $meal->id, $selectedOptions);
+            // create new cart item (no merging)
+            $cartItem = CartItem::create([
+                'user_id' => $user->id,
+                'meal_id' => $meal->id,
+                'quantity' => 1,
+                'notes' => $request->input('notes', null),
+            ]);
 
-            if ($existingCartItem) {
-                // Increase quantity if already exists
-                $existingCartItem->quantity += 1;
-                $existingCartItem->save();
-                $cartItem = $existingCartItem;
-            } else {
-                // Create new cart item
-                $cartItem = CartItem::create([
-                    'user_id' => $user->id,
-                    'meal_id' => $meal->id,
-                    'quantity' => 1,
-                    'notes' => $request->input('notes', null),
+            // Save selected options
+            foreach ($selectedOptions as $optionValueId) {
+                CartItemOption::create([
+                    'cart_item_id' => $cartItem->id,
+                    'meal_option_value_id' => $optionValueId,
                 ]);
-
-                // Save selected options
-                foreach ($selectedOptions as $optionValueId) {
-                    CartItemOption::create([
-                        'cart_item_id' => $cartItem->id,
-                        'meal_option_value_id' => $optionValueId,
-                    ]);
-                }
             }
 
             DB::commit();
@@ -117,6 +107,27 @@ class CartController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to add item to cart. Please try again.');
         }
+    }
+
+    public function increment($id)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'You must be logged in to modify your cart.');
+        }
+
+        $cartItem = CartItem::where('user_id', $user->id)
+            ->where('id', $id)
+            ->first();
+
+        if (!$cartItem) {
+            return redirect()->back()->with('error', 'Item not found in your cart.');
+        }
+
+        $cartItem->increment('quantity');
+
+        return redirect()->back()->with('success', 'Cart updated successfully.');
     }
 
     public function decrement($id)
@@ -136,32 +147,11 @@ class CartController extends Controller
         }
 
         if ($cartItem->quantity > 1) {
-            $cartItem->quantity -= 1;
-            $cartItem->save();
+            $cartItem->decrement('quantity');
         } else {
             $cartItem->delete(); // remove item if quantity reaches 0
         }
 
         return redirect()->back()->with('success', 'Cart updated successfully.');
-    }
-
-    // Helper method to find existing cart item with same options
-    private function findExistingCartItem($userId, $mealId, $selectedOptions)
-    {
-        $cartItems = CartItem::where('user_id', $userId)
-            ->where('meal_id', $mealId)
-            ->with('selectedOptions')
-            ->get();
-
-        foreach ($cartItems as $item) {
-            $existingOptions = $item->selectedOptions->pluck('meal_option_value_id')->sort()->values()->toArray();
-            $newOptions = collect($selectedOptions)->sort()->values()->toArray();
-
-            if ($existingOptions == $newOptions) {
-                return $item;
-            }
-        }
-
-        return null;
     }
 }

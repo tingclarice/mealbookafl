@@ -80,12 +80,16 @@
                                 @foreach ($items as $item)
                                     <div class="d-flex align-items-center mb-4">
                                         {{-- Image --}}
-                                        <img src="{{ asset('storage/' . $item->meal->image_url) }}"
-                                            alt="{{ $item->meal->name }}" class="cart-item-img">
+                                        <a href="{{ route('menu.show', $item->meal->id) }}">
+                                            <img src="{{ asset('storage/' . $item->meal->image_url) }}"
+                                                alt="{{ $item->meal->name }}" class="cart-item-img">
+                                        </a>
 
                                         {{-- Details --}}
                                         <div class="flex-grow-1 ms-3">
-                                            <h6 class="fw-bold mb-1">{{ $item->meal->name }}</h6>
+                                            <a href="{{ route('menu.show', $item->meal->id) }}" class="text-decoration-none text-dark">
+                                                <h6 class="fw-bold mb-1">{{ $item->meal->name }}</h6>
+                                            </a>
 
                                             {{-- Options Display --}}
                                             @if ($item->selectedOptions->isNotEmpty())
@@ -123,7 +127,7 @@
 
                                                 <span class="mx-3 fw-bold">{{ $item->quantity }}</span>
 
-                                                <form action="{{ route('cart.add', $item->meal->id) }}" method="POST">
+                                                <form action="{{ route('cart.increment', $item->id) }}" method="POST">
                                                     @csrf
                                                     <button type="submit" class="btn btn-sm btn-outline-secondary quantity-btn">+</button>
                                                 </form>
