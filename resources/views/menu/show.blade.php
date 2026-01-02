@@ -4,7 +4,7 @@
     <section class="py-5" style="background-color: #FFF9F7; min-height: 100vh;">
         <div class="container">
             {{-- Back Button --}}
-            <a href="{{ url()->previous() }}" class="btn mb-4 d-inline-flex align-items-center"
+            <a href="{{ url()->previous() == url()->current() ? route('menu') : url()->previous() }}" class="btn mb-4 d-inline-flex align-items-center"
                 style="background: none; border: none; color: #4B205F; font-size: 1.25rem; padding: 0;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor"
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
