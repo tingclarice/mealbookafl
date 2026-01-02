@@ -4,7 +4,7 @@
     <div class="container py-5">
         <!-- Header -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-            <h1 class="mb-3 mb-md-0">Analytics Dashboard</h1>
+            <h3 class="mb-3 fs-2 fw-bold mb-md-0">Analytics Dashboard</h3>
 
             <!-- Date Filter -->
             <div class="d-flex flex-column flex-md-row gap-2">

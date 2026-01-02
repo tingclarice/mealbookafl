@@ -25,7 +25,7 @@ class AnalyticsController extends Controller
 
         $analytics = $this->getAnalytics($shop->id, $startDate, $endDate);
 
-        return view('analytics.index', compact('analytics', 'shop', 'startDate', 'endDate'));
+        return view('admin.analytics', compact('analytics', 'shop', 'startDate', 'endDate'));
     }
 
     private function getAnalytics($shopId, $startDate, $endDate)
