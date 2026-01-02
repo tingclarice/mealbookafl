@@ -31,6 +31,12 @@ class CartItem extends Model
         return $this->belongsTo(Meal::class);
     }
 
+    // Get the shop associated with this cart item (via meal)
+    public function shop()
+    {
+        return $this->meal->shop();
+    }
+
     // Relationship to selected options
     public function selectedOptions()
     {

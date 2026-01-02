@@ -27,11 +27,14 @@ class OrderController extends Controller
     {
         $user = auth()->user();
         $cartItems = CartItem::where('user_id', $user->id)
+            ->whereHas('meal', function ($query) use ($shop) {
+                $query->where('shop_id', $shop->id);
+            })
             ->with(['meal', 'selectedOptions.optionValue'])
             ->get();
 
         if ($cartItems->isEmpty()) {
-            return redirect()->route('cart')->with('error', 'Your cart is empty.');
+            return redirect()->route('cart')->with('error', 'Your cart is empty for this shop.');
         }
 
         // Calculate total
@@ -58,7 +61,7 @@ class OrderController extends Controller
                     'meal_id' => $item->meal_id,
                     'meal_name' => $item->meal->name,
                     'quantity' => $item->quantity,
-                    'shop_id' => $item->meal->shop_id,
+                    'shop_id' => $item->shop->id, // Use the new relationship
                     'price' => $item->meal->price,
                     'notes' => $item->notes,
                 ]);
@@ -114,8 +117,8 @@ class OrderController extends Controller
             $order->snap_token = $snapToken;
             $order->save();
 
-            // Clear User's Cart
-            CartItem::where('user_id', $user->id)->delete();
+            // Clear User's Cart (Only for this shop)
+            CartItem::whereIn('id', $cartItems->pluck('id'))->delete();
 
             DB::commit();
 
