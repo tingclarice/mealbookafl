@@ -45,8 +45,21 @@
                         {{-- Image Carousel for multiple images --}}
                         <div id="mealImageCarousel" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner" style="border-radius: 25px; overflow: hidden;">
-                                @foreach($meal->images as $index => $image)
-                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                {{-- Show primary image first --}}
+                                @php
+                                    $primaryImage = $meal->images->where('is_primary', true)->first();
+                                    $otherImages = $meal->images->where('is_primary', false)->values();
+                                @endphp
+                                @if($primaryImage)
+                                    <div class="carousel-item active">
+                                        <img src="{{ asset('storage/' . $primaryImage->image_path) }}" 
+                                            class="d-block w-100" 
+                                            alt="{{ $meal->name }}"
+                                            style="width: 100%; max-width: 400px; height: 400px; object-fit: cover;">
+                                    </div>
+                                @endif
+                                @foreach($otherImages as $image)
+                                    <div class="carousel-item">
                                         <img src="{{ asset('storage/' . $image->image_path) }}" 
                                             class="d-block w-100" 
                                             alt="{{ $meal->name }}"
@@ -67,7 +80,7 @@
                                 <div class="carousel-indicators">
                                     @foreach($meal->images as $index => $image)
                                         <button type="button" data-bs-target="#mealImageCarousel" data-bs-slide-to="{{ $index }}" 
-                                                class="{{ $index === 0 ? 'active' : '' }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}" 
+                                                class="{{ ($index === 0 && $image->is_primary) || ($index > 0 && !$primaryImage) ? 'active' : '' }}" aria-current="{{ ($index === 0 && $image->is_primary) || ($index > 0 && !$primaryImage) ? 'true' : 'false' }}" 
                                                 aria-label="Slide {{ $index + 1 }}"></button>
                                     @endforeach
                                 </div>

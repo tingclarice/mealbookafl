@@ -67,6 +67,14 @@ class Meal extends Model
         return $this->image_url;
     }
 
+    /**
+     * Check if meal has a legacy image (stored in image_url but not in meal_images)
+     */
+    public function hasLegacyImage()
+    {
+        return !empty($this->image_url) && $this->images()->count() === 0;
+    }
+
     // Accessor untuk format harga
     public function getFormattedPriceAttribute()
     {

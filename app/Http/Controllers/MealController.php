@@ -246,6 +246,18 @@ class MealController extends Controller
     {
         $meal = Meal::with('images')->findOrFail($mealId);
 
+        // Migrate legacy image to meal_images if it exists and no images are set yet
+        if ($meal->hasLegacyImage()) {
+            MealImage::create([
+                'meal_id' => $meal->id,
+                'image_path' => $meal->image_url,
+                'order' => 0,
+                'is_primary' => true
+            ]);
+            // Reload images after migration
+            $meal = Meal::with('images')->findOrFail($mealId);
+        }
+
         $images = $meal->images->map(function ($image) {
             return [
                 'id' => $image->id,
@@ -281,16 +293,14 @@ class MealController extends Controller
         $primaryImage = $meal->images()->where('is_primary', true)->first();
 
         if ($primaryImage) {
+            // Update the legacy image_url column to match the primary image
             $meal->update(['image_url' => $primaryImage->image_path]);
         } else {
-            // If no images left, fallback to null or keep existing if manually set?
-            // Safer to set null if we are strictly using meal_images as source of truth.
-            // But if user used legacy upload without MealImage record, we might lose data.
-            // However, our new logic creates MealImage for everything.
-            if ($meal->images()->count() === 0) {
-                // only clear if truly no images
-                // $meal->update(['image_url' => null]); 
-                // actually, let's just leave it alone if no primary found to avoid accidental deletion of legitimate legacy data
+            // If no primary image found but images exist, mark the first one as primary
+            $firstImage = $meal->images()->orderBy('order')->first();
+            if ($firstImage) {
+                $firstImage->update(['is_primary' => true]);
+                $meal->update(['image_url' => $firstImage->image_path]);
             }
         }
     }

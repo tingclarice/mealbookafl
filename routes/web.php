@@ -25,7 +25,6 @@ use App\Http\Middleware\ShopApprovedMiddleware;
 // handles login, register, password reset, etc.
 require __DIR__ . '/auth.php';
 
-
 // PUBLIC ROUTES
 // ===== GOOGLE AUTH =====
 Route::get('/auth/google', [AuthController::class, 'loginGoogle'])->name("google.login");
@@ -84,7 +83,6 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-
 // ===== ADMIN ONLY ROUTES =====
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // User Management
@@ -104,7 +102,6 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
         Route::post('/withdrawal/store', [WithdrawalController::class, 'store'])->name('withdrawal.store');
     });
 });
-
 
 // ===== STAFF & OWNER ONLY ROUTES =====
 Route::middleware(['auth', StaffMiddleware::class])->group(function () {
@@ -165,7 +162,6 @@ Route::middleware(['auth', StaffMiddleware::class])->group(function () {
 
 });
 
-
 // ===== OWNER ONLY ROUTES =====
 Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
     // Shop must be approved
@@ -193,10 +189,6 @@ Route::middleware(['auth', OwnerMiddleware::class])->group(function () {
     });
 });
 
-
-
-
-
 // Midtrans Webhook
 Route::post('/midtrans/webhook', [MidtransController::class, 'handleNotification']);
 
@@ -206,7 +198,6 @@ Route::post('/timezone', function (Request $request) {
         session(['timezone' => $request->timezone]);
     }
 });
-
 
 // Test route
 Route::get('test', function () {
