@@ -72,7 +72,7 @@
                     </td>
                     <td class="text-end pe-3">
                         @if($staff->pivot->role === 'OWNER')
-                             <button class="btn btn-link text-muted p-0" disabled style="opacity: 0.5; cursor: not-allowed;">
+                            <button class="btn btn-link text-muted p-0" disabled style="opacity: 0.5; cursor: not-allowed;">
                                 <i class="bi bi-trash"></i>
                             </button>
                         @else

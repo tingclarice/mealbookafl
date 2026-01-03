@@ -18,7 +18,7 @@
         <div class="container">
             <div class="d-flex justify-content-center">
                 <form method="GET" action="{{ route('menu') }}" class="d-flex gap-2" style="max-width: 600px; width: 100%;">
-                    {{-- Preserve category filter --}}
+                    {{-- Category Filter --}}
                     @if($currentCategory)
                         <input type="hidden" name="category" value="{{ $currentCategory }}">
                     @endif
@@ -47,7 +47,6 @@
     <section class="py-4" style="background-color: #FEF3F0;">
         <div class="container">
             <div class="d-flex justify-content-center gap-3 flex-wrap">
-                {{-- Loop Categories from Controller --}}
                 <x-filter-button label="Semua" :isActive="!$currentCategory" />
                 @foreach($categories as $key => $label)
                     <x-filter-button :label="$label" :category="$key" :isActive="$currentCategory == $key" />
@@ -95,7 +94,6 @@
                                     <li class="page-item disabled">
                                         <span class="page-link"
                                             style="background-color: #fff; border: 2px solid #F97352; color: #64748B; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
-                                            {{-- Teks diganti dengan ikon --}}
                                             <i class="bi bi-chevron-left"></i>
                                         </span>
                                     </li>
@@ -103,7 +101,6 @@
                                     <li class="page-item">
                                         <a class="page-link" href="{{ $meals->previousPageUrl() }}"
                                             style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
-                                            {{-- Teks diganti dengan ikon --}}
                                             <i class="bi bi-chevron-left"></i>
                                         </a>
                                     </li>
@@ -129,7 +126,6 @@
                                     <li class="page-item">
                                         <a class="page-link" href="{{ $meals->nextPageUrl() }}"
                                             style="background-color: #F97352; border: 2px solid #F97352; color: white; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
-                                            {{-- Teks diganti dengan ikon --}}
                                             <i class="bi bi-chevron-right"></i>
                                         </a>
                                     </li>
@@ -137,7 +133,6 @@
                                     <li class="page-item disabled">
                                         <span class="page-link"
                                             style="background-color: #fff; border: 2px solid #F97352; color: #64748B; border-radius: 10px; margin: 0 5px; padding: 10px 20px;">
-                                            {{-- Teks diganti dengan ikon --}}
                                             <i class="bi bi-chevron-right"></i>
                                         </span>
                                     </li>

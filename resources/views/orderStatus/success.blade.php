@@ -22,20 +22,20 @@
                         {{-- Main Heading --}}
                         <h3 class="fw-bold mb-2" style="color: #333;">Payment Settled!</h3>
 
-                        {{-- The Specific Message Requested --}}
+                        {{-- Message --}}
                         <p class="text-muted mb-4" style="font-size: 1.1rem; line-height: 1.6;">
                             Thank you for ordering, your payment is settled. <br>
                             We will inform you to get ready the food.
                         </p>
 
-                        {{-- Optional: Order ID Reference --}}
+                        {{-- Order ID Reference --}}
                         <div class="py-2 px-3 rounded-3 mb-4 d-inline-block"
                             style="background-color: #f8f9fa; border: 1px dashed #dee2e6;">
                             <span class="text-muted small text-uppercase fw-bold">Order ID:</span>
                             <span class="fw-bold" style="color: #333;">#{{ $order->id ?? 'ORD-' . rand(1000, 9999) }}</span>
                         </div>
 
-                        {{-- Action Button (Styled with your brand orange #F97352) --}}
+                        {{-- Action Button --}}
                         <div class="d-grid gap-2">
                             <a href="{{ url('/') }}" class="btn text-white fw-bold py-2"
                                 style="background-color: #F97352; border-radius: 8px; transition: 0.3s;">
@@ -51,7 +51,7 @@
 
                     </div>
 
-                    {{-- Decorative Footer Strip --}}
+                    {{-- Footer Strip --}}
                     <div class="card-footer border-0 p-0" style="height: 6px; background-color: #F97352;"></div>
                 </div>
 

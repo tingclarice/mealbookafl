@@ -58,12 +58,12 @@
                                 <div class="d-flex align-items-center">
                                     <div class="me-3">
                                         <input type="radio" 
-                                               name="shop_selection" 
-                                               id="shop_radio_{{ $shopId }}" 
-                                               class="shop-radio"
-                                               value="{{ $shopId }}"
-                                               data-subtotal="{{ $shopSubtotal }}"
-                                               onchange="updateSummary(this)">
+                                            name="shop_selection" 
+                                            id="shop_radio_{{ $shopId }}" 
+                                            class="shop-radio"
+                                            value="{{ $shopId }}"
+                                            data-subtotal="{{ $shopSubtotal }}"
+                                            onchange="updateSummary(this)">
                                     </div>
                                     <div>
                                         <h5 class="fw-bold mb-0 text-dark">

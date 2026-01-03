@@ -43,7 +43,7 @@
         <header class="mb-4">
             <h4 class="text-lg font-medium text-dark fw-bold">Delete Account</h4>
             <p class="mt-1 text-sm text-muted">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted.') }}
+                {{ ('Once your account is deleted, all of its resources and data will be permanently deleted.') }}
             </p>
         </header>
 
@@ -66,9 +66,7 @@
     </div>
 
     <script>
-        /**
-         * Validation for Shop Deletion
-         */
+        // Validation for Shop Deletion
         function confirmDeleteShop(shopId) {
             const input = document.getElementById('confirm_shop_text').value.trim().toLowerCase();
             const targetPhrase = 'delete my shop';
@@ -83,9 +81,7 @@
             }
         }
 
-        /**
-         * Validation for Account Deletion
-         */
+        // Validation for Account Deletion
         function confirmDeleteAccount() {
             const input = document.getElementById('confirm_text').value.trim().toLowerCase();
             const targetPhrase = 'delete my account';

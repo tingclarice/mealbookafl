@@ -1,13 +1,12 @@
 function showQr(displayId, midtransId) {
-    // 1. Set ID text
+    // Set ID text
     document.getElementById('qrOrderId').innerText = displayId;
 
-    // 2. Clear previous QR
+    // Clear previous QR
     const qrContainer = document.getElementById('qrcode');
     qrContainer.innerHTML = '';
 
-    // 3. Generate new QR
-    // We encode the sensitive midtrans_order_id because that's what the backend expects
+    // Generate new QR
     new QRCode(qrContainer, {
         text: midtransId,
         width: 200,
@@ -17,7 +16,7 @@ function showQr(displayId, midtransId) {
         correctLevel: QRCode.CorrectLevel.H
     });
 
-    // 4. Show Modal
+    // Show Modal
     const modal = new bootstrap.Modal(document.getElementById('qrDisplayModal'));
     modal.show();
 }

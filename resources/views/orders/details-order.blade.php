@@ -167,7 +167,7 @@
                                                     </div>
                                                 @endif
                                                 @if($item->notes)
-                                                     <div class="small mt-1`">Note: "{{ $item->notes }}"</div>
+                                                    <div class="small mt-1`">Note: "{{ $item->notes }}"</div>
                                                 @endif
                                             </td>
                                             <td class="text-center">Rp {{ number_format($item->price, 0, ',', '.') }}</td>

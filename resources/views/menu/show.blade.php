@@ -48,9 +48,9 @@
                                 @foreach($meal->images as $index => $image)
                                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                                         <img src="{{ asset('storage/' . $image->image_path) }}" 
-                                             class="d-block w-100" 
-                                             alt="{{ $meal->name }}"
-                                             style="width: 100%; max-width: 400px; height: 400px; object-fit: cover;">
+                                            class="d-block w-100" 
+                                            alt="{{ $meal->name }}"
+                                            style="width: 100%; max-width: 400px; height: 400px; object-fit: cover;">
                                     </div>
                                 @endforeach
                             </div>

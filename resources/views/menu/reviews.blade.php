@@ -7,7 +7,7 @@
 @section('content')
 <div class="container my-5">
 
-    {{-- Section 1: Meal & Rating Summary --}}
+    {{-- Meal & Rating Summary --}}
     <div class="card mb-4">
         <div class="card-body p-4">
             <div class="row align-items-center">
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    {{-- Section 2: List of All Reviews --}}
+    {{-- List of All Reviews --}}
     <div class="card">
         <div class="card-header bg-white border-0 pt-4 px-4">
             <h4 class="fw-bold">All Reviews</h4>
