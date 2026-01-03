@@ -125,6 +125,14 @@
                             onclick="event.stopPropagation(); showQr('#{{ $order->id }}', '{{ $order->midtrans_order_id }}')">
                             <i class="bi bi-qr-code me-1"></i> Show QR
                         </button>
+
+                        {{-- 3. REVIEW (Only when COMPLETED) --}}
+                    @elseif($orderStatus === 'COMPLETED')
+                        <a href="{{ route('order.details', $order->id) }}" 
+                            class="btn btn-sm btn-outline-primary fw-bold px-3 rounded-pill"
+                            onclick="event.stopPropagation()">
+                            <i class="bi bi-star me-1"></i> Review
+                        </a>
                     @endif
                 </div>
             @endif

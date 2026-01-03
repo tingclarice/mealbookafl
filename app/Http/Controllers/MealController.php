@@ -15,7 +15,11 @@ class MealController extends Controller
     // Untuk halaman /menu (list + filter)
     public function index(Request $request)
     {
-        $query = Meal::with('shop')->where('isAvailable', true);
+        $query = Meal::with('shop')
+            ->where('isAvailable', true)
+            ->whereHas('shop', function ($q) {
+                $q->where('status', 'OPEN');
+            });
 
         $currentCategory = $request->get('category');
 
@@ -48,7 +52,11 @@ class MealController extends Controller
             'optionGroups.values',
             'shop',
             'images'
-        ])->findOrFail($id);
+        ])
+        ->whereHas('shop', function ($q) {
+            $q->where('status', 'OPEN');
+        })
+        ->findOrFail($id);
 
         // $reviews = $meal->reviews;
         // $averageRating = round($reviews->avg('rate'), 1);
