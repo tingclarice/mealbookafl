@@ -6,7 +6,7 @@
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
             <h3 class="mb-3 fs-2 fw-bold mb-md-0">Analytics Dashboard</h3>
 
-            <!-- Date Filter -->
+            <!-- Date Filter & Export -->
             <div class="d-flex flex-column flex-md-row gap-2">
                 <!-- Quick Filters -->
                 <div class="btn-group" role="group">
@@ -24,6 +24,12 @@
                     <input type="date" name="end_date" class="form-control form-control-sm" value="{{ $endDate }}">
                     <button type="submit" class="btn btn-sm btn-primary">Apply</button>
                 </form>
+
+                <!-- Export CSV Button -->
+                <a href="{{ route('analytics.export', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
+                    class="btn btn-sm btn-success" title="Download analytics as CSV">
+                    <i class="bi bi-download"></i> Export CSV
+                </a>
             </div>
         </div>
 
