@@ -45,13 +45,13 @@ class AnalyticsController extends Controller
     {
         $totalRevenue = Order::where('shop_id', $shopId)
             ->where('payment_status', 'PAID')
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->sum('total_amount');
 
         $todayRevenue = Order::where('shop_id', $shopId)
             ->where('payment_status', 'PAID')
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereDate('created_at', today())
             ->sum('total_amount');
 
@@ -61,7 +61,7 @@ class AnalyticsController extends Controller
 
         $previousPeriodRevenue = Order::where('shop_id', $shopId)
             ->where('payment_status', 'PAID')
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereBetween('created_at', [$previousStart, $startDate])
             ->sum('total_amount');
 
@@ -80,12 +80,12 @@ class AnalyticsController extends Controller
     private function getOrderMetrics($shopId, $startDate, $endDate)
     {
         $totalOrders = Order::where('shop_id', $shopId)
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->count();
 
         $todayOrders = Order::where('shop_id', $shopId)
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereDate('created_at', today())
             ->count();
 
@@ -109,7 +109,7 @@ class AnalyticsController extends Controller
         $topSelling = OrderItem::whereHas('order', function ($q) use ($shopId, $startDate, $endDate) {
             $q->where('shop_id', $shopId)
                 ->where('payment_status', 'PAID')
-                ->where('order_status', 'COMPLETED')
+                ->where('order_status', 'READY')
                 ->whereBetween('created_at', [$startDate, $endDate]);
         })
             ->select('meal_id', 'meal_name')
@@ -130,7 +130,7 @@ class AnalyticsController extends Controller
         // Revenue trend (daily)
         $revenueTrend = Order::where('shop_id', $shopId)
             ->where('payment_status', 'PAID')
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->selectRaw('DATE(created_at) as date')
             ->selectRaw('SUM(total_amount) as revenue')
@@ -147,7 +147,7 @@ class AnalyticsController extends Controller
     {
         return Order::where('shop_id', $shopId)
             ->where('payment_status', 'PAID')
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->avg('total_amount') ?? 0;
     }
@@ -159,7 +159,7 @@ class AnalyticsController extends Controller
             ->count();
 
         $completed = Order::where('shop_id', $shopId)
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->count();
 
@@ -201,7 +201,7 @@ class AnalyticsController extends Controller
         $clv = $totalCustomers > 0
             ? Order::where('shop_id', $shopId)
                 ->where('payment_status', 'PAID')
-                ->where('order_status', 'COMPLETED')
+                ->where('order_status', 'READY')
                 ->whereBetween('created_at', [$startDate, $endDate])
                 ->sum('total_amount') / $totalCustomers
             : 0;
@@ -223,7 +223,7 @@ class AnalyticsController extends Controller
         // Payment method breakdown
         $paymentMethods = Order::where('shop_id', $shopId)
             ->where('payment_status', 'PAID')
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->select('payment_method')
             ->selectRaw('COUNT(*) as count')
@@ -234,13 +234,13 @@ class AnalyticsController extends Controller
 
         // Payment success rate
         $totalOrders = Order::where('shop_id', $shopId)
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->count();
 
         $paidOrders = Order::where('shop_id', $shopId)
             ->where('payment_status', 'PAID')
-            ->where('order_status', 'COMPLETED')
+            ->where('order_status', 'READY')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->count();
 
