@@ -10,7 +10,7 @@ class ShopUpdateRequest extends ShopOwnerRequest
         // This runs the ownership check from ShopOwnerRequest first
         $isOwner = parent::authorize(); 
 
-        return $isOwner && $this->route('shop')->isApproved();
+        return true;
     }
 
     public function rules(): array

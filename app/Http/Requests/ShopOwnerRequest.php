@@ -18,10 +18,8 @@ class ShopOwnerRequest extends FormRequest
         }
 
         // Check if the logged-in user is the OWNER of this specific shop
-        return $this->user() && $this->user()->shops()
-            ->where('shops.id', $shop->id)
-            ->wherePivot('role', 'OWNER')
-            ->exists();
+        return $this->user() && $this->user()->isOwnerOf($shop->id);
+
     }
 
     public function rules(): array

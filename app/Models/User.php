@@ -81,6 +81,21 @@ class User extends Authenticatable
             ->exists();
     }
 
+    public function isOwnerOf($shopId) {
+        return $this->shops()
+            ->where('shop_id', $shopId) // Use shop_id (the foreign key in pivot)
+            ->wherePivot('role', 'OWNER')
+            ->exists();
+    }
+
+    // Check if user is staff of a SPECIFIC shop
+    public function isStaffOf($shopId) {
+        return $this->shops()
+            ->where('shop_id', $shopId)
+            ->wherePivot('role', 'STAFF')
+            ->exists();
+    }
+
     public function isOwnerOrStaff(){
         return $this->isOwner() || $this->isStaff();
     }
