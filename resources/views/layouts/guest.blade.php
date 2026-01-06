@@ -18,12 +18,8 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     
-    {{-- Simple navbar for auth pages (no user dropdown) --}}
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #F97352;">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/" style="font-family: 'Pacifico'; color: #fff;">MealBook</a>
-        </div>
-    </nav>
+    {{-- Navbar Component --}}
+    @include('layouts.navbar')
 
     {{-- Page Content --}}
     <main class="flex-grow-1">
