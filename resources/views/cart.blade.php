@@ -10,10 +10,12 @@
             cursor: pointer;
             accent-color: #e74c3c;
         }
+
         .shop-group-card {
             transition: all 0.3s ease;
             border: 1px solid #eee;
         }
+
         .shop-group-card.selected-shop {
             border: 2px solid #e74c3c;
             background-color: #fff5f5;
@@ -39,30 +41,27 @@
     <div style="background-color: #fef3f0; min-height: 100vh; padding: 3rem 0;">
         <div class="container my-5 min-h-screen">
             <div class="row g-4">
-                
+
                 {{-- LEFT COLUMN: Cart Items Grouped by Shop --}}
                 <div class="col-lg-8 mx-auto">
-                    
+
                     @forelse ($groupedCartItems as $shopId => $items)
                         @php
                             $shop = $items->first()->meal->shop;
                             // Calculate subtotal for THIS specific shop
-                            $shopSubtotal = $items->sum(function($item){ return $item->total_price; });
+                            $shopSubtotal = $items->sum(function ($item) {
+                                return $item->total_price; });
                         @endphp
 
                         {{-- Shop Card Wrapper --}}
                         <div class="card p-3 mb-4 shop-group-card" id="shop-card-{{ $shopId }}">
-                            
+
                             {{-- Card Header with Radio Button --}}
                             <div class="card-header bg-transparent border-bottom-0 pt-3 pb-2">
                                 <div class="d-flex align-items-center">
                                     <div class="me-3">
-                                        <input type="radio" 
-                                            name="shop_selection" 
-                                            id="shop_radio_{{ $shopId }}" 
-                                            class="shop-radio"
-                                            value="{{ $shopId }}"
-                                            data-subtotal="{{ $shopSubtotal }}"
+                                        <input type="radio" name="shop_selection" id="shop_radio_{{ $shopId }}"
+                                            class="shop-radio" value="{{ $shopId }}" data-subtotal="{{ $shopSubtotal }}"
                                             onchange="updateSummary(this)">
                                     </div>
                                     <div>
@@ -87,7 +86,8 @@
 
                                         {{-- Details --}}
                                         <div class="flex-grow-1 ms-3">
-                                            <a href="{{ route('menu.show', $item->meal->id) }}" class="text-decoration-none text-dark">
+                                            <a href="{{ route('menu.show', $item->meal->id) }}"
+                                                class="text-decoration-none text-dark">
                                                 <h6 class="fw-bold mb-1">{{ $item->meal->name }}</h6>
                                             </a>
 
@@ -120,16 +120,19 @@
 
                                             {{-- Quantity Controls --}}
                                             <div class="d-flex align-items-center">
-                                                <form action="{{ route('cart.decrement', $item->id) }}" method="POST" style="display:inline;">
+                                                <form action="{{ route('cart.decrement', $item->id) }}" method="POST"
+                                                    style="display:inline;">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-sm btn-outline-secondary quantity-btn">−</button>
+                                                    <button type="submit"
+                                                        class="btn btn-sm btn-outline-secondary quantity-btn">−</button>
                                                 </form>
 
                                                 <span class="mx-3 fw-bold">{{ $item->quantity }}</span>
 
                                                 <form action="{{ route('cart.increment', $item->id) }}" method="POST">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-sm btn-outline-secondary quantity-btn">+</button>
+                                                    <button type="submit"
+                                                        class="btn btn-sm btn-outline-secondary quantity-btn">+</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -144,9 +147,29 @@
                         </div>
 
                     @empty
-                        <div class="card p-5 text-center">
-                            <h4>Your cart is empty</h4>
-                            <a href="/" class="btn btn-primary mt-3">Browse Food</a>
+                        <div class="card border-0 shadow-sm p-5 text-center bg-white" style="border-radius: 1.5rem;">
+                            <div class="mb-4">
+                                <div class="d-inline-flex align-items-center justify-content-center rounded-circle"
+                                    style="width: 80px; height: 80px; background-color: #fff1ee;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+                                        fill="none" stroke="#F97352" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                                        <path d="M3 6h18" />
+                                        <path d="M16 10a4 4 0 0 1-8 0" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <h4 class="fw-bold mb-2" style="color: #333;">Your cart is empty</h4>
+                            <p class="text-muted mb-4">Looks like you haven't added anything to your cart yet.</p>
+
+                            <div class="d-flex justify-content-center">
+                                <a href="/" class="btn btn-lg px-5 py-3 text-white fw-bold shadow-sm"
+                                    style="background-color: #F97352; border-radius: 12px; border: none; transition: 0.3s;">
+                                    Browse Food
+                                </a>
+                            </div>
                         </div>
                     @endforelse
                 </div>
@@ -157,17 +180,17 @@
                         <div class="card shadow-sm sticky-top" style="top: 20px;">
                             <div class="card-body p-4">
                                 <h5 class="fw-bold mb-4">Payment Summary</h5>
-                                
+
                                 {{-- Dynamic Values Span --}}
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-muted">Subtotal</span>
                                     <span class="fw-bold" id="summary-subtotal">Rp 0</span>
                                 </div>
                                 @if($fee > 0)
-                                <div class="d-flex justify-content-between mb-3">
-                                    <span class="text-muted">Fee</span>
-                                    <span class="fw-bold">Rp {{ number_format($fee, 0, ',', '.') }}</span>
-                                </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">Fee</span>
+                                        <span class="fw-bold">Rp {{ number_format($fee, 0, ',', '.') }}</span>
+                                    </div>
                                 @endif
 
                                 <hr>
@@ -185,11 +208,9 @@
                                 <form id="checkout-form" action="#" method="POST">
                                     @csrf
                                     <input type="hidden" name="shop_id" id="selected-shop-input" required>
-                                    
-                                    <button type="submit" 
-                                            id="checkout-btn"
-                                            class="btn btn-primary w-100 mt-4 checkout-btn" 
-                                            disabled>
+
+                                    <button type="submit" id="checkout-btn" class="btn btn-primary w-100 mt-4 checkout-btn"
+                                        disabled>
                                         Check Out
                                     </button>
                                 </form>
@@ -216,14 +237,14 @@
             const shopId = radioButton.value;
             const total = subtotal + FEE;
 
-        
+
             let routeUrl = "{{ route('order.create', ['shop' => 0]) }}";
 
-            routeUrl = routeUrl.replace('/0', '/' + shopId); 
+            routeUrl = routeUrl.replace('/0', '/' + shopId);
 
             // Update the form action
             document.getElementById('checkout-form').action = routeUrl;
-            
+
 
             // 2. Update Summary UI
             document.getElementById('summary-subtotal').innerText = formatRupiah(subtotal);
