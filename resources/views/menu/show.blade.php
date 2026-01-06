@@ -43,45 +43,54 @@
                 <div class="col-md-5 text-center">
                     @if($meal->images->count() > 0)
                         {{-- Image Carousel for multiple images --}}
-                        <div id="mealImageCarousel" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner" style="border-radius: 25px; overflow: hidden;">
-                                {{-- Show primary image first --}}
+                        <div id="mealImageCarousel" class="carousel slide shadow-sm" data-bs-ride="carousel" style="border-radius: 25px; overflow: hidden;">
+                            <div class="carousel-inner">
                                 @php
                                     $primaryImage = $meal->images->where('is_primary', true)->first();
                                     $otherImages = $meal->images->where('is_primary', false)->values();
+                                    $allImages = collect();
+                                    if($primaryImage) $allImages->push($primaryImage);
+                                    $allImages = $allImages->concat($otherImages);
                                 @endphp
-                                @if($primaryImage)
-                                    <div class="carousel-item active">
-                                        <img src="{{ asset('storage/' . $primaryImage->image_path) }}" 
-                                            class="d-block w-100" 
-                                            alt="{{ $meal->name }}"
-                                            style="width: 100%; max-width: 400px; height: 400px; object-fit: cover;">
-                                    </div>
-                                @endif
-                                @foreach($otherImages as $image)
-                                    <div class="carousel-item">
-                                        <img src="{{ asset('storage/' . $image->image_path) }}" 
-                                            class="d-block w-100" 
-                                            alt="{{ $meal->name }}"
-                                            style="width: 100%; max-width: 400px; height: 400px; object-fit: cover;">
+
+                                @foreach($allImages as $index => $image)
+                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                        {{-- Aspect Ratio Box (Square 1:1 or 4:3) --}}
+                                        <div class="ratio ratio-1x1 bg-light">
+                                            <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                                class="d-block w-100" 
+                                                alt="{{ $meal->name }}"
+                                                style="object-fit: contain; background-color: #f8f9fa;">
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
-                            @if($meal->images->count() > 1)
+
+                            @if($allImages->count() > 1)
+                                {{-- Elegant Custom Controls --}}
                                 <button class="carousel-control-prev" type="button" data-bs-target="#mealImageCarousel" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
+                                    <span class="rounded-circle d-flex align-items-center justify-content-center" 
+                                        style="background: rgba(255,255,255,0.8); width: 40px; height: 40px;">
+                                        <i class="bi bi-chevron-left text-dark"></i>
+                                    </span>
                                 </button>
                                 <button class="carousel-control-next" type="button" data-bs-target="#mealImageCarousel" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
+                                    <span class="rounded-circle d-flex align-items-center justify-content-center" 
+                                        style="background: rgba(255,255,255,0.8); width: 40px; height: 40px;">
+                                        <i class="bi bi-chevron-right text-dark"></i>
+                                    </span>
                                 </button>
-                                {{-- Indicators --}}
-                                <div class="carousel-indicators">
-                                    @foreach($meal->images as $index => $image)
-                                        <button type="button" data-bs-target="#mealImageCarousel" data-bs-slide-to="{{ $index }}" 
-                                                class="{{ ($index === 0 && $image->is_primary) || ($index > 0 && !$primaryImage) ? 'active' : '' }}" aria-current="{{ ($index === 0 && $image->is_primary) || ($index > 0 && !$primaryImage) ? 'true' : 'false' }}" 
-                                                aria-label="Slide {{ $index + 1 }}"></button>
+
+                                {{-- Minimalist Pill Indicators --}}
+                                <div class="carousel-indicators mb-3">
+                                    @foreach($allImages as $index => $image)
+                                        <button type="button" 
+                                                data-bs-target="#mealImageCarousel" 
+                                                data-bs-slide-to="{{ $index }}" 
+                                                class="{{ $index === 0 ? 'active' : '' }}" 
+                                                style="width: 12px; height: 12px; border-radius: 50%; margin: 0 5px; border: 2px solid #fff; background-color: #F97352;"
+                                                aria-label="Slide {{ $index + 1 }}">
+                                        </button>
                                     @endforeach
                                 </div>
                             @endif
