@@ -2,7 +2,7 @@
     <div class="container">
         {{-- Brand --}}
         <a class="navbar-brand fw-bold" href="/" style="font-family: 'Pacifico'; color: #fff; font-size: 1.6rem;">
-            Denver
+            Denfood
         </a>
 
         {{-- Hamburger button --}}
@@ -80,7 +80,7 @@
                                     <i class="bi bi-box-seam me-2"></i> Shop Orders
                                 </a>
                             @endif
-                                
+
 
                             <li>
                                 <a class="dropdown-item" href="{{ route('myOrders') }}">
