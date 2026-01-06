@@ -75,13 +75,6 @@ class MealController extends Controller
         return view('menu.show', compact('meal', 'averageRating', 'reviewCount', 'latestReviews', 'suggestedMeals'));
     }
 
-    // public function reviews($id){
-    //     $meal = Meal::with(['reviews.user'])->findOrFail($id);
-    //     $reviews = $meal->reviews->sortByDesc('created_at');
-    //     $averageRating = round($reviews->avg('rate'), 1);
-    //     $reviewCount = $reviews->count();
-    //     return view('menu.reviews', compact('meal', 'reviews', 'averageRating', 'reviewCount'));
-    // }
 
     // Store new meal
     public function store(Request $request)

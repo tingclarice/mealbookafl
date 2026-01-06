@@ -26,9 +26,9 @@
                         <div class="card-body px-4">
                             @foreach ($order->items as $item)
                                 <div class="d-flex align-items-start mb-4 border-bottom pb-4 last:border-0">
-                                    
+
                                     {{-- Placeholder for Image if you uncomment it later --}}
-                                    <div class="rounded-3 bg-light d-flex align-items-center justify-content-center" 
+                                    <div class="rounded-3 bg-light d-flex align-items-center justify-content-center"
                                         style="width: 70px; height: 70px; flex-shrink: 0; background-color: #fff1ee !important;">
                                         <i class="bi bi-egg-fried" style="color: #F97352; font-size: 1.5rem;"></i>
                                     </div>
@@ -36,7 +36,8 @@
                                     <div class="flex-grow-1 ms-3">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <h6 class="fw-bold mb-1" style="font-size: 1.1rem;">{{ $item->meal_name }}</h6>
-                                            <span class="badge rounded-pill px-3 py-2" style="background-color: #fff1ee; color: #F97352;">
+                                            <span class="badge rounded-pill px-3 py-2"
+                                                style="background-color: #fff1ee; color: #F97352;">
                                                 x{{ $item->quantity }}
                                             </span>
                                         </div>
@@ -47,7 +48,8 @@
 
                                         {{-- Options List --}}
                                         @if ($item->options && $item->options->isNotEmpty())
-                                            <div class="small text-muted p-2 rounded-3" style="background-color: #fcfcfc; border: 1px solid #f0f0f0;">
+                                            <div class="small text-muted p-2 rounded-3"
+                                                style="background-color: #fcfcfc; border: 1px solid #f0f0f0;">
                                                 @foreach ($item->options as $option)
                                                     <div class="d-flex justify-content-between">
                                                         <span>• {{ $option->option_name }}</span>
@@ -107,10 +109,10 @@
 
                             {{-- Pay Button --}}
                             <button id="pay-button" class="btn w-100 py-3 fw-bold text-white shadow-sm"
-                                    style="background-color: #F97352; border-radius: 12px; border: none; transition: 0.3s;">
+                                style="background-color: #F97352; border-radius: 12px; border: none; transition: 0.3s;">
                                 <i class="bi bi-shield-check me-2"></i> Pay Now
                             </button>
-                        
+
                         </div>
                     </div>
                 </div>
@@ -133,7 +135,7 @@
                     alert('Payment failed');
                 },
                 onClose: function () {
-                    alert('You closed the popup without finishing the payment');
+                    // alert('You closed the popup without finishing the payment');
                 }
             });
         });

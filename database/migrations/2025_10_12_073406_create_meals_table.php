@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->enum('category', ['MEAL', 'SNACK', 'DRINK', 'DESSERT']);
             $table->boolean('isAvailable')->default(true);
-            $table->string('image_url');
+            $table->string('image_url')->default("");
             $table->timestamps();
         });
     }

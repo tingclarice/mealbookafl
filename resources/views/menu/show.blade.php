@@ -128,50 +128,13 @@
                     <form action="{{ route('cart.add', $meal->id) }}" method="POST">
                         @csrf
 
-                        @if ($meal->optionGroups->isNotEmpty())
-                            <div class="mt-4">
-                                <h5 class="fw-bold mb-3">Customize Your Order</h5>
-
-                                @foreach ($meal->optionGroups as $group)
-                                    @if($group->values->isNotEmpty())
-                                    <div class="mb-4 p-3 border rounded">
-                                        <h6 class="fw-bold">
-                                            {{ $group->name }}
-                                            @if ($group->is_required)
-                                                <span class="badge bg-danger">Required</span>
-                                            @endif
-                                        </h6>
-
-                                        @foreach ($group->values as $value)
-                                            <div class="form-check">
-                                                <input class="form-check-input"
-                                                    type="{{ $group->is_multiple ? 'checkbox' : 'radio' }}" name="options[]"
-                                                    value="{{ $value->id }}" id="option-{{ $value->id }}"
-                                                    {{ $group->is_required && !$group->is_multiple ? 'required' : '' }}>
-                                                <label class="form-check-label" for="option-{{ $value->id }}">
-                                                    {{ $value->name }}
-                                                    @if ($value->price > 0)
-                                                        <span class="text-muted">(+{{ $value->formatted_price }})</span>
-                                                    @endif
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                    @endif
-                                @endforeach
-                            </div>
-                        @endif
-
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">Special Instructions (Optional)</label>
-                            <textarea name="notes" id="notes" class="form-control" rows="2"
-                                placeholder="e.g., No onions, extra spicy..."></textarea>
+                        <div class="mt-5">
+                            <button type="button" class="btn btn-lg px-5 py-3 fw-bold shadow-sm"
+                                data-bs-toggle="modal" data-bs-target="#customizationModal"
+                                style="background-color: #F97352; color: #fff; border: none; border-radius: 15px; transition: 0.3s;">
+                                <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                            </button>
                         </div>
-
-                        <button type="submit" class="btn mt-4 px-5 py-3 fw-bold mx-auto d-block d-md-inline-block"
-                            style="background-color: #2D114B; color: #fff; border: none; border-radius: 25px;">
-                            Add to Cart
-                        </button>
                     </form>
                 </div>
             </div>
@@ -262,4 +225,108 @@
             </div>
         </div>
     </section>
+
+    {{-- Customization Modal --}}
+<div class="modal fade" id="customizationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 1.5rem;">
+            
+            <form action="{{ route('cart.add', $meal->id) }}" method="POST">
+                @csrf
+                
+                <div class="modal-header border-0 pb-0 pt-4 px-4">
+                    <h5 class="fw-bold mb-0" style="color: #2D114B;">Customize Your Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4" style="max-height: 60vh; overflow-y: auto;">
+                    
+                    {{-- Option Groups --}}
+                    @if ($meal->optionGroups->isNotEmpty())
+                        @foreach ($meal->optionGroups as $group)
+                            @if($group->values->isNotEmpty())
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h6 class="fw-bold mb-0" style="color: #2D114B;">{{ $group->name }}</h6>
+                                        @if ($group->is_required)
+                                            <span class="badge rounded-pill px-2 py-1" style="background-color: #fff1ee; color: #F97352; font-size: 0.65rem;">REQUIRED</span>
+                                        @endif
+                                    </div>
+
+                                    <div class="row g-2">
+                                        @foreach ($group->values as $value)
+                                            <div class="col-12">
+                                                <label class="d-flex align-items-center justify-content-between p-3 rounded-3 custom-option-label" 
+                                                       for="modal-option-{{ $value->id }}">
+                                                    
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-check-input me-3"
+                                                            type="{{ $group->is_multiple ? 'checkbox' : 'radio' }}" 
+                                                            name="options[{{ $group->id }}]{{ $group->is_multiple ? '[]' : '' }}"
+                                                            value="{{ $value->id }}" 
+                                                            id="modal-option-{{ $value->id }}"
+                                                            {{ $group->is_required && !$group->is_multiple ? 'required' : '' }}>
+                                                        
+                                                        <span class="fw-medium text-dark">{{ $value->name }}</span>
+                                                    </div>
+
+                                                    @if ($value->price > 0)
+                                                        <span class="fw-bold small" style="color: #F97352;">
+                                                            +Rp {{ number_format($value->price, 0, ',', '.') }}
+                                                        </span>
+                                                    @endif
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
+
+                    {{-- Special Instructions --}}
+                    <div class="mt-3">
+                        <label for="notes" class="form-label fw-bold" style="color: #2D114B;">Special Instructions</label>
+                        <textarea name="notes" id="notes" class="form-control border-0 shadow-sm" rows="3"
+                            style="border-radius: 12px; background-color: #f8f9fa;"
+                            placeholder="e.g. No onions, extra spicy..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="submit" class="btn w-100 py-3 fw-bold text-white shadow-sm"
+                        style="background-color: #F97352; border-radius: 12px; border: none;">
+                        Confirm & Add to Cart
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-option-label {
+        cursor: pointer;
+        transition: 0.2s;
+        background-color: #fcfcfc;
+        border: 1px solid #f0f0f0;
+    }
+
+    .custom-option-label:hover {
+        background-color: #fff9f8;
+        border-color: #F97352;
+    }
+
+    .custom-option-label:has(input:checked) {
+        background-color: #fff9f8;
+        border: 1.5px solid #F97352;
+    }
+
+    .form-check-input:checked {
+        background-color: #F97352;
+        border-color: #F97352;
+    }
+    
+    .ls-1 { letter-spacing: 0.5px; }
+</style>
 @endsection
