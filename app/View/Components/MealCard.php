@@ -11,17 +11,13 @@ class MealCard extends Component
 {
     public $meal;
 
-    /**
-     * Create a new component instance.
-     */
+    // Create a new component instance
     public function __construct(Meal $meal)
     {
         $this->meal = $meal;
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
+    // Get the view / contents that represent the component
     public function render(): View|Closure|string
     {
         return view('components.meal-card');

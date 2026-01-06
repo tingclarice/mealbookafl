@@ -12,9 +12,7 @@ class FilterButton extends Component
     public $category;
     public $isActive;
 
-    /**
-     * Create a new component instance.
-     */
+    // Create a new component instance
     public function __construct($label, $category = null, $isActive = false)
     {
         $this->label = $label;
@@ -22,9 +20,7 @@ class FilterButton extends Component
         $this->isActive = $isActive;
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
+    // Get the view / contents that represent the component
     public function render(): View|Closure|string
     {
         return view('components.filter-button');

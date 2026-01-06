@@ -23,9 +23,7 @@ class OrderItem extends Model
         'price' => 'decimal:2',
     ];
 
-    /**
-     * Relationships
-     */
+    // Relationships
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
@@ -36,9 +34,7 @@ class OrderItem extends Model
         return $this->hasMany(OrderItemOption::class);
     }
 
-    /**
-     * Helpers
-     */
+    // HELPERS
 
     // Base price * quantity
     public function getSubtotalAttribute(): float

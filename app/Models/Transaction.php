@@ -20,18 +20,14 @@ class Transaction extends Model
         'amount' => 'decimal:2',
     ];
 
-    /**
-     * Relationships
-     */
+    // Relationships
     public function wallet(): BelongsTo
     {
         return $this->belongsTo(ShopWallet::class, 'wallet_id');
     }
 
 
-    /**
-     * Helpers
-     */
+    // Helpers
     public function isCredit(): bool
     {
         return $this->type === 'credit';

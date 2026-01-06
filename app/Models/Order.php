@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
-    /**
-     * Mass assignable attributes
-     */
+    // Mass assignable attributes
     protected $fillable = [
         'user_id',
         'shop_id',
@@ -29,18 +27,14 @@ class Order extends Model
         'raw_midtrans_response',
     ];
 
-    /**
-     * Attribute casting
-     */
+    // Attribute casting
     protected $casts = [
         'total_amount' => 'decimal:2',
         'payment_time' => 'datetime',
         'raw_midtrans_response' => 'array',
     ];
 
-    /**
-     * Relationships
-     */
+    // Relationships
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -64,9 +58,7 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    /**
-     * ---- Business helpers ----
-     */
+    // Business helpers
 
     public function transactions()
     {
@@ -178,17 +170,4 @@ class Order extends Model
             'raw_midtrans_response' => $midtransPayload,
         ]);
     }
-
-    /**
-     * Query scopes
-     */
-    // public function scopePaid($query)
-    // {
-    //     return $query->where('payment_status', 'PAID');
-    // }
-
-    // public function scopePending($query)
-    // {
-    //     return $query->where('payment_status', 'PENDING');
-    // }
 }

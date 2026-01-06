@@ -21,17 +21,13 @@ class MealImage extends Model
         'order' => 'integer'
     ];
 
-    /**
-     * Get the meal that owns this image
-     */
+    // Get the meal that owns this image
     public function meal()
     {
         return $this->belongsTo(Meal::class);
     }
 
-    /**
-     * Get the full URL for the image
-     */
+    // Get the full URL for the image
     public function getUrlAttribute()
     {
         return asset('storage/' . $this->image_path);

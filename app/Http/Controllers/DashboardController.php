@@ -9,7 +9,6 @@ class DashboardController extends Controller
 {
 
     public function dashboardMeal(Request $request){
-        // $meals = Meal::orderBy('created_at', 'desc')->get();
         $meals = $request->user()->meals()->get();
 
         return view('dashboard.menuDashboard', compact('meals'));

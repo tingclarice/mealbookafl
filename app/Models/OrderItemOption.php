@@ -17,9 +17,7 @@ class OrderItemOption extends Model
         'price' => 'decimal:2',
     ];
 
-    /**
-     * Relationships
-     */
+    // Relationships
     public function orderItem(): BelongsTo
     {
         return $this->belongsTo(OrderItem::class);
