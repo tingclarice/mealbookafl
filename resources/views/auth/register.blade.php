@@ -3,12 +3,12 @@
 @section('title', 'Register')
 
 @section('content')
-<section class="d-flex align-items-center justify-content-center" style="min-height: 80vh; background-color: #FFF9F7;">
-    <div class="container">
+<section class="d-flex align-items-center justify-content-center" style="min-height: auto; padding-top: 20px; padding-bottom: 30px; background-color: #FFF9F7;">
+    <div class="container mt-3">
         <div class="row justify-content-center">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="card border-0 shadow-sm" style="border-radius: 25px;">
-                    <div class="card-body p-5">
+                    <div class="card-body p-4">
                         {{-- Logo/Title --}}
                         <h2 class="text-center mb-4" style="font-family: 'Pacifico'; color: #F97352;">
                             Join MealBook!
