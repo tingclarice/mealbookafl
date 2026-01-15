@@ -23,8 +23,15 @@ class OrderController extends Controller
         Config::$is3ds = config('midtrans.is_3ds');
     }
 
-    public function createOrder(Shop $shop)
+    public function createOrder(Request $request, Shop $shop)
     {
+        $request->validate([
+            'pickup_date' => 'required|date|after_or_equal:today',
+            'pickup_time' => 'required|in:07:00,10:00,12:55',
+        ]);
+
+        $pickupDateTime = \Carbon\Carbon::parse($request->pickup_date . ' ' . $request->pickup_time);
+
         $user = auth()->user();
         $cartItems = CartItem::where('user_id', $user->id)
             ->whereHas('meal', function ($query) use ($shop) {
@@ -51,6 +58,7 @@ class OrderController extends Controller
                 'order_status' => 'PENDING',
                 'payment_status' => 'PENDING',
                 'total_amount' => $totalAmount,
+                'pickup_date' => $pickupDateTime,
                 'midtrans_order_id' => 'ORDER-' . uniqid() . '-' . time(),
                 'snap_token' => "",
             ]);

@@ -50,7 +50,8 @@
                             $shop = $items->first()->meal->shop;
                             // Calculate subtotal for THIS specific shop
                             $shopSubtotal = $items->sum(function ($item) {
-                                return $item->total_price; });
+                                return $item->total_price;
+                            });
                         @endphp
 
                         {{-- Shop Card Wrapper --}}
@@ -208,6 +209,29 @@
                                 <form id="checkout-form" action="#" method="POST">
                                     @csrf
                                     <input type="hidden" name="shop_id" id="selected-shop-input" required>
+
+                                    {{-- Pickup Date & Time --}}
+                                    <div class="mb-3">
+                                        <label for="pickup_date" class="form-label small fw-bold">Pickup Date</label>
+                                        <input type="date" name="pickup_date" id="pickup_date" class="form-control" required
+                                            min="{{ date('Y-m-d') }}">
+                                        @error('pickup_date')
+                                            <div class="text-danger small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="pickup_time" class="form-label small fw-bold">Pickup Time</label>
+                                        <select name="pickup_time" id="pickup_time" class="form-select" required>
+                                            <option value="" disabled selected>Select Time</option>
+                                            <option value="07:00">07:00</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="12:55">12:55</option>
+                                        </select>
+                                        @error('pickup_time')
+                                            <div class="text-danger small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
                                     <button type="submit" id="checkout-btn" class="btn btn-primary w-100 mt-4 checkout-btn"
                                         disabled>

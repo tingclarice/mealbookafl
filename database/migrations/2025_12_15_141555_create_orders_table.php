@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-
+        
             // Relations
             $table->foreignId('user_id')
                 ->constrained()
@@ -27,6 +27,7 @@ return new class extends Migration {
                 'CANCELLED',
                 'COMPLETED'
             ])->default('PENDING');
+            $table->dateTime('pickup_date')->nullable();
 
             // Payment lifecycle (Midtrans)
             $table->enum('payment_status', [
@@ -47,7 +48,7 @@ return new class extends Migration {
             $table->decimal('total_amount', 10, 2);
             $table->timestamp('payment_time')->nullable();
 
-            // Optional: store raw webhook payload
+
             $table->json('raw_midtrans_response')->nullable();
 
             $table->timestamps();

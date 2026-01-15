@@ -15,6 +15,7 @@ class Order extends Model
         'user_id',
         'shop_id',
 
+        'pickup_date',
         'order_status',
         'payment_status',
 
@@ -35,6 +36,7 @@ class Order extends Model
     protected $casts = [
         'total_amount' => 'decimal:2',
         'payment_time' => 'datetime',
+        'pickup_date' => 'datetime',
         'raw_midtrans_response' => 'array',
     ];
 
